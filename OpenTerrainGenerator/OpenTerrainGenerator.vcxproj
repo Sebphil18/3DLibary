@@ -25,13 +25,18 @@
     <ClCompile Include="src\sebphil\source\application\RenderLoop.cpp" />
     <ClCompile Include="src\sebphil\source\application\Window.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\ApplicationException.cpp" />
+    <ClCompile Include="src\sebphil\source\exceptions\FileInputException.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\GlfwException.cpp" />
+    <ClCompile Include="src\sebphil\source\exceptions\ShaderCompilationException.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\DebugMessenger.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\IndexBuffer.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\LayoutElementType.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\Shader.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\ShaderType.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexArray.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexBuffer.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexBufferLayout.cpp" />
+    <ClCompile Include="src\sebphil\source\io\FileReader.cpp" />
     <ClCompile Include="src\vendor\glad\glad.c" />
   </ItemGroup>
   <ItemGroup>
@@ -41,12 +46,20 @@
     <ClInclude Include="src\sebphil\header\application\Window.h" />
     <ClInclude Include="src\sebphil\header\exceptions\ApplicationException.h" />
     <ClInclude Include="src\sebphil\header\exceptions\GlfwException.h" />
+    <ClInclude Include="src\sebphil\header\exceptions\ShaderCompilationException.h" />
     <ClInclude Include="src\sebphil\header\globjects\DebugMessenger.h" />
     <ClInclude Include="src\sebphil\header\globjects\IndexBuffer.h" />
     <ClInclude Include="src\sebphil\header\globjects\LayoutElementType.h" />
+    <ClInclude Include="src\sebphil\header\globjects\Shader.h" />
+    <ClInclude Include="src\sebphil\header\globjects\ShaderType.h" />
     <ClInclude Include="src\sebphil\header\globjects\VertexArray.h" />
     <ClInclude Include="src\sebphil\header\globjects\VertexBuffer.h" />
     <ClInclude Include="src\sebphil\header\globjects\VertexBufferLayout.h" />
+    <ClInclude Include="src\sebphil\header\io\FileReader.h" />
+    <ClInclude Include="src\sebphil\header\exceptions\FileInputException.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\sebphil\shader\vertex\VertexStandard.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

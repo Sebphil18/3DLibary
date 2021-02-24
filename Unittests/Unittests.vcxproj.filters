@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="test.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="FrameClockTest.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBufferLayoutTest.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\application\FrameClock.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\globjects\VertexBufferLayout.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenTerrainGenerator\src\vendor\glad\glad.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\application\Application.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\application\Window.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\exceptions\ApplicationException.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\exceptions\GlfwException.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\globjects\LayoutElementType.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\io\FileReader.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="FileReaderTest.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\exceptions\FileInputException.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="tests">
+      <UniqueIdentifier>{ac122602-6704-4295-b1f6-55f50dac28d3}</UniqueIdentifier>
+      <Extensions>.cpp</Extensions>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{3246186e-82a0-4383-a84e-bb9512392006}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Unittests.rc" />
+  </ItemGroup>
+</Project>

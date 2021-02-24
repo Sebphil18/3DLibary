@@ -5,6 +5,8 @@
 #include "GLFW/glfw3.h"
 
 #include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtx/quaternion.hpp"
 
 #include "application/Application.h"
 #include "application/Window.h"
@@ -15,6 +17,7 @@
 #include "globjects/VertexArray.h"
 #include "globjects/VertexBufferLayout.h"
 #include "globjects/DebugMessenger.h"
+#include "globjects/Shader.h"
 
 static float screenVertices[3 * 4] = {
 	0, 0,
@@ -40,7 +43,6 @@ static void draw();
 * TODO: Model
 * TODO: Texture
 * TODO: Image
-* TODO: IndexBuffer
 * TODO: UniformBufferObject
 * TODO: Camera
 */
@@ -71,8 +73,10 @@ static void launchApp() {
 	otg::VertexArray vao;
 
 	otg::VertexBufferLayout layout;
-	layout.addElement({otg::ElementType::Float, 3, false});
-	layout.applyLayout(vao.getGlHandle(), vbo.getGlHandle(), ibo.getGlHandle());
+	layout.addElement({otg::ElementType::Int, 2, false, 2 * sizeof(float)});
+	layout.applyLayout(vao.getGlHandel(), vbo.getGlHandel(), ibo.getGlHandel());
+
+	otg::Shader shader("src/sebphil/shader/vertex/VertexStandard.glsl", otg::ShaderType::Vertex);
 
 	loop.start();
 
