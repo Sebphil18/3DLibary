@@ -18,17 +18,18 @@
 #include "globjects/VertexBufferLayout.h"
 #include "globjects/DebugMessenger.h"
 #include "globjects/Shader.h"
+#include "globjects/ShaderProgram.h"
 
-static float screenVertices[3 * 4] = {
-	0, 0,
-	1, 0,
-	1, 1,
-	0, 1
+static float screenVertices[2 * 4] = {
+	-0.5, -0.5,
+	0.5, -0.5,
+	0.5, 0.5,
+	-0.5, 0.5
 };
 
-static unsigned int screenIndices[3 * 2] = {
+static unsigned int screenIndices[2 * 3] = {
 	0, 1, 3,
-	1, 2, 3
+	1, 2, 3,
 };
 
 static void launchApp();
@@ -36,15 +37,7 @@ static void update(otg::FrameClock& clock);
 static void draw();
 
 /*
-* TODO: Unittests
-* TODO: ShaderProgram
-* TODO: Shader
-* TODO: Mesh
-* TODO: Model
-* TODO: Texture
-* TODO: Image
-* TODO: UniformBufferObject
-* TODO: Camera
+TODO: Add uniform support for shaderprogram
 */
 
 int main() {
@@ -64,19 +57,18 @@ static void launchApp() {
 	loop.setUpdateFunc(update);
 	loop.setDrawFunc(draw);
 
-	otg::VertexBuffer vbo;
-	vbo.setData(sizeof(screenVertices), screenVertices, GL_STATIC_DRAW);
-
-	otg::IndexBuffer ibo;
-	ibo.setData(sizeof(unsigned int) * 6, screenIndices, GL_STATIC_DRAW);
+	otg::VertexBuffer vbo(sizeof(screenVertices), screenVertices, GL_STATIC_DRAW);
+	otg::IndexBuffer ibo(sizeof(screenIndices), screenIndices, GL_STATIC_DRAW);
 
 	otg::VertexArray vao;
+	vao.use();
 
-	otg::VertexBufferLayout layout;
-	layout.addElement({otg::ElementType::Int, 2, false, 2 * sizeof(float)});
-	layout.applyLayout(vao.getGlHandel(), vbo.getGlHandel(), ibo.getGlHandel());
+	otg::VertexBufferLayout bufferLayout;
+	bufferLayout.addElement({otg::ElementType::Float, 2, false});
+	bufferLayout.applyLayout(vao.getGlHandle(), vbo.getGlHandle(), ibo.getGlHandle());
 
-	otg::Shader shader("src/sebphil/shader/vertex/VertexStandard.glsl", otg::ShaderType::Vertex);
+	otg::ShaderProgram program("src/sebphil/shader/vertex/VertexStandard.glsl", "src/sebphil/shader/fragment/FragmentScreen.glsl");
+	program.use();
 
 	loop.start();
 
@@ -90,4 +82,7 @@ static void draw() {
 
 	glClearColor(1, 0, 1, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 }

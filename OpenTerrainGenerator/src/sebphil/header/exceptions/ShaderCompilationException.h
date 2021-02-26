@@ -15,10 +15,10 @@ namespace otg {
 	private:
 		std::uint32_t glHandle;
 		std::string message;
-		std::string logMsg;
 
-		void receiveLogMsg();
+		std::string getLog() const;
 		std::int32_t getLogLength() const;
+		void deleteShader() const;
 
 		void constructMsg(const std::string& filePath);
 

@@ -18,7 +18,7 @@ namespace otg {
 		~VertexBuffer() noexcept;
 
 		void setData(std::size_t size, void* data, std::uint32_t usage);
-		void bind() const;
+		void use() const;
 		static void unbind();
 
 		std::uint32_t getGlHandle() const;

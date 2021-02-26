@@ -5,14 +5,10 @@
 
 namespace otg {
 
-	// Move into LayoutElementType.h
-	typedef LayoutElementType::ElementType ElementType;
-
 	struct LayoutElement {
 		ElementType type;
 		std::uint32_t count;
 		bool normalized;
-		std::uint32_t size = 0;
 	};
 
 	struct VertexAttribute {
@@ -37,18 +33,21 @@ namespace otg {
 
 		void applyLayout(std::uint32_t vao, std::uint32_t vbo, std::uint32_t ibo);
 
-		std::uint32_t getElementSize(const LayoutElement& element);
-
 	private:
 		std::uint32_t stride;
 		std::vector<LayoutElement> elements;
 
-		void linkBuffer(const ArrayHandles& handels);
-		void linkArrayBuffer(const ArrayHandles& handels);
-		void linkElementBuffer(const ArrayHandles& handels);
+		void addElementToStride(const LayoutElement& element);
+		void removeElementFromStride(const LayoutElement& element);
 
-		void addVertexAttributes(const ArrayHandles& handels);
-		void addVertexAttribute(const VertexAttribute& vertexAttrib, const ArrayHandles& handels);
+		void linkBuffer(const ArrayHandles& handles);
+		void linkArrayBuffer(const ArrayHandles& handles);
+		void linkElementBuffer(const ArrayHandles& handles);
+
+		void addVertexAttributes(const ArrayHandles& handles);
+		void addVertexAttribute(const VertexAttribute& vertexAttrib, const ArrayHandles& handles);
+
+		std::uint32_t getElementSize(const LayoutElement& element);
 
 	};
 

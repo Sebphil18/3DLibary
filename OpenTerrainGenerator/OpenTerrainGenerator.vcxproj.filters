@@ -72,6 +72,12 @@
     <ClCompile Include="src\sebphil\source\globjects\ShaderType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sebphil\source\globjects\ShaderProgram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\exceptions\ProgramBuildException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sebphil\header\application\Application.h">
@@ -125,8 +131,15 @@
     <ClInclude Include="src\sebphil\header\globjects\ShaderType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\sebphil\header\globjects\ShaderProgram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\exceptions\ProgramBuildException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\sebphil\shader\vertex\VertexStandard.glsl" />
+    <None Include="src\sebphil\shader\fragment\FragmentScreen.glsl" />
   </ItemGroup>
 </Project>

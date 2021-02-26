@@ -16,4 +16,6 @@ namespace otg {
 
 	};
 
+	typedef LayoutElementType::ElementType ElementType;
+
 }

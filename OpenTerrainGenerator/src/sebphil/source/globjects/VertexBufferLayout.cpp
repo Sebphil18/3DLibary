@@ -10,7 +10,13 @@ otg::VertexBufferLayout::VertexBufferLayout() :
 void otg::VertexBufferLayout::addElement(const LayoutElement& element) {
 
 	elements.push_back(element);
-	stride += element.size;
+	addElementToStride(element);
+}
+
+void otg::VertexBufferLayout::addElementToStride(const LayoutElement& element) {
+
+	std::uint32_t elementSize = getElementSize(element);
+	stride += elementSize;
 }
 
 void otg::VertexBufferLayout::removeElement(std::size_t index) {
@@ -19,32 +25,44 @@ void otg::VertexBufferLayout::removeElement(std::size_t index) {
 	auto elementLocation = elements.begin() + index;
 
 	elements.erase(elementLocation);
-	stride -= element.size;
+	removeElementFromStride(element);
 }
 
-void otg::VertexBufferLayout::applyLayout(std::uint32_t vao, std::uint32_t vbo, std::uint32_t ibo) {
+void otg::VertexBufferLayout::removeElementFromStride(const LayoutElement& element) {
 
-	ArrayHandles handels = {vao, vbo, ibo};
-
-	linkBuffer(handels);
-	addVertexAttributes(handels);
+	std::uint32_t elementSize = getElementSize(element);
+	stride -= elementSize;
 }
 
-void otg::VertexBufferLayout::linkBuffer(const ArrayHandles& handels) {
+std::uint32_t otg::VertexBufferLayout::getElementSize(const LayoutElement& element) {
 
-	linkArrayBuffer(handels);
-	linkElementBuffer(handels);
+	otg::ElementType type = element.type;
+	return getElementTypeSize(type) * element.count;
 }
 
-void otg::VertexBufferLayout::linkArrayBuffer(const ArrayHandles& handels) {
-	glVertexArrayVertexBuffer(handels.vertexArray, 0, handels.arrayBuffer, 0, stride);
+void otg::VertexBufferLayout::applyLayout(std::uint32_t vaoHandle, std::uint32_t vboHandle, std::uint32_t iboHandle) {
+
+	ArrayHandles handles = {vaoHandle, vboHandle, iboHandle};
+
+	linkBuffer(handles);
+	addVertexAttributes(handles);
 }
 
-void otg::VertexBufferLayout::linkElementBuffer(const ArrayHandles& handels) {
-	glVertexArrayElementBuffer(handels.vertexArray, handels.elementBuffer);
+void otg::VertexBufferLayout::linkBuffer(const ArrayHandles& handles) {
+
+	linkArrayBuffer(handles);
+	linkElementBuffer(handles);
 }
 
-void otg::VertexBufferLayout::addVertexAttributes(const ArrayHandles& handels) {
+void otg::VertexBufferLayout::linkArrayBuffer(const ArrayHandles& handles) {
+	glVertexArrayVertexBuffer(handles.vertexArray, 0, handles.arrayBuffer, 0, stride);
+}
+
+void otg::VertexBufferLayout::linkElementBuffer(const ArrayHandles& handles) {
+	glVertexArrayElementBuffer(handles.vertexArray, handles.elementBuffer);
+}
+
+void otg::VertexBufferLayout::addVertexAttributes(const ArrayHandles& handles) {
 
 	std::uint32_t offset = 0;
 
@@ -53,22 +71,17 @@ void otg::VertexBufferLayout::addVertexAttributes(const ArrayHandles& handels) {
 		const LayoutElement& element = elements[attribIndex];
 		VertexAttribute attribute = { element, attribIndex, offset };
 
-		addVertexAttribute(attribute, handels);
+		addVertexAttribute(attribute, handles);
 	}
+
 }
 
-void otg::VertexBufferLayout::addVertexAttribute(const VertexAttribute& vertexAttrib, const ArrayHandles& handels) {
+void otg::VertexBufferLayout::addVertexAttribute(const VertexAttribute& vertexAttrib, const ArrayHandles& handles) {
 
 	const LayoutElement& element = vertexAttrib.element;
 	std::uint32_t glType = getElementGlType(element.type);
 
-	glVertexArrayAttribFormat(handels.vertexArray, vertexAttrib.index, element.count, glType, element.normalized, vertexAttrib.offset);
-	glVertexArrayAttribBinding(handels.vertexArray, vertexAttrib.index, 0);
-	glEnableVertexArrayAttrib(handels.vertexArray, vertexAttrib.index);
-}
-
-std::uint32_t otg::VertexBufferLayout::getElementSize(const LayoutElement& element) {
-
-	otg::ElementType type = element.type;
-	return getElementTypeSize(type) * element.count;
+	glEnableVertexArrayAttrib(handles.vertexArray, vertexAttrib.index);
+	glVertexArrayAttribFormat(handles.vertexArray, vertexAttrib.index, element.count, glType, element.normalized, vertexAttrib.offset);
+	glVertexArrayAttribBinding(handles.vertexArray, vertexAttrib.index, 0);
 }

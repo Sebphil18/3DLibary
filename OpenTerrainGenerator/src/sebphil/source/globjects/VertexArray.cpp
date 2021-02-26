@@ -2,50 +2,40 @@
 #include <iostream>
 #include "glad/glad.h"
 
-otg::VertexArray::VertexArray() noexcept {
-	createVertexArray();
-}
+namespace otg {
+	VertexArray::VertexArray() noexcept {
+		createVertexArray();
+	}
 
-otg::VertexArray::VertexArray(const VertexArray& otherVertArray) noexcept {
-	createVertexArray();
-}
+	void otg::VertexArray::createVertexArray() {
+		glCreateVertexArrays(1, &glHandle);
+	}
 
-otg::VertexArray::VertexArray(VertexArray&& otherVertArray) noexcept :
-	glHandle(std::move(otherVertArray.glHandle))
-{
-}
+	VertexArray::VertexArray(VertexArray&& otherVertArray) noexcept :
+		glHandle(std::move(otherVertArray.glHandle)) {
+	}
 
-otg::VertexArray& otg::VertexArray::operator=(const VertexArray& otherVertArray) noexcept {
+	VertexArray& VertexArray::operator=(VertexArray&& otherVertArray) noexcept {
 
-	createVertexArray();
+		glHandle = std::move(otherVertArray.glHandle);
 
-	return *this;
-}
+		return *this;
+	}
 
-void otg::VertexArray::createVertexArray() {
-	glCreateVertexArrays(1, &glHandle);
-}
+	VertexArray::~VertexArray() noexcept {
 
-otg::VertexArray& otg::VertexArray::operator=(VertexArray&& otherVertArray) noexcept {
+		deleteVertexArray();
+	}
 
-	glHandle = std::move(otherVertArray.glHandle);
+	void VertexArray::deleteVertexArray() {
+		glDeleteVertexArrays(1, &glHandle);
+	}
 
-	return *this;
-}
+	void VertexArray::use() {
+		glBindVertexArray(glHandle);
+	}
 
-otg::VertexArray::~VertexArray() noexcept {
-
-	deleteVertexArray();
-}
-
-void otg::VertexArray::deleteVertexArray() {
-	glDeleteVertexArrays(1, &glHandle);
-}
-
-void otg::VertexArray::bind() {
-	glBindVertexArray(glHandle);
-}
-
-std::uint32_t otg::VertexArray::getGlHandle() const {
-	return glHandle;
+	std::uint32_t VertexArray::getGlHandle() const {
+		return glHandle;
+	}
 }

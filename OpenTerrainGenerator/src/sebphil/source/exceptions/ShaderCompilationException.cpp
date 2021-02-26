@@ -8,21 +8,30 @@ namespace otg {
 	ShaderCompilationException::ShaderCompilationException(std::uint32_t glHandle, const std::string& filePath) :
 		glHandle(glHandle)
 	{
-		receiveLogMsg();
 		constructMsg(filePath);
+		deleteShader();
 	}
 
-	void ShaderCompilationException::receiveLogMsg() {
+	void otg::ShaderCompilationException::constructMsg(const std::string& filePath) {
 
-		std::int32_t length = getLogLength();
+		std::string log = getLog();
 
-		std::vector<char> msgLog(length);
-		glGetShaderInfoLog(glHandle, length, &length, &msgLog[0]);
-
-		logMsg = std::string(msgLog.begin(), msgLog.end());
+		message = "ERROR::SHADER::COMPILATION::Could not compile shader '" + filePath + "': \n";
+		message.append(log);
+		message.append("\n");
 	}
 
-	std::int32_t otg::ShaderCompilationException::getLogLength() const {
+	std::string ShaderCompilationException::getLog() const {
+
+		std::int32_t logLength = getLogLength();
+
+		std::vector<char> log(logLength);
+		glGetShaderInfoLog(glHandle, logLength, &logLength, &log[0]);
+
+		return std::string(log.begin(), log.end());
+	}
+
+	std::int32_t ShaderCompilationException::getLogLength() const {
 
 		std::int32_t length;
 		glGetShaderiv(glHandle, GL_INFO_LOG_LENGTH, &length);
@@ -30,11 +39,8 @@ namespace otg {
 		return length;
 	}
 
-	void otg::ShaderCompilationException::constructMsg(const std::string& filePath) {
-
-		message = "ERROR::SHADER::COMPILATION::Could not compile shader '" + filePath + "': \n";
-		message.append(logMsg);
-		message.append("\n");
+	void ShaderCompilationException::deleteShader() const {
+		glDeleteShader(glHandle);
 	}
 
 	const char* otg::ShaderCompilationException::what() const {

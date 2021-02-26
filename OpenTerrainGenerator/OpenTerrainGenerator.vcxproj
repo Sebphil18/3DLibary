@@ -28,10 +28,12 @@
     <ClCompile Include="src\sebphil\source\exceptions\FileInputException.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\GlfwException.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\ShaderCompilationException.cpp" />
+    <ClCompile Include="src\sebphil\source\exceptions\ProgramBuildException.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\DebugMessenger.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\IndexBuffer.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\LayoutElementType.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\Shader.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\ShaderProgram.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\ShaderType.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexArray.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexBuffer.cpp" />
@@ -46,11 +48,13 @@
     <ClInclude Include="src\sebphil\header\application\Window.h" />
     <ClInclude Include="src\sebphil\header\exceptions\ApplicationException.h" />
     <ClInclude Include="src\sebphil\header\exceptions\GlfwException.h" />
+    <ClInclude Include="src\sebphil\header\exceptions\ProgramBuildException.h" />
     <ClInclude Include="src\sebphil\header\exceptions\ShaderCompilationException.h" />
     <ClInclude Include="src\sebphil\header\globjects\DebugMessenger.h" />
     <ClInclude Include="src\sebphil\header\globjects\IndexBuffer.h" />
     <ClInclude Include="src\sebphil\header\globjects\LayoutElementType.h" />
     <ClInclude Include="src\sebphil\header\globjects\Shader.h" />
+    <ClInclude Include="src\sebphil\header\globjects\ShaderProgram.h" />
     <ClInclude Include="src\sebphil\header\globjects\ShaderType.h" />
     <ClInclude Include="src\sebphil\header\globjects\VertexArray.h" />
     <ClInclude Include="src\sebphil\header\globjects\VertexBuffer.h" />
@@ -59,6 +63,7 @@
     <ClInclude Include="src\sebphil\header\exceptions\FileInputException.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\sebphil\shader\fragment\FragmentScreen.glsl" />
     <None Include="src\sebphil\shader\vertex\VertexStandard.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -164,6 +169,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\Projekte\GLFW\glfw-3.3.2.bin.WIN64\include;D:\Projekte\Glad\include;D:\Projekte\Assimp\include;D:\Projekte\GLM\glm;src\sebphil\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
