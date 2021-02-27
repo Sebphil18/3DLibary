@@ -7,16 +7,12 @@ otg::VertexBufferLayout::VertexBufferLayout() :
 	elements.reserve(5);
 }
 
-void otg::VertexBufferLayout::addElement(const LayoutElement& element) {
+void otg::VertexBufferLayout::addElement(LayoutElement element) {
+
+	element.size = getElementSize(element);
 
 	elements.push_back(element);
-	addElementToStride(element);
-}
-
-void otg::VertexBufferLayout::addElementToStride(const LayoutElement& element) {
-
-	std::uint32_t elementSize = getElementSize(element);
-	stride += elementSize;
+	stride += element.size;
 }
 
 void otg::VertexBufferLayout::removeElement(std::size_t index) {
@@ -25,13 +21,7 @@ void otg::VertexBufferLayout::removeElement(std::size_t index) {
 	auto elementLocation = elements.begin() + index;
 
 	elements.erase(elementLocation);
-	removeElementFromStride(element);
-}
-
-void otg::VertexBufferLayout::removeElementFromStride(const LayoutElement& element) {
-
-	std::uint32_t elementSize = getElementSize(element);
-	stride -= elementSize;
+	stride -= element.size;
 }
 
 std::uint32_t otg::VertexBufferLayout::getElementSize(const LayoutElement& element) {
@@ -72,8 +62,8 @@ void otg::VertexBufferLayout::addVertexAttributes(const ArrayHandles& handles) {
 		VertexAttribute attribute = { element, attribIndex, offset };
 
 		addVertexAttribute(attribute, handles);
+		offset += element.size;
 	}
-
 }
 
 void otg::VertexBufferLayout::addVertexAttribute(const VertexAttribute& vertexAttrib, const ArrayHandles& handles) {

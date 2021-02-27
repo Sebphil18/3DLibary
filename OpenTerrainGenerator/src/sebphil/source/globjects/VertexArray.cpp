@@ -12,7 +12,7 @@ namespace otg {
 	}
 
 	VertexArray::VertexArray(VertexArray&& otherVertArray) noexcept :
-		glHandle(std::move(otherVertArray.glHandle)) {
+		GlObject(std::move(otherVertArray.glHandle)) {
 	}
 
 	VertexArray& VertexArray::operator=(VertexArray&& otherVertArray) noexcept {
@@ -33,9 +33,5 @@ namespace otg {
 
 	void VertexArray::use() {
 		glBindVertexArray(glHandle);
-	}
-
-	std::uint32_t VertexArray::getGlHandle() const {
-		return glHandle;
 	}
 }

@@ -85,7 +85,7 @@ namespace otg {
 		filePath(std::move(other.filePath)), 
 		src(std::move(other.src)), 
 		type(std::move(other.type)), 
-		glHandle(std::move(other.glHandle)) 
+		GlObject(std::move(other.glHandle)) 
 	{}
 
 	Shader& Shader::operator=(Shader&& other) noexcept {
@@ -100,9 +100,5 @@ namespace otg {
 
 	Shader::~Shader() noexcept {
 		glDeleteShader(glHandle);
-	}
-
-	std::uint32_t otg::Shader::getGlHandle() const {
-		return glHandle;
 	}
 }

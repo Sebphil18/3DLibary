@@ -1,12 +1,7 @@
 #include "application/Window.h"
 #include <iostream>
 #include "exceptions/ApplicationException.h"
-
-#ifdef _DEBUG
-#define SEB_DEBUG_MODE 1
-#else
-#define SEB_DEBUG_MODE 0
-#endif
+#include "debugflags/DebugFlags.h"
 
 otg::Window::Window(const std::string& title, int width, int height):
 	title(title), width(width), height(height)

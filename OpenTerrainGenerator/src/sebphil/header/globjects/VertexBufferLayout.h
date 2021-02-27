@@ -9,6 +9,7 @@ namespace otg {
 		ElementType type;
 		std::uint32_t count;
 		bool normalized;
+		std::uint32_t size = 0;
 	};
 
 	struct VertexAttribute {
@@ -28,7 +29,7 @@ namespace otg {
 	public:
 		VertexBufferLayout();
 
-		void addElement(const LayoutElement& element);
+		void addElement(LayoutElement element);
 		void removeElement(std::size_t index);
 
 		void applyLayout(std::uint32_t vao, std::uint32_t vbo, std::uint32_t ibo);
@@ -36,9 +37,6 @@ namespace otg {
 	private:
 		std::uint32_t stride;
 		std::vector<LayoutElement> elements;
-
-		void addElementToStride(const LayoutElement& element);
-		void removeElementFromStride(const LayoutElement& element);
 
 		void linkBuffer(const ArrayHandles& handles);
 		void linkArrayBuffer(const ArrayHandles& handles);

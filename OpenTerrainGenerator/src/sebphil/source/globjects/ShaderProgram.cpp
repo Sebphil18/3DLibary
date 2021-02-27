@@ -8,7 +8,6 @@ namespace otg {
 
 		glHandle = glCreateProgram();
 
-		// TODO: automate this!
 		Shader vertexShader(vertexShaderPath, ShaderType::Vertex);
 		Shader fragmentShader(fragmentShaderPath, ShaderType::Fragment);
 
@@ -22,7 +21,6 @@ namespace otg {
 
 		glHandle = glCreateProgram();
 
-		// TODO: automate this!
 		Shader vertexShader(vertexShaderPath, ShaderType::Vertex);
 		Shader fragmentShader(fragmentShaderPath, ShaderType::Fragment);
 		Shader geometryShader(geometryShaderPath, ShaderType::Geometry);
@@ -32,14 +30,23 @@ namespace otg {
 		shaderHandles.push_back(geometryShader.getGlHandle());
 
 		buildProgram();
-
 	}
 
 	void ShaderProgram::buildProgram() {
 
 		attachShaders();
+		buildExecutable();
+		detachShaders();
+	}
 
-		// TODO: move into different function!
+	void ShaderProgram::attachShaders() {
+
+		for (std::uint32_t shaderHandle : shaderHandles)
+			glAttachShader(glHandle, shaderHandle);
+	}
+
+	void otg::ShaderProgram::buildExecutable() {
+
 		try {
 
 			linkProgram();
@@ -48,14 +55,6 @@ namespace otg {
 		} catch (const ProgramBuildException& exception) {
 			std::cout << exception.what() << "\n";
 		}
-
-		detachShaders();
-	}
-
-	void ShaderProgram::attachShaders() {
-
-		for (std::uint32_t shaderHandle : shaderHandles)
-			glAttachShader(glHandle, shaderHandle);
 	}
 
 	void ShaderProgram::linkProgram() {

@@ -78,6 +78,12 @@
     <ClCompile Include="src\sebphil\source\exceptions\ProgramBuildException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sebphil\source\globjects\GlObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\globjects\ProgramUniformLink.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sebphil\header\application\Application.h">
@@ -135,6 +141,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\sebphil\header\exceptions\ProgramBuildException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\globjects\GlObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\globjects\ProgramUniformLink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\debugflags\DebugFlags.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

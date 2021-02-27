@@ -1,10 +1,11 @@
 #pragma once
 #include <cstdint>
 #include <cstddef>
+#include "GlObject.h"
 
 namespace otg {
 
-	class IndexBuffer{
+	class IndexBuffer : public GlObject{
 	
 	public:
 		IndexBuffer() noexcept;
@@ -19,10 +20,7 @@ namespace otg {
 
 		void setData(std::size_t size, void* data, std::uint32_t usage);
 
-		std::uint32_t getGlHandle() const;
-
 	private:
-		std::uint32_t glHandle;
 		std::uint32_t usage;
 		std::size_t size;
 

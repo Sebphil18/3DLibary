@@ -1,9 +1,10 @@
 #pragma once
 #include <cstdint>
+#include "globjects/GlObject.h"
 
 namespace otg {
 	
-	class VertexArray {
+	class VertexArray : public GlObject {
 
 	public:
 		VertexArray() noexcept;
@@ -17,11 +18,7 @@ namespace otg {
 
 		void use();
 
-		std::uint32_t getGlHandle() const;
-
 	private:
-		std::uint32_t glHandle;
-
 		void createVertexArray();
 		void deleteVertexArray();
 

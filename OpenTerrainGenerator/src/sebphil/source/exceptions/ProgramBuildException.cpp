@@ -14,7 +14,6 @@ namespace otg {
 
 		std::string log = getLog();
 
-		// TODO: Is the statement in brackets true (in ShaderProgram the first exception will cause the try-catch block to)?
 		message = "ERROR:SHADERPROGRAM::BUILD::Program could not be build (there might be more errors associated with this error): \n";
 		message.append(log);
 		message.append("\n");

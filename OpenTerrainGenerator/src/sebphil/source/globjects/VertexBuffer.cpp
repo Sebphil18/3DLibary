@@ -84,7 +84,3 @@ void otg::VertexBuffer::use() const {
 void otg::VertexBuffer::unbind() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
-
-std::uint32_t otg::VertexBuffer::getGlHandle() const {
-	return glHandle;
-}

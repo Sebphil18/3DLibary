@@ -23,7 +23,7 @@ otg::IndexBuffer::IndexBuffer(const IndexBuffer& otherIbo) noexcept :
 }
 
 otg::IndexBuffer::IndexBuffer(IndexBuffer&& otherIbo) noexcept:
-	glHandle(std::move(otherIbo.glHandle)), 
+	GlObject(std::move(otherIbo.glHandle)), 
 	usage(std::move(otherIbo.usage)), 
 	size(std::move(otherIbo.size)), 
 	data(std::move(otherIbo.data))
@@ -87,8 +87,4 @@ void otg::IndexBuffer::setData(std::size_t size, void* data, std::uint32_t usage
 void otg::IndexBuffer::fillBuffer() {
 
 	glNamedBufferData(glHandle, size, data, usage);
-}
-
-std::uint32_t otg::IndexBuffer::getGlHandle() const {
-	return glHandle;
 }

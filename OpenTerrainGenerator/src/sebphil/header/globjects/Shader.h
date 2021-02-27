@@ -1,11 +1,12 @@
 #pragma once
 #include <cstdint>
 #include <string>
+#include "globjects/GlObject.h"
 #include "globjects/ShaderType.h"
 
 namespace otg {
 
-	class Shader {
+	class Shader : public  GlObject {
 
 	public:
 		Shader(const std::string& filePath, ShaderType type) noexcept;
@@ -17,10 +18,7 @@ namespace otg {
 
 		~Shader() noexcept;
 
-		std::uint32_t getGlHandle() const;
-
 	private:
-		std::uint32_t glHandle;
 		std::uint32_t type;
 		std::string src;
 		std::string filePath;

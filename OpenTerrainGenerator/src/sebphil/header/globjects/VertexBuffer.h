@@ -1,10 +1,11 @@
 #pragma once
 #include <cstddef>
 #include <cstdint>
+#include "globjects/GlObject.h"
 
 namespace otg {
 
-	class VertexBuffer {
+	class VertexBuffer : public GlObject {
 
 	public:
 		VertexBuffer() noexcept;
@@ -21,10 +22,7 @@ namespace otg {
 		void use() const;
 		static void unbind();
 
-		std::uint32_t getGlHandle() const;
-
 	private:
-		std::uint32_t glHandle;
 		std::uint32_t usage;
 		std::size_t size;
 

@@ -2,11 +2,12 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include "globjects/GlObject.h"
 #include "globjects/Shader.h"
 
 namespace otg {
 
-	class ShaderProgram {
+	class ShaderProgram : public GlObject {
 
 	public:
 		ShaderProgram(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
@@ -17,10 +18,10 @@ namespace otg {
 		void use() const;
 
 	private:
-		std::uint32_t glHandle;
 		std::vector<uint32_t> shaderHandles;
 
 		void buildProgram();
+		void buildExecutable();
 
 		void attachShaders();
 

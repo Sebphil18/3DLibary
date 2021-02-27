@@ -19,12 +19,13 @@
 #include "globjects/DebugMessenger.h"
 #include "globjects/Shader.h"
 #include "globjects/ShaderProgram.h"
+#include "globjects/ProgramUniformLink.h"
 
-static float screenVertices[2 * 4] = {
-	-0.5, -0.5,
-	0.5, -0.5,
-	0.5, 0.5,
-	-0.5, 0.5
+static float screenVertices[5 * 4] = {
+	-0.5, -0.5,		1, 0, 0,
+	0.5, -0.5,		0, 1, 0,
+	0.5, 0.5,		0, 0, 1,
+	-0.5, 0.5,		1, 1, 0
 };
 
 static unsigned int screenIndices[2 * 3] = {
@@ -37,7 +38,6 @@ static void update(otg::FrameClock& clock);
 static void draw();
 
 /*
-TODO: Add uniform support for shaderprogram
 */
 
 int main() {
@@ -64,14 +64,17 @@ static void launchApp() {
 	vao.use();
 
 	otg::VertexBufferLayout bufferLayout;
-	bufferLayout.addElement({otg::ElementType::Float, 2, false});
+	bufferLayout.addElement({ otg::ElementType::Float, 2, false });
+	bufferLayout.addElement({ otg::ElementType::Float, 3, false });
 	bufferLayout.applyLayout(vao.getGlHandle(), vbo.getGlHandle(), ibo.getGlHandle());
 
 	otg::ShaderProgram program("src/sebphil/shader/vertex/VertexStandard.glsl", "src/sebphil/shader/fragment/FragmentScreen.glsl");
 	program.use();
 
-	loop.start();
+	otg::ProgramUniformLink uniformLink(program.getGlHandle());
+	uniformLink.setUniform("testUni", 1.0f);
 
+	loop.start();
 }
 
 static void update(otg::FrameClock& clock) {
