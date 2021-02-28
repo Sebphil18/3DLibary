@@ -1,6 +1,7 @@
 #include "globjects/ProgramUniformLink.h"
 #include "glad/glad.h"
 #include "glm/gtc/type_ptr.hpp"
+
 #include "debugflags/DebugFlags.h"
 
 #if SEB_DEBUG_MODE 1
@@ -8,6 +9,11 @@
 #endif
 
 namespace otg {
+
+	otg::ProgramUniformLink::ProgramUniformLink():
+		programHandle(0)
+	{
+	}
 
 	ProgramUniformLink::ProgramUniformLink(std::uint32_t programHandle) :
 		programHandle(programHandle)
@@ -99,13 +105,17 @@ namespace otg {
 		if (itr == uniformLocations.end())
 			return false;
 		else
-			return false;
+			return true;
 	}
 
 	void otg::ProgramUniformLink::printUnusedUniform(const std::string& uniformName) {
 #if SEB_DEBUG_MODE 1
-		std::cout << "WARNING::SHADERPROGRAM::Uniform '" << uniformName << "' not found. (It might be removed because it was not used in a shader.)";
+		std::cout << "WARNING::SHADERPROGRAM::Uniform '" << uniformName << "' not found. (It might got removed because it was not used in a shader.)";
 #endif
+	}
+
+	void otg::ProgramUniformLink::setProgramUniformHandle(std::uint32_t programHandle) {
+		this->programHandle = programHandle;
 	}
 
 }

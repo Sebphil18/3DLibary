@@ -8,7 +8,7 @@ namespace otg {
 	struct LayoutElement {
 		ElementType type;
 		std::uint32_t count;
-		bool normalized;
+		bool normalized = false;
 		std::uint32_t size = 0;
 	};
 

@@ -9,6 +9,7 @@ namespace otg {
 	class ProgramUniformLink {
 
 	public:
+		ProgramUniformLink();
 		ProgramUniformLink(std::uint32_t programHandle);
 
 		void setUniform(const std::string& uniformName, bool value);
@@ -20,6 +21,8 @@ namespace otg {
 		void setUniformVec(const std::string& uniformName, glm::vec4 vec4);
 
 		void setUniformMat(const std::string& uniformName, glm::mat4 mat4, bool transpose = false);
+
+		void setProgramUniformHandle(std::uint32_t programHandle);
 
 	private:
 		std::uint32_t programHandle;

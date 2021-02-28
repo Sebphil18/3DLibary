@@ -7,6 +7,7 @@ namespace otg {
 	ShaderProgram::ShaderProgram(const std::string& vertexShaderPath, const std::string& fragmentShaderPath) {
 
 		glHandle = glCreateProgram();
+		setProgramUniformHandle(glHandle);
 
 		Shader vertexShader(vertexShaderPath, ShaderType::Vertex);
 		Shader fragmentShader(fragmentShaderPath, ShaderType::Fragment);
@@ -20,6 +21,7 @@ namespace otg {
 	ShaderProgram::ShaderProgram(const std::string& vertexShaderPath, const std::string& geometryShaderPath, const std::string& fragmentShaderPath) {
 
 		glHandle = glCreateProgram();
+		setProgramUniformHandle(glHandle);
 
 		Shader vertexShader(vertexShaderPath, ShaderType::Vertex);
 		Shader fragmentShader(fragmentShaderPath, ShaderType::Fragment);

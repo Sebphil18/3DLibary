@@ -4,10 +4,11 @@
 #include <cstdint>
 #include "globjects/GlObject.h"
 #include "globjects/Shader.h"
+#include "globjects/ProgramUniformLink.h"
 
 namespace otg {
 
-	class ShaderProgram : public GlObject {
+	class ShaderProgram : public GlObject, public ProgramUniformLink {
 
 	public:
 		ShaderProgram(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);

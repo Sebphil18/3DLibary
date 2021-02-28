@@ -61,18 +61,17 @@ static void launchApp() {
 	otg::IndexBuffer ibo(sizeof(screenIndices), screenIndices, GL_STATIC_DRAW);
 
 	otg::VertexArray vao;
-	vao.use();
 
 	otg::VertexBufferLayout bufferLayout;
-	bufferLayout.addElement({ otg::ElementType::Float, 2, false });
-	bufferLayout.addElement({ otg::ElementType::Float, 3, false });
+	bufferLayout.addElement({ otg::ElementType::Float, 2 });
+	bufferLayout.addElement({ otg::ElementType::Float, 3 });
 	bufferLayout.applyLayout(vao.getGlHandle(), vbo.getGlHandle(), ibo.getGlHandle());
 
 	otg::ShaderProgram program("src/sebphil/shader/vertex/VertexStandard.glsl", "src/sebphil/shader/fragment/FragmentScreen.glsl");
-	program.use();
+	program.setUniform("testUni", 1.0f);
 
-	otg::ProgramUniformLink uniformLink(program.getGlHandle());
-	uniformLink.setUniform("testUni", 1.0f);
+	vao.use();
+	program.use();
 
 	loop.start();
 }
@@ -86,6 +85,6 @@ static void draw() {
 	glClearColor(1, 0, 1, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, sizeof(screenIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
 
 }
