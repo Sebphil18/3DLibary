@@ -110,7 +110,7 @@ namespace otg {
 
 	void otg::ProgramUniformLink::printUnusedUniform(const std::string& uniformName) {
 #if SEB_DEBUG_MODE 1
-		std::cout << "WARNING::SHADERPROGRAM::Uniform '" << uniformName << "' not found. (It might got removed because it was not used in a shader.)";
+		std::cout << "WARNING::SHADERPROGRAM::Uniform '" << uniformName << "' not found. (It might got removed because it was not used in a shader.)\n";
 #endif
 	}
 

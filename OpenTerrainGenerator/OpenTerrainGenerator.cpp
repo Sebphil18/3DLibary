@@ -20,12 +20,14 @@
 #include "globjects/Shader.h"
 #include "globjects/ShaderProgram.h"
 #include "globjects/ProgramUniformLink.h"
+#include "globjects/TextureImage2D.h"
+#include "io/ImageLoader.h"
 
 static float screenVertices[5 * 4] = {
-	-0.5, -0.5,		1, 0, 0,
-	0.5, -0.5,		0, 1, 0,
-	0.5, 0.5,		0, 0, 1,
-	-0.5, 0.5,		1, 1, 0
+	-1, -1,		1, 0, 0,
+	1, -1,		0, 1, 0,
+	1, 1,		0, 0, 1,
+	-1, 1,		1, 1, 0
 };
 
 static unsigned int screenIndices[2 * 3] = {
@@ -68,12 +70,18 @@ static void launchApp() {
 	bufferLayout.applyLayout(vao.getGlHandle(), vbo.getGlHandle(), ibo.getGlHandle());
 
 	otg::ShaderProgram program("src/sebphil/shader/vertex/VertexStandard.glsl", "src/sebphil/shader/fragment/FragmentScreen.glsl");
-	program.setUniform("testUni", 1.0f);
+	program.setUniform("tex", 0);
 
-	vao.use();
 	program.use();
+	vao.use();
+
+	otg::ImageLoader image("rec\\textures\\testtexture\\TestTexture.png");
+
+	std::uint32_t texture;
+	otg::TextureImage2D(image, 0);
 
 	loop.start();
+
 }
 
 static void update(otg::FrameClock& clock) {
