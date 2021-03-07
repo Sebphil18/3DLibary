@@ -11,39 +11,28 @@ otg::IndexBuffer::IndexBuffer() noexcept :
 otg::IndexBuffer::IndexBuffer(std::size_t size, void* data, std::uint32_t usage) noexcept :
 	usage(usage), size(size), data(data)
 {
-	createBuffer();
-	fillBuffer();
+	init();
 }
 
 otg::IndexBuffer::IndexBuffer(const IndexBuffer& otherIbo) noexcept :
-	usage(otherIbo.usage), size(otherIbo.size), data(otherIbo.data)
-{
-	createBuffer();
-	fillBuffer();
-}
-
-otg::IndexBuffer::IndexBuffer(IndexBuffer&& otherIbo) noexcept:
-	GlObject(std::move(otherIbo.glHandle)), 
-	usage(std::move(otherIbo.usage)), 
-	size(std::move(otherIbo.size)), 
-	data(std::move(otherIbo.data))
+	IndexBuffer(otherIbo.size, otherIbo.data, otherIbo.usage)
 {
 }
 
 otg::IndexBuffer& otg::IndexBuffer::operator=(const IndexBuffer& otherIbo) noexcept {
 
-	copyMembers(otherIbo);
-	createBuffer();
-	fillBuffer();
+	usage = otherIbo.usage;
+	size = otherIbo.size;
+	data = otherIbo.data;
+
+	init();
 
 	return *this;
 }
 
-void otg::IndexBuffer::copyMembers(const IndexBuffer& otherIbo) {
-
-	usage = otherIbo.usage;
-	size = otherIbo.size;
-	data = otherIbo.data;
+void otg::IndexBuffer::init() {
+	createBuffer();
+	fillBuffer();
 }
 
 void otg::IndexBuffer::createBuffer() {
@@ -51,32 +40,8 @@ void otg::IndexBuffer::createBuffer() {
 	glCreateBuffers(1, &glHandle);
 }
 
-otg::IndexBuffer& otg::IndexBuffer::operator=(IndexBuffer&& otherIbo) noexcept {
-	
-	moveMembers(otherIbo);
-
-	return *this;
-}
-
-void otg::IndexBuffer::moveMembers(IndexBuffer& otherIbo) {
-
-	glHandle = std::move(otherIbo.glHandle);
-	usage = std::move(otherIbo.usage);
-	size = std::move(otherIbo.size);
-	data = std::move(otherIbo.data);
-}
-
-otg::IndexBuffer::~IndexBuffer() noexcept {
-	deleteBuffer();
-}
-
-void otg::IndexBuffer::deleteBuffer() {
-
-	glDeleteBuffers(1, &glHandle);
-}
-
 void otg::IndexBuffer::setData(std::size_t size, void* data, std::uint32_t usage) {
-	
+
 	this->usage = usage;
 	this->size = size;
 	this->data = data;
@@ -87,6 +52,35 @@ void otg::IndexBuffer::setData(std::size_t size, void* data, std::uint32_t usage
 void otg::IndexBuffer::fillBuffer() {
 
 	glNamedBufferData(glHandle, size, data, usage);
+}
+
+otg::IndexBuffer::IndexBuffer(IndexBuffer&& otherIbo) noexcept : 
+	GlObject(std::move(otherIbo)),
+	usage(std::move(otherIbo.usage)),
+	size(std::move(otherIbo.size)),
+	data(std::move(otherIbo.data))
+{
+}
+
+otg::IndexBuffer& otg::IndexBuffer::operator=(IndexBuffer&& otherIbo) noexcept {
+	
+	usage = std::move(otherIbo.usage);
+	size = std::move(otherIbo.size);
+	data = std::move(otherIbo.data);
+
+	glHandle = otherIbo.glHandle;
+	otherIbo.glHandle = 0;
+
+	return *this;
+}
+
+otg::IndexBuffer::~IndexBuffer() noexcept {
+	deleteBuffer();
+}
+
+void otg::IndexBuffer::deleteBuffer() {
+
+	glDeleteBuffers(1, &glHandle);
 }
 
 std::size_t otg::IndexBuffer::getElementCount() const {

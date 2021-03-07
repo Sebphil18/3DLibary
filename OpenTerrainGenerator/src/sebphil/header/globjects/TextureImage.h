@@ -29,7 +29,7 @@ namespace otg {
 		otg::TextureType type;
 		std::string filePath;
 
-		void initialize();
+		void init();
 		void createTexture();
 		void setTextureData();
 		void setTextureParams();

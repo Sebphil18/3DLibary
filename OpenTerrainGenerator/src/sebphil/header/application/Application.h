@@ -18,7 +18,7 @@ namespace otg {
 		Application& operator=(Application& otherApp) = delete;
 
 		static void instantiate();
-		static void initialize();
+		static void init();
 		static void errorCallback(int errorCode, const char* description);
 
 	};

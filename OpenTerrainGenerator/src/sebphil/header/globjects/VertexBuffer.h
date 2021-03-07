@@ -10,11 +10,11 @@ namespace otg {
 	public:
 		VertexBuffer() noexcept;
 		VertexBuffer(std::size_t size, void* data, std::uint32_t usage) noexcept;
-		VertexBuffer(const VertexBuffer& otherObj) noexcept;
-		VertexBuffer(VertexBuffer&& otherObj) noexcept;
+		VertexBuffer(const VertexBuffer& otherVbo) noexcept;
+		VertexBuffer(VertexBuffer&& otherVbo) noexcept;
 
-		VertexBuffer& operator=(const VertexBuffer& otherObj) noexcept;
-		VertexBuffer& operator=(VertexBuffer&& otherObj) noexcept;
+		VertexBuffer& operator=(const VertexBuffer& otherVbo) noexcept;
+		VertexBuffer& operator=(VertexBuffer&& otherVbo) noexcept;
 
 		~VertexBuffer() noexcept;
 
@@ -30,9 +30,10 @@ namespace otg {
 
 		void* data;
 
+		void init();
+
 		void createBuffer();
 		void fillBuffer();
-		void moveMember(VertexBuffer& otherObj) noexcept;
 
 	};
 

@@ -15,31 +15,28 @@ namespace otg {
 
 		img.buffer = stbi_load(filePath.c_str(), &img.width, &img.height, &img.channels, 0);
 
-		initialize();
+		init();
 	}
 
 	TextureImage::TextureImage(const TextureImage& otherTex) noexcept :
-		img(otherTex.img), type(otherTex.type), filePath(otherTex.filePath) {
-
-		img.buffer = stbi_load(filePath.c_str(), &img.width, &img.height, &img.channels, 0);
-
-		initialize();
+		TextureImage(otherTex.filePath, otherTex.type)
+	{
 	}
 
 	TextureImage& TextureImage::operator=(const TextureImage& otherTex) noexcept {
 
-		img = otherTex.img;
 		type = otherTex.type;
 		filePath = otherTex.filePath;
 
+		// TODO: loadImg
 		img.buffer = stbi_load(filePath.c_str(), &img.width, &img.height, &img.channels, 0);
 
-		initialize();
+		init();
 
 		return *this;
 	}
 
-	void TextureImage::initialize() {
+	void TextureImage::init() {
 
 		createTexture();
 		setTextureData();
@@ -89,10 +86,11 @@ namespace otg {
 	}
 
 	TextureImage::TextureImage(TextureImage&& otherTex) noexcept :
+		GlObject(std::move(otherTex)),
 		img(std::move(otherTex.img)),
 		type(std::move(otherTex.type)),
-		filePath(std::move(otherTex.filePath)),
-		GlObject(std::move(otherTex.glHandle)) {
+		filePath(std::move(otherTex.filePath))
+	{
 	}
 
 	TextureImage& TextureImage::operator=(TextureImage&& otherTex) noexcept {
@@ -100,7 +98,9 @@ namespace otg {
 		img = std::move(otherTex.img);
 		type = std::move(otherTex.type);
 		filePath = std::move(otherTex.filePath);
+
 		glHandle = std::move(otherTex.glHandle);
+		otherTex.glHandle = 0;
 
 		return *this;
 	}

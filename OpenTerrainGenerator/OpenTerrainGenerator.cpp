@@ -71,11 +71,25 @@ static void launchApp() {
 
 	std::shared_ptr<otg::ShaderProgram> program = std::make_shared<otg::ShaderProgram>("src/sebphil/shader/vertex/VertexStandard.glsl", "src/sebphil/shader/fragment/FragmentScreen.glsl");
 	programs.push_back(program);
-	
+
 	std::shared_ptr<otg::Mesh> mesh = std::make_shared<otg::Mesh>(screenVertices, screenIndices);
 	std::shared_ptr<otg::TextureImage> texture = std::make_shared<otg::TextureImage>("rec\\textures\\testtexture\\TestTexture.png", otg::TextureType::Albedo);
 	mesh->addTexture(texture);
+
 	meshes.push_back(mesh);
+
+	otg::MeshData meshData;
+	meshData.indices = screenIndices;
+	meshData.vertices = screenVertices;
+	meshData.textures = std::vector<std::shared_ptr<otg::TextureImage>>();
+	meshData.material = { 0, 0 };
+
+	otg::ModelData modelData;
+	modelData.meshes = std::vector<otg::MeshData>();
+	modelData.meshes.push_back(meshData);
+
+	otg::Model model(modelData);
+	model.draw(*program);
 
 	otg::RenderLoop loop(glfwWindow);
 	loop.setUpdateFunc(update);

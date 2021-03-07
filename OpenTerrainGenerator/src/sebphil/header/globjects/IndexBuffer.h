@@ -28,8 +28,8 @@ namespace otg {
 
 		void* data;
 		
-		void copyMembers(const IndexBuffer& otherIbo);
-		void moveMembers(IndexBuffer& otherIbo);
+		void init();
+
 		void createBuffer();
 		void fillBuffer();
 		void deleteBuffer();

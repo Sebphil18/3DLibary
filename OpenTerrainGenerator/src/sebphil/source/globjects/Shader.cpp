@@ -11,12 +11,8 @@ namespace otg {
 	Shader::Shader(const std::string& filePath, ShaderType type) noexcept :
 		filePath(filePath), type(ShaderStageType::getGlType(type))
 	{
-		glHandle = glCreateShader(this->type);
-
 		readSource();
-		loadSource();
-
-		tryToCompile();
+		createShader();
 	}
 
 	void Shader::readSource() {
@@ -26,18 +22,10 @@ namespace otg {
 		src = fileReader.read(filePath);
 	}
 
-	void Shader::loadSource() {
-
-		const char* srcPtr = src.c_str();
-		glShaderSource(glHandle, 1, &srcPtr, NULL);
-	}
-
 	Shader::Shader(const Shader& other) noexcept :
 		filePath(other.filePath), src(other.src), type(other.type) {
 
-		glHandle = glCreateShader(type);
-
-		tryToCompile();
+		createShader();
 	}
 
 	Shader& Shader::operator=(const Shader& other) noexcept {
@@ -46,11 +34,23 @@ namespace otg {
 		src = other.src;
 		type = other.type;
 
-		glHandle = glCreateShader(type);
-
-		tryToCompile();
+		createShader();
 
 		return *this;
+	}
+
+	void otg::Shader::createShader() {
+
+		glHandle = glCreateShader(this->type);
+
+		loadSource();
+		tryToCompile();
+	}
+
+	void Shader::loadSource() {
+
+		const char* srcPtr = src.c_str();
+		glShaderSource(glHandle, 1, &srcPtr, NULL);
 	}
 
 	void Shader::tryToCompile() {
@@ -82,18 +82,21 @@ namespace otg {
 	}
 
 	Shader::Shader(Shader&& other) noexcept :
-		filePath(std::move(other.filePath)), 
-		src(std::move(other.src)), 
-		type(std::move(other.type)), 
-		GlObject(std::move(other.glHandle)) 
-	{}
+		GlObject(std::move(other)),
+		filePath(std::move(other.filePath)),
+		src(std::move(other.src)),
+		type(std::move(other.type)) 
+	{
+	}
 
 	Shader& Shader::operator=(Shader&& other) noexcept {
 
 		filePath = std::move(other.filePath);
 		src = std::move(other.src);
 		type = std::move(other.type);
+
 		glHandle = std::move(other.glHandle);
+		other.glHandle = 0;
 
 		return *this;
 	}

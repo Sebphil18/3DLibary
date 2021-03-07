@@ -12,7 +12,7 @@ otg::Application::Application() {
 	try {
 
 		instantiate();
-		initialize();
+		init();
 
 	} catch (otg::ApplicationException& exception) {
 		std::cout << exception.what() << "\n";
@@ -27,7 +27,7 @@ void otg::Application::instantiate() {
 		throw otg::ApplicationException("Application already created!");
 }
 
-void otg::Application::initialize() {
+void otg::Application::init() {
 
 	if (glfwInit())
 		glfwSetErrorCallback(Application::errorCallback);

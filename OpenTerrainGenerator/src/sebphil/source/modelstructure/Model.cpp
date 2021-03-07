@@ -19,7 +19,7 @@ namespace otg {
 			mesh.draw(program);
 	}
 
-	void otg::Model::addMesh(const Mesh& mesh) {
+	void Model::addMesh(const Mesh& mesh) {
 		meshes.push_back(mesh);
 	}
 
@@ -35,14 +35,14 @@ namespace otg {
 		transforms.scale = glm::scale(glm::mat4(1), scale);
 	}
 
-	/// <param name="rotation">rotation for x-, y-, z-axis in radians</param>
-	void otg::Model::setRotation(glm::vec3 rotation) {
+	/// <param name="rotation">for x-, y-, z-axis in radians</param>
+	void Model::setRotation(glm::vec3 rotation) {
 
 		properties.rotation = rotation;
 		transforms.rotationQuat = glm::quat(rotation);
 	}
 
-	glm::mat4 otg::Model::getWorldMat() const {
+	glm::mat4 Model::getWorldMat() const {
 
 		glm::mat4 rotation = glm::toMat4(transforms.rotationQuat);
 		glm::mat4 worldMat = rotation * transforms.translation * transforms.scale;

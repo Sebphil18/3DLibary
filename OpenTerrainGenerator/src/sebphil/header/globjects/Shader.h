@@ -23,6 +23,8 @@ namespace otg {
 		std::string src;
 		std::string filePath;
 
+		void createShader();
+
 		void readSource();
 		void loadSource();
 

@@ -3,39 +3,36 @@
 #include "glad/glad.h"
 
 otg::VertexBuffer::VertexBuffer() noexcept :
-	data(nullptr), size(0), usage(GL_STATIC_DRAW)
+	usage(GL_STATIC_DRAW), size(0), data(nullptr)
 {
 	createBuffer();
 }
 
 otg::VertexBuffer::VertexBuffer(std::size_t size, void* data, std::uint32_t usage) noexcept :
-	data(data), size(size), usage(usage)
+	usage(usage), size(size), data(data)
 {
-	createBuffer();
-	fillBuffer();
+	init();
 }
 
-otg::VertexBuffer::VertexBuffer(const VertexBuffer& otherObj) noexcept :
-	data(otherObj.data), size(otherObj.size), usage(otherObj.usage)
+otg::VertexBuffer::VertexBuffer(const VertexBuffer& otherVbo) noexcept :
+	VertexBuffer(otherVbo.size, otherVbo.data, otherVbo.usage)
 {
-	createBuffer();
-	fillBuffer();
 }
 
-otg::VertexBuffer::VertexBuffer(VertexBuffer&& otherObj) noexcept {
-	moveMember(otherObj);
-}
+otg::VertexBuffer& otg::VertexBuffer::operator=(const VertexBuffer& otherVbo) noexcept {
 
-otg::VertexBuffer& otg::VertexBuffer::operator=(const VertexBuffer& otherObj) noexcept {
+	usage = otherVbo.usage;
+	size = otherVbo.size;
+	data = otherVbo.data;
 
-	data = otherObj.data;
-	size = otherObj.size;
-	usage = otherObj.usage;
-
-	createBuffer();
-	fillBuffer();
+	init();
 
 	return *this;
+}
+
+void otg::VertexBuffer::init() {
+	createBuffer();
+	fillBuffer();
 }
 
 void otg::VertexBuffer::createBuffer() {
@@ -43,19 +40,24 @@ void otg::VertexBuffer::createBuffer() {
 	glCreateBuffers(1, &glHandle);
 }
 
-otg::VertexBuffer& otg::VertexBuffer::operator=(VertexBuffer&& otherObj) noexcept {
-
-	moveMember(otherObj);
-
-	return *this;
+otg::VertexBuffer::VertexBuffer(VertexBuffer&& otherVbo) noexcept :
+	GlObject(std::move(otherVbo)),
+	usage(std::move(otherVbo.usage)),
+	size(std::move(otherVbo.size)),
+	data(std::move(otherVbo.data))
+{
 }
 
-void otg::VertexBuffer::moveMember(VertexBuffer& otherObj) noexcept {
+otg::VertexBuffer& otg::VertexBuffer::operator=(VertexBuffer&& otherVbo) noexcept {
 
-	data = std::move(otherObj.data);
-	size = std::move(otherObj.size);
-	usage = std::move(otherObj.usage);
-	glHandle = std::move(otherObj.glHandle);
+	usage = std::move(otherVbo.usage);
+	size = std::move(otherVbo.size);
+	data = std::move(otherVbo.data);
+
+	glHandle = otherVbo.glHandle;
+	otherVbo.glHandle = 0;
+
+	return *this;
 }
 
 otg::VertexBuffer::~VertexBuffer() noexcept {

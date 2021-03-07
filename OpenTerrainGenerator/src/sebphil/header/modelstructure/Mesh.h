@@ -37,10 +37,13 @@ namespace otg {
 		};
 
 	public:
-		Mesh();
-		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
-		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<std::shared_ptr<TextureImage>>& textures);
-		Mesh(const MeshData& data);
+		Mesh() noexcept;
+		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) noexcept;
+		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<std::shared_ptr<TextureImage>>& textures) noexcept;
+		Mesh(const Mesh& mesh) noexcept;
+		Mesh(const MeshData& data) noexcept;
+
+		Mesh& operator=(const Mesh& mesh) noexcept;
 
 		void setData(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 		void updateVertices(const std::vector<Vertex>& vertices, std::size_t offset, std::size_t count);

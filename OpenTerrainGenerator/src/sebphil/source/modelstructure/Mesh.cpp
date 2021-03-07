@@ -3,12 +3,12 @@
 
 namespace otg {
 
-	Mesh::Mesh() {
+	Mesh::Mesh() noexcept {
 
 		setUpLayout();
 	}
 
-	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) {
+	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) noexcept {
 
 		data.vertices = vertices;
 		data.indices = indices;
@@ -17,7 +17,7 @@ namespace otg {
 		fillBuffer();
 	}
 
-	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<std::shared_ptr<TextureImage>>& textures) {
+	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<std::shared_ptr<TextureImage>>& textures) noexcept {
 
 		data.vertices = vertices;
 		data.indices = indices;
@@ -27,11 +27,25 @@ namespace otg {
 		fillBuffer();
 	}
 
-	otg::Mesh::Mesh(const MeshData& data) :
-		data(data)
-	{
+	Mesh::Mesh(const MeshData& data) noexcept :
+		data(data) {
+
 		setUpLayout();
 		fillBuffer();
+	}
+
+	Mesh::Mesh(const Mesh& otherMesh) noexcept :
+		Mesh(otherMesh.data)
+	{
+	}
+
+	Mesh& otg::Mesh::operator=(const Mesh& otherMesh) noexcept {
+		data = otherMesh.data;
+
+		setUpLayout();
+		fillBuffer();
+
+		return *this;
 	}
 
 	void Mesh::setUpLayout() {

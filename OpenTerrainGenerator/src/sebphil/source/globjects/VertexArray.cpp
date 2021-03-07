@@ -7,17 +7,31 @@ namespace otg {
 		createVertexArray();
 	}
 
+	VertexArray::VertexArray(const VertexArray& otherVao) noexcept :
+		VertexArray()
+	{
+	}
+
+	VertexArray& otg::VertexArray::operator=(const VertexArray& otherVao) noexcept {
+		
+		createVertexArray();
+
+		return *this;
+	}
+
 	void otg::VertexArray::createVertexArray() {
 		glCreateVertexArrays(1, &glHandle);
 	}
 
-	VertexArray::VertexArray(VertexArray&& otherVertArray) noexcept :
-		GlObject(std::move(otherVertArray.glHandle)) {
+	VertexArray::VertexArray(VertexArray&& otherVao) noexcept :
+		GlObject(std::move(otherVao))
+	{
 	}
 
-	VertexArray& VertexArray::operator=(VertexArray&& otherVertArray) noexcept {
+	VertexArray& VertexArray::operator=(VertexArray&& otherVao) noexcept {
 
-		glHandle = std::move(otherVertArray.glHandle);
+		glHandle = std::move(otherVao.glHandle);
+		otherVao.glHandle = 0;
 
 		return *this;
 	}
