@@ -88,3 +88,7 @@ void otg::IndexBuffer::fillBuffer() {
 
 	glNamedBufferData(glHandle, size, data, usage);
 }
+
+std::size_t otg::IndexBuffer::getElementCount() const {
+	return size / sizeof(int);
+}

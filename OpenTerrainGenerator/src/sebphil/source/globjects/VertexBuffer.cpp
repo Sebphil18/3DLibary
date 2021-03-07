@@ -77,6 +77,10 @@ void otg::VertexBuffer::fillBuffer() {
 	glNamedBufferData(glHandle, size, data, usage);
 }
 
+void otg::VertexBuffer::updateData(std::uint32_t size, std::uint32_t offset, void* data) {
+	glNamedBufferSubData(glHandle, offset, size, data);
+}
+
 void otg::VertexBuffer::use() const {
 	glBindBuffer(GL_ARRAY_BUFFER, glHandle);
 }

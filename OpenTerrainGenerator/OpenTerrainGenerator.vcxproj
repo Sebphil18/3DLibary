@@ -38,12 +38,13 @@
     <ClCompile Include="src\sebphil\source\globjects\Shader.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\ShaderProgram.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\ShaderType.cpp" />
-    <ClCompile Include="src\sebphil\source\globjects\TextureImage2D.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\TextureImage.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexArray.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexBuffer.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexBufferLayout.cpp" />
     <ClCompile Include="src\sebphil\source\io\FileReader.cpp" />
-    <ClCompile Include="src\sebphil\source\io\ImageLoader.cpp" />
+    <ClCompile Include="src\sebphil\source\modelstructure\Mesh.cpp" />
+    <ClCompile Include="src\sebphil\source\modelstructure\Model.cpp" />
     <ClCompile Include="src\vendor\glad\glad.c" />
   </ItemGroup>
   <ItemGroup>
@@ -57,7 +58,6 @@
     <ClInclude Include="src\sebphil\header\exceptions\ImageLoadException.h" />
     <ClInclude Include="src\sebphil\header\exceptions\ProgramBuildException.h" />
     <ClInclude Include="src\sebphil\header\exceptions\ShaderCompilationException.h" />
-    <ClInclude Include="src\sebphil\header\globjects\TextureImage2D.h" />
     <ClInclude Include="src\sebphil\header\globjects\DebugMessenger.h" />
     <ClInclude Include="src\sebphil\header\globjects\GlObject.h" />
     <ClInclude Include="src\sebphil\header\globjects\IndexBuffer.h" />
@@ -66,12 +66,17 @@
     <ClInclude Include="src\sebphil\header\globjects\Shader.h" />
     <ClInclude Include="src\sebphil\header\globjects\ShaderProgram.h" />
     <ClInclude Include="src\sebphil\header\globjects\ShaderType.h" />
+    <ClInclude Include="src\sebphil\header\globjects\TextureImage.h" />
     <ClInclude Include="src\sebphil\header\globjects\VertexArray.h" />
     <ClInclude Include="src\sebphil\header\globjects\VertexBuffer.h" />
     <ClInclude Include="src\sebphil\header\globjects\VertexBufferLayout.h" />
     <ClInclude Include="src\sebphil\header\io\FileReader.h" />
     <ClInclude Include="src\sebphil\header\exceptions\FileInputException.h" />
-    <ClInclude Include="src\sebphil\header\io\ImageLoader.h" />
+    <ClInclude Include="src\sebphil\header\io\Image.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\Mesh.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\Model.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\TextureType.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\Vertex.h" />
     <ClInclude Include="src\vendor\stb\stbimage.h" />
   </ItemGroup>
   <ItemGroup>

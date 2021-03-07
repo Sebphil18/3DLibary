@@ -20,6 +20,8 @@ namespace otg {
 
 		void setData(std::size_t size, void* data, std::uint32_t usage);
 
+		std::size_t getElementCount() const;
+
 	private:
 		std::uint32_t usage;
 		std::size_t size;

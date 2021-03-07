@@ -1,8 +1,12 @@
-#version 330 core
+#version 460 core
 
 out vec4 color;
 
-uniform sampler2D tex;
+struct Material {
+	sampler2D albedoTex0;
+};
+
+uniform Material material;
 
 in VertexData {
 	float testUniform;
@@ -11,6 +15,8 @@ in VertexData {
 } vertexIn;
 
 void main() {
-	vec4 texColor = texture(tex, vertexIn.texCoord * 2);
+
+	vec4 texColor = texture(material.albedoTex0, vertexIn.texCoord * 2);
+
 	color = texColor;
 }

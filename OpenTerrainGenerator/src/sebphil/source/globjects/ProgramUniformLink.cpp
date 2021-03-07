@@ -4,7 +4,7 @@
 
 #include "debugflags/DebugFlags.h"
 
-#if SEB_DEBUG_MODE 1
+#ifdef SEB_DEBUG_MODE
 #include <iostream>
 #endif
 
@@ -109,7 +109,7 @@ namespace otg {
 	}
 
 	void otg::ProgramUniformLink::printUnusedUniform(const std::string& uniformName) {
-#if SEB_DEBUG_MODE 1
+#ifdef SEB_DEBUG_MODE
 		std::cout << "WARNING::SHADERPROGRAM::Uniform '" << uniformName << "' not found. (It might got removed because it was not used in a shader.)\n";
 #endif
 	}
