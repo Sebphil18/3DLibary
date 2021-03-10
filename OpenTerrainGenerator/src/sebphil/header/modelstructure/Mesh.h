@@ -7,8 +7,8 @@
 #include "globjects/VertexArray.h"
 #include "globjects/VertexBufferLayout.h"
 #include "globjects/ShaderProgram.h"
-#include "globjects/TextureImage.h"
-#include "modelstructure/TextureType.h"
+#include "globjects/Texture.h"
+#include "globjects/TextureType.h"
 #include "modelstructure/Vertex.h"
 
 namespace otg {
@@ -22,7 +22,7 @@ namespace otg {
 	struct MeshData {
 		std::vector<Vertex> vertices;
 		std::vector<std::uint32_t> indices;
-		std::vector<std::shared_ptr<TextureImage>> textures;
+		std::vector<std::shared_ptr<Texture>> textures;
 		Material material = {0, 0};
 	};
 
@@ -39,7 +39,7 @@ namespace otg {
 	public:
 		Mesh() noexcept;
 		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) noexcept;
-		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<std::shared_ptr<TextureImage>>& textures) noexcept;
+		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<std::shared_ptr<Texture>>& textures) noexcept;
 		Mesh(const Mesh& mesh) noexcept;
 		Mesh(const MeshData& data) noexcept;
 
@@ -50,7 +50,7 @@ namespace otg {
 
 		void draw(otg::ShaderProgram& program);
 
-		void addTexture(const std::shared_ptr<TextureImage>& texture);
+		void addTexture(const std::shared_ptr<Texture>& texture);
 
 		void setMaterial(const Material& material);
 
@@ -75,7 +75,7 @@ namespace otg {
 		void updateVertexBuffer(std::size_t offset, std::size_t count);
 
 		void bindTextures(otg::ShaderProgram& program);
-		void bindTexToUnit(const std::shared_ptr<TextureImage>& texture, int unit);
+		void bindTexToUnit(const std::shared_ptr<Texture>& texture, int unit);
 		std::string getTexUniName(TextureIterators& iterators, TextureType type);
 
 		void drawTriangles();

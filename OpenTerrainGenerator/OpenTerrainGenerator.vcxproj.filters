@@ -96,6 +96,12 @@
     <ClCompile Include="src\sebphil\source\globjects\TextureImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sebphil\source\globjects\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\globjects\TextureType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sebphil\header\application\Application.h">
@@ -179,13 +185,16 @@
     <ClInclude Include="src\sebphil\header\modelstructure\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\sebphil\header\modelstructure\TextureType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\sebphil\header\modelstructure\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\sebphil\header\globjects\TextureImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\globjects\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\globjects\TextureType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

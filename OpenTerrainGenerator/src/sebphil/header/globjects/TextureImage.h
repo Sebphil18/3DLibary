@@ -1,12 +1,13 @@
 #pragma once
 #include <string>
-#include "modelstructure/TextureType.h"
+#include "globjects/TextureType.h"
+#include "globjects/Texture.h"
 #include "io/Image.h"
 #include "globjects/GlObject.h"
 
 namespace otg {
 
-	class TextureImage : public GlObject {
+	class TextureImage : public Texture{
 
 	public:
 		TextureImage() noexcept;
@@ -25,16 +26,9 @@ namespace otg {
 		unsigned char* getBufferPtr() const;
 
 	private:
-		Image img;
-		otg::TextureType type;
 		std::string filePath;
 
-		void init();
-		void createTexture();
-		void setTextureData();
-		void setTextureParams();
-		void generateMipmap();
-
+		void loadImg();
 
 	};
 

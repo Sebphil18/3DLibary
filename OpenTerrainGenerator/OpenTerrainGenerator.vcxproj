@@ -38,7 +38,9 @@
     <ClCompile Include="src\sebphil\source\globjects\Shader.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\ShaderProgram.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\ShaderType.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\Texture.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\TextureImage.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\TextureType.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexArray.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexBuffer.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexBufferLayout.cpp" />
@@ -66,6 +68,7 @@
     <ClInclude Include="src\sebphil\header\globjects\Shader.h" />
     <ClInclude Include="src\sebphil\header\globjects\ShaderProgram.h" />
     <ClInclude Include="src\sebphil\header\globjects\ShaderType.h" />
+    <ClInclude Include="src\sebphil\header\globjects\Texture.h" />
     <ClInclude Include="src\sebphil\header\globjects\TextureImage.h" />
     <ClInclude Include="src\sebphil\header\globjects\VertexArray.h" />
     <ClInclude Include="src\sebphil\header\globjects\VertexBuffer.h" />
@@ -75,7 +78,7 @@
     <ClInclude Include="src\sebphil\header\io\Image.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Mesh.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Model.h" />
-    <ClInclude Include="src\sebphil\header\modelstructure\TextureType.h" />
+    <ClInclude Include="src\sebphil\header\globjects\TextureType.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Vertex.h" />
     <ClInclude Include="src\vendor\stb\stbimage.h" />
   </ItemGroup>

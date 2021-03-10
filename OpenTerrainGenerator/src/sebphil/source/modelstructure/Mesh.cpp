@@ -17,7 +17,7 @@ namespace otg {
 		fillBuffer();
 	}
 
-	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<std::shared_ptr<TextureImage>>& textures) noexcept {
+	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<std::shared_ptr<Texture>>& textures) noexcept {
 
 		data.vertices = vertices;
 		data.indices = indices;
@@ -129,7 +129,7 @@ namespace otg {
 
 		for (std::int32_t unit = 0; unit < static_cast<int>(data.textures.size()); unit++) {
 			
-			const std::shared_ptr<TextureImage>& texture = data.textures[unit];
+			const std::shared_ptr<Texture>& texture = data.textures[unit];
 
 			bindTexToUnit(texture, unit);
 
@@ -140,7 +140,7 @@ namespace otg {
 
 	}
 
-	void Mesh::bindTexToUnit(const std::shared_ptr<TextureImage>& texture, int unit) {
+	void Mesh::bindTexToUnit(const std::shared_ptr<Texture>& texture, int unit) {
 		glBindTextureUnit(unit, texture->getGlHandle());
 	}
 
@@ -206,7 +206,7 @@ namespace otg {
 		return vao.getGlHandle();
 	}
 
-	void Mesh::addTexture(const std::shared_ptr<TextureImage>& texture) {
+	void Mesh::addTexture(const std::shared_ptr<Texture>& texture) {
 		data.textures.push_back(texture);
 	}
 
