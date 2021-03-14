@@ -28,7 +28,10 @@ namespace otg {
 	private:
 		std::string filePath;
 
+		void loadTexture();
+		void tryLoadImg();
 		void loadImg();
+		void specifyStorage() override;
 
 	};
 

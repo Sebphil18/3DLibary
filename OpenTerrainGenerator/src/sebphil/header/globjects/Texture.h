@@ -5,7 +5,6 @@
 
 namespace otg {
 
-	// TODO: implement TexutreType::AttachmentRGB/RGBA
 	class Texture : public GlObject, public TextureTypes {
 
 	public:
@@ -22,14 +21,11 @@ namespace otg {
 
 		void generateMipmap();
 
-		TextureType getType() const;
-
 	protected:
 		Image img;
-		TextureType type;
 
 		void createTexture();
-		void specifyStorage();
+		virtual void specifyStorage();
 		void specifySubImg();
 
 	};

@@ -3,6 +3,16 @@
 
 namespace otg {
 
+	TextureTypes::TextureTypes() noexcept :
+		type(TextureType::None)
+	{
+	}
+
+	TextureTypes::TextureTypes(TextureType type) noexcept : 
+		type(type)
+	{
+	}
+
 	std::uint32_t TextureTypes::getGlType(TextureType type) {
 
 		switch (type) {
@@ -13,6 +23,10 @@ namespace otg {
 		default:
 			return GL_TEXTURE_2D;
 		}
+	}
+
+	TextureType TextureTypes::getType() const {
+		return type;
 	}
 
 }

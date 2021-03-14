@@ -23,6 +23,8 @@
 #include "globjects/ProgramUniformLink.h"
 #include "globjects/TextureImage.h"
 #include "globjects/Texture.h"
+#include "globjects/RenderBuffer.h"
+#include "globjects/Framebuffer.h"
 #include "io/Image.h"
 #include "modelstructure/Mesh.h"
 #include "modelstructure/Model.h"
@@ -30,10 +32,10 @@
 
 // standard VertexFormat: position | normal | tangent | bitangent | textureCoordinates
 static std::vector<otg::Vertex> screenVertices = {
-	{ glm::vec3(-1, -1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) },
-	{ glm::vec3(1, -1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
-	{ glm::vec3(1, 1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
-	{ glm::vec3(-1, 1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) }
+	{ glm::vec3(-1, -1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
+	{ glm::vec3(1, -1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
+	{ glm::vec3(1, 1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
+	{ glm::vec3(-1, 1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) }
 };
 
 static std::vector<unsigned int> screenIndices = {
@@ -52,6 +54,7 @@ static void update(otg::FrameClock& clock);
 static void draw();
 
 /*
+* multisample texture, rebderbuffer, framebuffer
 * UniformBuffer
 * Model
 *	-> settings uniform matrices for program
@@ -71,22 +74,29 @@ static void launchApp() {
 
 	otg::DebugMessenger debugMessenger;
 
-	std::shared_ptr<otg::ShaderProgram> program = std::make_shared<otg::ShaderProgram>(
-		"src/sebphil/shader/vertex/VertexStandard.glsl", 
+	std::shared_ptr<otg::ShaderProgram> screenProgram = std::make_shared<otg::ShaderProgram>(
+		"src/sebphil/shader/vertex/VertexScreen.glsl", 
 		"src/sebphil/shader/fragment/FragmentScreen.glsl"
+		);
+	programs.push_back(screenProgram);
+
+	std::shared_ptr<otg::ShaderProgram> program = std::make_shared<otg::ShaderProgram>(
+		"src/sebphil/shader/vertex/VertexStandard.glsl",
+		"src/sebphil/shader/fragment/FragmentStandard.glsl"
 		);
 	programs.push_back(program);
 
+	// Model
 	std::shared_ptr<otg::TextureImage> texture = std::make_shared<otg::TextureImage>(
-		"rec\\textures\\testtexture\\TestTexture.png", 
+		"rec\\textures\\testtexture\\TestTexture.png",
 		otg::TextureType::Albedo
 		);
 
 	otg::MeshData meshData;
 	meshData.indices = screenIndices;
 	meshData.vertices = screenVertices;
-	meshData.textures.push_back(texture);
 	meshData.material = { 0, 0 };
+	meshData.textures.push_back(texture);
 
 	otg::ModelData modelData;
 	modelData.meshes.push_back(meshData);
@@ -94,34 +104,28 @@ static void launchApp() {
 	std::shared_ptr<otg::Model> model = std::make_shared<otg::Model>(modelData);
 	models.push_back(model);
 
-	//int width = window.getWidth();
-	//int height = window.getHeight();
+	/*std::uint32_t multiRenderBuffer;
+	glCreateRenderbuffers(1, &multiRenderBuffer);
+	glNamedRenderbufferStorageMultisample(multiRenderBuffer, 4, GL_DEPTH24_STENCIL8, width, height);*/
 
-	//std::uint32_t screenTexture;
-	//glCreateTextures(GL_TEXTURE_2D, 1, &screenTexture);
-	//glTextureStorage2D(screenTexture, 1, GL_SRGB8_ALPHA8, width, height);
-	//glTextureParameteri(screenTexture, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//glTextureParameteri(screenTexture, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//glTextureParameteri(screenTexture, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//glTextureParameteri(screenTexture, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// Framebuffer
+	int width = window.getWidth();
+	int height = window.getHeight();
 
-	//std::uint32_t renderBuffer = 0;
-	//glCreateRenderbuffers(1, &renderBuffer);
-	//glNamedRenderbufferStorage(renderBuffer, GL_DEPTH24_STENCIL8, width, height);
-	//
-	//std::uint32_t framebuffer;
-	//glCreateFramebuffers(1, &framebuffer);
-	//glNamedFramebufferTexture(framebuffer, GL_COLOR_ATTACHMENT0, screenTexture, 0);
-	//glNamedFramebufferRenderbuffer(framebuffer, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer);
-	//
-	//std::uint32_t framebufferStatus = glCheckNamedFramebufferStatus(framebuffer, GL_FRAMEBUFFER);
-	//if (framebufferStatus != GL_FRAMEBUFFER_COMPLETE) {
-	//	std::cout << "ERROR::FRAMEBUFFER::Framebuffer is incomplete! \n";
-	//}
+	std::shared_ptr<otg::Texture> screenTexture = std::make_shared<otg::Texture>(width, height, otg::TextureType::ColorAttachment);
+	otg::RenderBuffer renderBuffer(width, height, otg::TextureType::DepthStencilAttachment);
 
-	//glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-	//model->draw(*program);
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	otg::Framebuffer framebuffer;
+	framebuffer.attachTexture(*screenTexture);
+	framebuffer.attachRenderBuffer(renderBuffer);
+	framebuffer.validate();
+
+	framebuffer.bind();
+	model->draw(*program);
+	framebuffer.unbind();
+
+	model->clearTextures(0);
+	model->addTexture(screenTexture, 0);
 
 	otg::RenderLoop loop(glfwWindow);
 	loop.setUpdateFunc(update);

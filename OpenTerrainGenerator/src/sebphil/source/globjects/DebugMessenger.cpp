@@ -29,7 +29,6 @@ void APIENTRY otg::DebugMessenger::standardMsgCallback(GLenum source, GLenum typ
 	printMessage(msg);
 }
 
-// TODO: too long!
 std::string otg::DebugMessenger::getSourceStr(std::uint32_t source) {
 
 	switch (source) {
@@ -57,7 +56,6 @@ std::string otg::DebugMessenger::getSourceStr(std::uint32_t source) {
 	}
 }
 
-// TODO: too long!
 std::string otg::DebugMessenger::getTypeStr(std::uint32_t type) {
 
 	switch (type) {
@@ -95,7 +93,6 @@ std::string otg::DebugMessenger::getTypeStr(std::uint32_t type) {
 	}
 }
 
-// TODO: too long!
 std::string otg::DebugMessenger::getSeverityStr(std::uint32_t severity) {
 
 	switch (severity) {

@@ -50,12 +50,11 @@ otg::VertexBuffer::VertexBuffer(VertexBuffer&& otherVbo) noexcept :
 
 otg::VertexBuffer& otg::VertexBuffer::operator=(VertexBuffer&& otherVbo) noexcept {
 
+	GlObject::operator=(std::move(otherVbo));
+
 	usage = std::move(otherVbo.usage);
 	size = std::move(otherVbo.size);
 	data = std::move(otherVbo.data);
-
-	glHandle = otherVbo.glHandle;
-	otherVbo.glHandle = 0;
 
 	return *this;
 }

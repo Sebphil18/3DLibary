@@ -8,22 +8,24 @@ namespace otg {
 		setUpLayout();
 	}
 
-	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) noexcept {
+	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) noexcept : 
+		Mesh()
+	{
 
 		data.vertices = vertices;
 		data.indices = indices;
 
-		setUpLayout();
 		fillBuffer();
 	}
 
-	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<std::shared_ptr<Texture>>& textures) noexcept {
+	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<std::shared_ptr<Texture>>& textures) noexcept :
+		Mesh()
+	{
 
 		data.vertices = vertices;
 		data.indices = indices;
 		data.textures = textures;
 
-		setUpLayout();
 		fillBuffer();
 	}
 
@@ -71,6 +73,13 @@ namespace otg {
 
 		this->data.vertices = vertices;
 		this->data.indices = indices;
+
+		fillBuffer();
+	}
+
+	void Mesh::setData(const MeshData& data) {
+
+		this->data = data;
 
 		fillBuffer();
 	}
@@ -145,43 +154,37 @@ namespace otg {
 	}
 
 	// TODO: too long!
-	std::string otg::Mesh::getTexUniName(TextureIterators& iterators, otg::TextureType type) {
+	std::string Mesh::getTexUniName(TextureIterators& iterators, otg::TextureType type) {
 
 		std::string uniName = "";
 
 		switch (type) {
 
-		case otg::TextureType::Albedo:
-			uniName = "material.albedoTex" + std::to_string(iterators.albedoTextures);
-			iterators.albedoTextures++;
+		case TextureType::Albedo: setTexUniName(iterators.albedoTextures, "material.albedoTex", uniName);
 			break;
-
-		case otg::TextureType::Roughness:
-			uniName = "material.roughnessTex" + std::to_string(iterators.roughnessTextures);
-			iterators.roughnessTextures++;
+		case TextureType::Roughness: setTexUniName(iterators.roughnessTextures, "material.roughnessTex", uniName);
 			break;
-
-		case otg::TextureType::Metalness:
-			uniName = "material.metalnessTex" + std::to_string(iterators.metalnessTextures);
-			iterators.metalnessTextures++;
+		case TextureType::Metalness: setTexUniName(iterators.metalnessTextures, "material.metalnessTex", uniName);
 			break;
-
-		case otg::TextureType::Occlussion:
-			uniName = "material.occlussionTex" + std::to_string(iterators.occlussionTextures);
-			iterators.occlussionTextures++;
+		case TextureType::Occlussion: setTexUniName(iterators.occlussionTextures, "material.occlussionTex", uniName);
 			break;
-
-		case otg::TextureType::Height:
-			uniName = "material.heightTex" + std::to_string(iterators.heightTextures);
-			iterators.heightTextures++;
+		case TextureType::Height: setTexUniName(iterators.heightTextures, "material.heightTex", uniName);
+			break;
+		case TextureType::ColorAttachment: setTexUniName(iterators.albedoTextures, "material.albedoTex", uniName);
+			break;
+		case TextureType::DepthStencilAttachment: setTexUniName(iterators.albedoTextures, "material.albedoTex", uniName);
 			break;
 
 		default:
-			uniName = "texturetype is none or is not available";
-
+			uniName = "[Mesh] texturetype is none or is not available";
 		}
 
 		return uniName;
+	}
+
+	void Mesh::setTexUniName(std::uint32_t& iterator, const std::string& uniPrefix, std::string& uniName) {
+		uniName = uniPrefix + std::to_string(iterator);
+		iterator++;
 	}
 
 	void Mesh::drawTriangles() {
@@ -208,6 +211,14 @@ namespace otg {
 
 	void Mesh::addTexture(const std::shared_ptr<Texture>& texture) {
 		data.textures.push_back(texture);
+	}
+
+	void Mesh::removeTexture(std::size_t index) {
+		data.textures.erase(data.textures.begin() + index);
+	}
+
+	void Mesh::clearTextures() {
+		data.textures.clear();
 	}
 
 	void Mesh::setMaterial(const Material& material) {

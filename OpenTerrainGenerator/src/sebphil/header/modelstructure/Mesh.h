@@ -46,11 +46,14 @@ namespace otg {
 		Mesh& operator=(const Mesh& mesh) noexcept;
 
 		void setData(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
+		void setData(const MeshData& data);
 		void updateVertices(const std::vector<Vertex>& vertices, std::size_t offset, std::size_t count);
 
 		void draw(otg::ShaderProgram& program);
 
 		void addTexture(const std::shared_ptr<Texture>& texture);
+		void removeTexture(std::size_t index);
+		void clearTextures();
 
 		void setMaterial(const Material& material);
 
@@ -63,7 +66,7 @@ namespace otg {
 		IndexBuffer ibo;
 		VertexArray vao;
 		VertexBufferLayout layout;
-
+		
 		void setUpLayout();
 		void setLayoutElements();
 		void applyLayout(const VertexBufferLayout& layout);
@@ -77,6 +80,8 @@ namespace otg {
 		void bindTextures(otg::ShaderProgram& program);
 		void bindTexToUnit(const std::shared_ptr<Texture>& texture, int unit);
 		std::string getTexUniName(TextureIterators& iterators, TextureType type);
+
+		void setTexUniName(std::uint32_t& iterator, const std::string& uniPrefix, std::string& uniName);
 
 		void drawTriangles();
 		void drawIndices();

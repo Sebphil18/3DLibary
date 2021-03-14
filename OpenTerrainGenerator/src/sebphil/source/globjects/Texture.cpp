@@ -5,13 +5,13 @@
 namespace otg {
 
 	Texture::Texture() noexcept : 
-		img({ nullptr, 0, 0, 0 }), type(TextureType::None)
+		img({ nullptr, 0, 0, 0 }), TextureTypes()
 	{
 		createTexture();
 	}
 
 	Texture::Texture(std::int32_t width, std::int32_t height, TextureType type) noexcept :
-		type(type)
+		TextureTypes(type)
 	{
 		img.width = width;
 		img.height = height;
@@ -30,7 +30,7 @@ namespace otg {
 	}
 
 	Texture::Texture(const Image& img, TextureType type) noexcept :
-		img(img), type(type)
+		img(img), TextureTypes(type)
 	{
 		createTexture();
 		specifyStorage();
@@ -60,11 +60,7 @@ namespace otg {
 	}
 
 	void Texture::specifyStorage() {
-
-		if (type == TextureType::Albedo)
-			glTextureStorage2D(glHandle, 1, GL_SRGB8_ALPHA8, img.width, img.height);
-		else
-			glTextureStorage2D(glHandle, 1, GL_RGBA16, img.width, img.height);
+		glTextureStorage2D(glHandle, 1, GL_RGBA16, img.width, img.height);
 	}
 
 	void Texture::specifySubImg() {
@@ -76,16 +72,15 @@ namespace otg {
 	Texture::Texture(Texture&& otherTex) noexcept :
 		GlObject(std::move(otherTex)),
 		img(std::move(otherTex.img)),
-		type(std::move(otherTex.type)) {
+		TextureTypes(otherTex.type) {
 	}
 
 	Texture& Texture::operator=(Texture&& otherTex) noexcept {
 
+		GlObject::operator=(std::move(otherTex));
+
 		img = std::move(otherTex.img);
 		type = std::move(otherTex.type);
-
-		glHandle = std::move(otherTex.glHandle);
-		otherTex.glHandle = 0;
 
 		return *this;
 	}
@@ -100,10 +95,6 @@ namespace otg {
 
 		glTextureParameteri(glHandle, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTextureParameterf(glHandle, GL_TEXTURE_LOD_BIAS, 0.1);
-	}
-
-	TextureType otg::Texture::getType() const {
-		return type;
 	}
 
 }

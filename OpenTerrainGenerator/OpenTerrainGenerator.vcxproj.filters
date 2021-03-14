@@ -102,6 +102,15 @@
     <ClCompile Include="src\sebphil\source\globjects\TextureType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sebphil\source\globjects\RenderBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\globjects\Framebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\exceptions\FramebufferException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sebphil\header\application\Application.h">
@@ -197,9 +206,20 @@
     <ClInclude Include="src\sebphil\header\globjects\TextureType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\sebphil\header\globjects\RenderBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\globjects\Framebuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\exceptions\FramebufferException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\sebphil\shader\vertex\VertexStandard.glsl" />
     <None Include="src\sebphil\shader\fragment\FragmentScreen.glsl" />
+    <None Include="src\sebphil\shader\fragment\FragmentStandard.glsl" />
+    <None Include="src\sebphil\shader\vertex\VertexScreen.glsl" />
   </ItemGroup>
 </Project>

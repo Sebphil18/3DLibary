@@ -22,7 +22,6 @@ void otg::Window::setWindowHints() {
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, SEB_DEBUG_MODE);
 
 	glfwWindowHint(GLFW_DOUBLEBUFFER, true);
-	glfwWindowHint(GLFW_SAMPLES, 4);
 }
 
 void otg::Window::generateWindow() {
@@ -66,7 +65,8 @@ void otg::Window::framebufferSizeCallback(GLFWwindow* window, int width, int hei
 }
 
 void otg::Window::setUpOpenGL() {
-	glEnable(GL_DEPTH_TEST | GL_FRAMEBUFFER_SRGB | GL_BLEND | GL_MULTISAMPLE);
+	glEnable(GL_DEPTH_TEST | GL_FRAMEBUFFER_SRGB | GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 otg::Window::~Window() {

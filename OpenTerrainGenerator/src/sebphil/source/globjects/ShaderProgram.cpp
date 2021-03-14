@@ -4,6 +4,7 @@
 
 namespace otg {
 
+	// TDOO: duplicated code
 	ShaderProgram::ShaderProgram(const std::string& vertexShaderPath, const std::string& fragmentShaderPath) {
 
 		glHandle = glCreateProgram();

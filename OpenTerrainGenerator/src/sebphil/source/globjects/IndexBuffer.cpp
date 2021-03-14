@@ -64,12 +64,11 @@ otg::IndexBuffer::IndexBuffer(IndexBuffer&& otherIbo) noexcept :
 
 otg::IndexBuffer& otg::IndexBuffer::operator=(IndexBuffer&& otherIbo) noexcept {
 	
+	GlObject::operator=(std::move(otherIbo));
+
 	usage = std::move(otherIbo.usage);
 	size = std::move(otherIbo.size);
 	data = std::move(otherIbo.data);
-
-	glHandle = otherIbo.glHandle;
-	otherIbo.glHandle = 0;
 
 	return *this;
 }

@@ -30,8 +30,7 @@ namespace otg {
 
 	VertexArray& VertexArray::operator=(VertexArray&& otherVao) noexcept {
 
-		glHandle = std::move(otherVao.glHandle);
-		otherVao.glHandle = 0;
+		GlObject::operator=(std::move(otherVao));
 
 		return *this;
 	}

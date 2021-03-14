@@ -32,10 +32,16 @@ namespace otg {
 
 		void addMesh(const Mesh& mesh);
 
+		void setData(const ModelData& data);
+
+		void addTexture(const std::shared_ptr<Texture>& texture, std::size_t meshIndex);
+		void clearTextures(std::size_t meshIndex);
+
 		void setPosition(glm::vec3 position);
 		void setScale(glm::vec3 scale);
 		void setRotation(glm::vec3 rotation);
 
+		Mesh& getMesh(std::size_t index);
 		glm::mat4 getWorldMat() const;
 
 	private:
@@ -43,6 +49,8 @@ namespace otg {
 		Transformations transforms;
 
 		std::vector<Mesh> meshes;
+
+		void constructMeshes(const ModelData& data);
 
 	};
 
