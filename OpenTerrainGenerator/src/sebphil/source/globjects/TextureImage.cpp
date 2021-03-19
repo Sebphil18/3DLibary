@@ -35,7 +35,7 @@ namespace otg {
 		return *this;
 	}
 
-	void otg::TextureImage::setImage(const std::string& filePath, TextureType type) {
+	void TextureImage::setImage(const std::string& filePath, TextureType type) {
 
 		this->filePath = filePath;
 		this->type = type;
@@ -51,7 +51,7 @@ namespace otg {
 		generateMipmap();
 	}
 
-	void otg::TextureImage::tryLoadImg() {
+	void TextureImage::tryLoadImg() {
 
 		try {
 			loadImg();
@@ -60,16 +60,12 @@ namespace otg {
 		}
 	}
 
-	void otg::TextureImage::loadImg() {
+	void TextureImage::loadImg() {
 
 		img.buffer = stbi_load(filePath.c_str(), &img.width, &img.height, &img.channels, 0);
 
 		if (!img.buffer)
 			throw ImageLoaderException(filePath);
-	}
-
-	void otg::TextureImage::specifyStorage() {
-		glTextureStorage2D(glHandle, 1, GL_SRGB8_ALPHA8, img.width, img.height);
 	}
 
 	TextureImage::TextureImage(TextureImage&& otherTex) noexcept :

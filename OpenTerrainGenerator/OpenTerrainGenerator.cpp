@@ -23,7 +23,9 @@
 #include "globjects/ProgramUniformLink.h"
 #include "globjects/TextureImage.h"
 #include "globjects/Texture.h"
+#include "globjects/MultisampleTexture.h"
 #include "globjects/RenderBuffer.h"
+#include "globjects/MultisampleRenderBuffer.h"
 #include "globjects/Framebuffer.h"
 #include "io/Image.h"
 #include "modelstructure/Mesh.h"
@@ -32,7 +34,7 @@
 
 // standard VertexFormat: position | normal | tangent | bitangent | textureCoordinates
 static std::vector<otg::Vertex> screenVertices = {
-	{ glm::vec3(-1, -1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
+	{ glm::vec3(-1, -0.1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
 	{ glm::vec3(1, -1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
 	{ glm::vec3(1, 1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
 	{ glm::vec3(-1, 1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) }
@@ -54,10 +56,7 @@ static void update(otg::FrameClock& clock);
 static void draw();
 
 /*
-* multisample texture, rebderbuffer, framebuffer
 * UniformBuffer
-* Model
-*	-> settings uniform matrices for program
 * ModelLoader
 */
 
@@ -74,6 +73,7 @@ static void launchApp() {
 
 	otg::DebugMessenger debugMessenger;
 
+	// ShaderPrograms
 	std::shared_ptr<otg::ShaderProgram> screenProgram = std::make_shared<otg::ShaderProgram>(
 		"src/sebphil/shader/vertex/VertexScreen.glsl", 
 		"src/sebphil/shader/fragment/FragmentScreen.glsl"
@@ -104,10 +104,6 @@ static void launchApp() {
 	std::shared_ptr<otg::Model> model = std::make_shared<otg::Model>(modelData);
 	models.push_back(model);
 
-	/*std::uint32_t multiRenderBuffer;
-	glCreateRenderbuffers(1, &multiRenderBuffer);
-	glNamedRenderbufferStorageMultisample(multiRenderBuffer, 4, GL_DEPTH24_STENCIL8, width, height);*/
-
 	// Framebuffer
 	int width = window.getWidth();
 	int height = window.getHeight();
@@ -120,10 +116,22 @@ static void launchApp() {
 	framebuffer.attachRenderBuffer(renderBuffer);
 	framebuffer.validate();
 
-	framebuffer.bind();
-	model->draw(*program);
-	framebuffer.unbind();
+	// MULTISAMPLING
+	otg::Framebuffer multiFramebuffer;
+	otg::MultisampleTexture multiTexture(width, height);
+	otg::MultisampleRenderBuffer multiRbo(width, height);
 
+	multiFramebuffer.attachTexture(multiTexture);
+	multiFramebuffer.attachRenderBuffer(multiRbo);
+	multiFramebuffer.validate();
+
+	multiFramebuffer.bind();
+	model->draw(*program);
+	multiFramebuffer.unbind();
+
+	multiFramebuffer.copyColorTo(width, height, framebuffer);
+
+	// update model-textures so it will display only the screenTexture
 	model->clearTextures(0);
 	model->addTexture(screenTexture, 0);
 
@@ -143,5 +151,4 @@ static void draw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	models[0]->draw(*programs[0]);
-
 }

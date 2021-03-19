@@ -5,13 +5,13 @@
 namespace otg {
 
 	RenderBuffer::RenderBuffer() noexcept :
-		width(0), height(0), target(GL_RENDERBUFFER), TextureTypes(TextureType::DepthStencilAttachment)
+		width(0), height(0), TextureTypes(TextureType::DepthStencilAttachment)
 	{
 		createRenderbuffer();
 	}
 
-	RenderBuffer::RenderBuffer(std::int32_t width, std::int32_t height, TextureType format) noexcept :
-		width(width), height(height), target(GL_RENDERBUFFER), TextureTypes(format)
+	RenderBuffer::RenderBuffer(std::int32_t width, std::int32_t height, TextureType type) noexcept :
+		width(width), height(height), TextureTypes(type)
 	{
 		createRenderbuffer();
 	}
@@ -25,7 +25,6 @@ namespace otg {
 
 		width = other.width;
 		height = other.height;
-		target = other.target;
 		type = other.type;
 
 		createRenderbuffer();
@@ -33,12 +32,20 @@ namespace otg {
 		return *this;
 	}
 
+	void RenderBuffer::createRenderbuffer() {
+
+		glCreateRenderbuffers(1, &glHandle);
+
+		std::uint32_t format = getGlFormat(type);
+		glNamedRenderbufferStorage(glHandle, format, width, height);
+	}
+
 	RenderBuffer::RenderBuffer(RenderBuffer&& other) noexcept :
 		width(std::move(other.width)),
 		height(std::move(other.height)),
-		target(std::move(other.target)),
 		GlObject(std::move(other)),
-		TextureTypes(other.type) 	{
+		TextureTypes(other.type) 	
+	{
 	}
 
 	RenderBuffer& RenderBuffer::operator=(RenderBuffer&& other) noexcept {
@@ -47,7 +54,6 @@ namespace otg {
 
 		width = std::move(other.width);
 		height = std::move(other.height);
-		target = std::move(other.target);
 		type = std::move(other.type);
 
 		return *this;
@@ -55,34 +61,6 @@ namespace otg {
 
 	RenderBuffer::~RenderBuffer() noexcept {
 		glDeleteRenderbuffers(1, &glHandle);
-	}
-
-	void RenderBuffer::setTarget(std::uint32_t target) {
-		this->target = target;
-	}
-
-	std::uint32_t RenderBuffer::getTarget() const {
-		return target;
-	}
-
-	void RenderBuffer::createRenderbuffer() {
-		glCreateRenderbuffers(1, &glHandle);
-
-		std::uint32_t format = getFormat();
-
-		glNamedRenderbufferStorage(glHandle, format, width, height);
-	}
-
-	std::uint32_t RenderBuffer::getFormat() {
-		
-		switch (type) {
-
-		case TextureType::DepthStencilAttachment:
-			return GL_DEPTH24_STENCIL8;
-		defualt:
-			return GL_RGBA16;
-		}
-
 	}
 
 }

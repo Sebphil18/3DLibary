@@ -1,7 +1,9 @@
 #pragma once
 #include "globjects/GlObject.h"
 #include "globjects/Texture.h"
+#include "globjects/MultisampleTexture.h"
 #include "globjects/RenderBuffer.h"
+#include "globjects/MultisampleRenderBuffer.h"
 
 namespace otg {
 
@@ -18,12 +20,18 @@ namespace otg {
 		~Framebuffer() noexcept;
 
 		void attachTexture(const Texture& texture);
+		void attachTexture(const MultisampleTexture& texture);
+
 		void attachRenderBuffer(const RenderBuffer& renderbuffer);
+		void attachRenderBuffer(const MultisampleRenderBuffer& renderbuffer);
 
 		void validate();
 
 		void bind() const;
 		void unbind() const;
+
+		void clear();
+		void copyColorTo(std::int32_t width, std::int32_t height, otg::Framebuffer& other);
 
 		std::uint32_t setTarget(std::uint32_t target);
 
@@ -31,10 +39,9 @@ namespace otg {
 		std::uint32_t target;
 		std::uint32_t colorAttachement;
 
-		void createFramebuffer();
+		static float clearColor[4];
 
-		void setTextureAttachment(const Texture& texture, std::uint32_t& attachmentItr, std::uint32_t attachment);
-		void setRenderbufferAttachment(const RenderBuffer& renderbuffer, std::uint32_t& attachmentItr, std::uint32_t attachment);
+		void createFramebuffer();
 
 		void tryValidation();
 

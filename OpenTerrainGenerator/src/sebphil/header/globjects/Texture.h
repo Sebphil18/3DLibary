@@ -9,6 +9,7 @@ namespace otg {
 
 	public:
 		Texture() noexcept;
+		Texture(TextureType type) noexcept;
 		Texture(std::int32_t width, std::int32_t height, TextureType type) noexcept;
 		Texture(const Image& img, TextureType type) noexcept;
 		Texture(const Texture& otherTex) noexcept;
@@ -24,8 +25,9 @@ namespace otg {
 	protected:
 		Image img;
 
+		void initTexture();
 		void createTexture();
-		virtual void specifyStorage();
+		void specifyStorage();
 		void specifySubImg();
 
 	};

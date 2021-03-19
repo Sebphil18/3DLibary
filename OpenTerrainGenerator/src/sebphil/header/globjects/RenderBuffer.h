@@ -8,7 +8,7 @@ namespace otg {
 
 	public:
 		RenderBuffer() noexcept;
-		RenderBuffer(std::int32_t width, std::int32_t height, TextureType format) noexcept;
+		RenderBuffer(std::int32_t width, std::int32_t height, TextureType type) noexcept;
 		RenderBuffer(const RenderBuffer& other) noexcept;
 		RenderBuffer(RenderBuffer&& other) noexcept;
 
@@ -17,16 +17,10 @@ namespace otg {
 
 		~RenderBuffer() noexcept;
 
-		void setTarget(std::uint32_t target);
-
-		std::uint32_t getTarget() const;
-
 	private:
 		std::int32_t width, height;
-		std::uint32_t target;
 
 		void createRenderbuffer();
-		std::uint32_t getFormat();
 
 	};
 

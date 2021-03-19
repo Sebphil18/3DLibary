@@ -7,15 +7,18 @@ namespace otg {
 
 	public:
 		enum class TextureType {
-			None, Albedo, Roughness, Occlussion, Metalness, Height, Multisample, ColorAttachment, DepthStencilAttachment
+			None, RGBA, SRGBA, Multisample, ColorAttachment, DepthStencilAttachment, RGBAFloat, 
+			Albedo, Height, Roughness, Metalness, Occlussion
 		};
 
 		TextureTypes() noexcept;
 		TextureTypes(TextureType type) noexcept;
 
-		static std::uint32_t getGlType(TextureType type);
-
 		TextureType getType() const;
+
+		static std::uint32_t getGlType(TextureType type);
+		static std::uint32_t getGlFormat(TextureType type);
+		static std::uint32_t getGlDataType(TextureType type);
 
 	protected:
 		TextureType type;

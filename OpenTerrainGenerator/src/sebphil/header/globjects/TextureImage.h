@@ -31,8 +31,6 @@ namespace otg {
 		void loadTexture();
 		void tryLoadImg();
 		void loadImg();
-		void specifyStorage() override;
-
 	};
 
 }

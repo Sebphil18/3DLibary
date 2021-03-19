@@ -10,43 +10,48 @@ namespace otg {
 		createTexture();
 	}
 
+	otg::Texture::Texture(TextureType type) noexcept :
+		img({ nullptr, 0, 0, 0 }), TextureTypes(type)
+	{
+		createTexture();
+	}
+
 	Texture::Texture(std::int32_t width, std::int32_t height, TextureType type) noexcept :
 		TextureTypes(type)
 	{
 		img.width = width;
 		img.height = height;
 
-		createTexture();
-		specifyStorage();
+		initTexture();
 	}
 
-	Texture::Texture(const Texture& otherTex) noexcept {
-
-		img = otherTex.img;
-		type = otherTex.type;
-
-		createTexture();
-		specifyStorage();
+	Texture::Texture(const Texture& other) noexcept :
+		img(other.img), TextureTypes(other.type)
+	{
+		initTexture();
 	}
 
 	Texture::Texture(const Image& img, TextureType type) noexcept :
 		img(img), TextureTypes(type)
 	{
-		createTexture();
-		specifyStorage();
+		initTexture();
 		specifySubImg();
 	}
 
-	Texture& Texture::operator=(const Texture& otherTex) noexcept {
+	Texture& Texture::operator=(const Texture& other) noexcept {
 
-		img = otherTex.img;
-		type = otherTex.type;
+		img = other.img;
+		type = other.type;
 
-		createTexture();
-		specifyStorage();
+		initTexture();
 		specifySubImg();
 
 		return *this;
+	}
+	
+	void Texture::initTexture() {
+		createTexture();
+		specifyStorage();
 	}
 
 	void Texture::createTexture() {
@@ -60,27 +65,28 @@ namespace otg {
 	}
 
 	void Texture::specifyStorage() {
-		glTextureStorage2D(glHandle, 1, GL_RGBA16, img.width, img.height);
+		glTextureStorage2D(glHandle, 1, getGlFormat(type), img.width, img.height);
 	}
 
 	void Texture::specifySubImg() {
 
 		if (img.buffer != nullptr)
-			glTextureSubImage2D(glHandle, 0, 0, 0, img.width, img.height, GL_RGBA, GL_UNSIGNED_BYTE, img.buffer);
+			glTextureSubImage2D(glHandle, 0, 0, 0, img.width, img.height, GL_RGBA, getGlDataType(type), img.buffer);
 	}
 
-	Texture::Texture(Texture&& otherTex) noexcept :
-		GlObject(std::move(otherTex)),
-		img(std::move(otherTex.img)),
-		TextureTypes(otherTex.type) {
+	Texture::Texture(Texture&& other) noexcept :
+		GlObject(std::move(other)),
+		TextureTypes(other.type),
+		img(std::move(other.img))
+	{
 	}
 
-	Texture& Texture::operator=(Texture&& otherTex) noexcept {
+	Texture& Texture::operator=(Texture&& other) noexcept {
 
-		GlObject::operator=(std::move(otherTex));
+		GlObject::operator=(std::move(other));
 
-		img = std::move(otherTex.img);
-		type = std::move(otherTex.type);
+		img = std::move(other.img);
+		type = std::move(other.type);
 
 		return *this;
 	}

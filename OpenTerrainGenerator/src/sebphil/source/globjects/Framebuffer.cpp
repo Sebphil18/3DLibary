@@ -5,6 +5,8 @@
 
 namespace otg {
 
+	float Framebuffer::clearColor[4] = { 1, 0, 1, 1 };
+
 	Framebuffer::Framebuffer() noexcept :
 		colorAttachement(0), target(GL_FRAMEBUFFER)
 	{
@@ -51,65 +53,63 @@ namespace otg {
 		glDeleteFramebuffers(1, & glHandle);
 	}
 
+	// TODO: ugly (setTextureAttachment)
 	void Framebuffer::attachTexture(const Texture& texture) {
 
 		TextureType type = texture.getType();
-		std::uint32_t itr = 0;
 
 		switch (type) {
 
 		case TextureType::DepthStencilAttachment: 
-			setTextureAttachment(texture, itr, GL_DEPTH_STENCIL_ATTACHMENT);
+			glNamedFramebufferTexture(glHandle, GL_DEPTH_STENCIL_ATTACHMENT, texture.getGlHandle(), 0);
 			break;
 
 		default:
-			setTextureAttachment(texture, colorAttachement, GL_COLOR_ATTACHMENT0);
+			std::uint32_t attachmentSlot = GL_COLOR_ATTACHMENT0 + colorAttachement++;
+			glNamedFramebufferTexture(glHandle, attachmentSlot, texture.getGlHandle(), 0);
 			break;
 		}
 	}
 
-	void Framebuffer::setTextureAttachment(const Texture& texture, std::uint32_t& attachmentItr, std::uint32_t attachment) {
+	void Framebuffer::attachTexture(const MultisampleTexture& texture) {
 
-		std::uint32_t handle = texture.getGlHandle();
-
-		std::uint32_t attachmentSlot = attachment + attachmentItr;
-		attachmentItr++;
-
-		glNamedFramebufferTexture(glHandle, attachmentSlot, handle, 0);
+		glNamedFramebufferTexture(glHandle, GL_COLOR_ATTACHMENT0, texture.getGlHandle(), 0);
+		colorAttachement++;
 	}
 
 	void Framebuffer::attachRenderBuffer(const RenderBuffer& renderbuffer) {
 
 		TextureType type = renderbuffer.getType();
 
-		std::uint32_t itr = 0;
-
 		switch (type) {
 
 		case TextureType::DepthStencilAttachment:
-			setRenderbufferAttachment(renderbuffer, itr, GL_DEPTH_STENCIL_ATTACHMENT);
+			glNamedFramebufferRenderbuffer(glHandle, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer.getGlHandle());
 			break;
 
 		default:
-			setRenderbufferAttachment(renderbuffer, colorAttachement, GL_COLOR_ATTACHMENT0);
+			std::uint32_t attachmentSlot = GL_COLOR_ATTACHMENT0 + colorAttachement++;
+			glNamedFramebufferRenderbuffer(glHandle, attachmentSlot, GL_RENDERBUFFER, renderbuffer.getGlHandle());
 			break;
 		}
 	}
 
-	// TODO: not quite nice
-	void Framebuffer::setRenderbufferAttachment(const RenderBuffer& renderbuffer, std::uint32_t& attachmentItr, std::uint32_t attachment) {
+	// TODO: copy of above code!!!
+	void Framebuffer::attachRenderBuffer(const MultisampleRenderBuffer& renderbuffer) {
 
-		std::uint32_t target = renderbuffer.getTarget();
-		std::uint32_t handle = renderbuffer.getGlHandle();
+		TextureType type = renderbuffer.getType();
 
-		std::uint32_t attachmentSlot = attachment;
+		switch (type) {
 
-		if (renderbuffer.getType() != TextureType::DepthStencilAttachment) {
-			attachmentSlot = attachment + attachmentItr;
-			attachmentItr++;
+		case TextureType::DepthStencilAttachment:
+			glNamedFramebufferRenderbuffer(glHandle, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer.getGlHandle());
+			break;
+
+		default:
+			std::uint32_t attachmentSlot = GL_COLOR_ATTACHMENT0 + colorAttachement++;
+			glNamedFramebufferRenderbuffer(glHandle, attachmentSlot, GL_RENDERBUFFER, renderbuffer.getGlHandle());
+			break;
 		}
-
-		glNamedFramebufferRenderbuffer(glHandle, attachmentSlot, target, handle);
 	}
 
 	void Framebuffer::validate() {
@@ -127,7 +127,6 @@ namespace otg {
 
 		if (status != GL_FRAMEBUFFER_COMPLETE)
 			throw FramebufferException();
-
 	}
 
 	void Framebuffer::bind() const {
@@ -136,6 +135,16 @@ namespace otg {
 
 	void Framebuffer::unbind() const {
 		glBindFramebuffer(target, 0);
+	}
+
+	void Framebuffer::clear() {
+
+		glClearNamedFramebufferfv(glHandle, GL_COLOR, 0, clearColor);
+		glClearNamedFramebufferfi(glHandle, GL_DEPTH_STENCIL, 0, 0, 0);
+	}
+
+	void Framebuffer::copyColorTo(std::int32_t width, std::int32_t height, otg::Framebuffer& other) {
+		glBlitNamedFramebuffer(glHandle, other.getGlHandle(), 0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 	}
 
 	std::uint32_t Framebuffer::setTarget(std::uint32_t target) {

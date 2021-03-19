@@ -36,6 +36,8 @@
     <ClCompile Include="src\sebphil\source\globjects\GlObject.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\IndexBuffer.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\LayoutElementType.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\MultisampleRenderBuffer.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\MultisampleTexture.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\ProgramUniformLink.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\RenderBuffer.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\Shader.cpp" />
@@ -69,6 +71,8 @@
     <ClInclude Include="src\sebphil\header\globjects\GlObject.h" />
     <ClInclude Include="src\sebphil\header\globjects\IndexBuffer.h" />
     <ClInclude Include="src\sebphil\header\globjects\LayoutElementType.h" />
+    <ClInclude Include="src\sebphil\header\globjects\MultisampleRenderBuffer.h" />
+    <ClInclude Include="src\sebphil\header\globjects\MultisampleTexture.h" />
     <ClInclude Include="src\sebphil\header\globjects\ProgramUniformLink.h" />
     <ClInclude Include="src\sebphil\header\globjects\RenderBuffer.h" />
     <ClInclude Include="src\sebphil\header\globjects\Shader.h" />
