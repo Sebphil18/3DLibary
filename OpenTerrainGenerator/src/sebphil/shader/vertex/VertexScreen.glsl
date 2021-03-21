@@ -11,10 +11,15 @@ out VertexData {
 	vec2 texCoord;
 } vertexOut;
 
+layout(std140) uniform Matrices {
+	vec3 color1;	// 12
+} matrices;
+
 void main() {
 
 	gl_Position = vec4(vPosition, 1);
 
 	vertexOut.testUniform = testUni;
 	vertexOut.texCoord = texCoord;
+	vertexOut.color = matrices.color1;
 }

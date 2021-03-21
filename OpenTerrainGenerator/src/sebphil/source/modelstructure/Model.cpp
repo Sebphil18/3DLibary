@@ -65,7 +65,7 @@ namespace otg {
 		transforms.rotationQuat = glm::quat(rotation);
 	}
 
-	// TODO: This is bad practise (reference to object that might get deleted
+	// TODO: This is bad practise (reference to object that might get deleted or moved); change to ModelData getData()
 	Mesh& Model::getMesh(std::size_t index) {
 		return meshes[index];
 	}

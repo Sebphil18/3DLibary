@@ -18,5 +18,5 @@ void main() {
 
 	vec4 texColor = texture(material.albedoTex0, vec2(vertexIn.texCoord.x, 1 - vertexIn.texCoord.y));
 
-	color = texColor;
+	color = texColor * vec4(vertexIn.color, 1);
 }

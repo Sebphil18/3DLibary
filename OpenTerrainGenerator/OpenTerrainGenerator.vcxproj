@@ -31,6 +31,7 @@
     <ClCompile Include="src\sebphil\source\exceptions\ImageLoadException.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\ShaderCompilationException.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\ProgramBuildException.cpp" />
+    <ClCompile Include="src\sebphil\source\exceptions\UniformBufferException.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\DebugMessenger.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\Framebuffer.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\GlObject.cpp" />
@@ -46,6 +47,8 @@
     <ClCompile Include="src\sebphil\source\globjects\Texture.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\TextureImage.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\TextureType.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\UniformBuffer.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\UniformType.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexArray.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexBuffer.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexBufferLayout.cpp" />
@@ -66,6 +69,7 @@
     <ClInclude Include="src\sebphil\header\exceptions\ImageLoadException.h" />
     <ClInclude Include="src\sebphil\header\exceptions\ProgramBuildException.h" />
     <ClInclude Include="src\sebphil\header\exceptions\ShaderCompilationException.h" />
+    <ClInclude Include="src\sebphil\header\exceptions\UniformBufferException.h" />
     <ClInclude Include="src\sebphil\header\globjects\DebugMessenger.h" />
     <ClInclude Include="src\sebphil\header\globjects\Framebuffer.h" />
     <ClInclude Include="src\sebphil\header\globjects\GlObject.h" />
@@ -80,6 +84,8 @@
     <ClInclude Include="src\sebphil\header\globjects\ShaderType.h" />
     <ClInclude Include="src\sebphil\header\globjects\Texture.h" />
     <ClInclude Include="src\sebphil\header\globjects\TextureImage.h" />
+    <ClInclude Include="src\sebphil\header\globjects\UniformBuffer.h" />
+    <ClInclude Include="src\sebphil\header\globjects\UniformType.h" />
     <ClInclude Include="src\sebphil\header\globjects\VertexArray.h" />
     <ClInclude Include="src\sebphil\header\globjects\VertexBuffer.h" />
     <ClInclude Include="src\sebphil\header\globjects\VertexBufferLayout.h" />

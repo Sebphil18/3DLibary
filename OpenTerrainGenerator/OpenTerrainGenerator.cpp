@@ -17,6 +17,7 @@
 #include "globjects/IndexBuffer.h"
 #include "globjects/VertexArray.h"
 #include "globjects/VertexBufferLayout.h"
+#include "globjects/UniformBuffer.h"
 #include "globjects/DebugMessenger.h"
 #include "globjects/Shader.h"
 #include "globjects/ShaderProgram.h"
@@ -56,7 +57,7 @@ static void update(otg::FrameClock& clock);
 static void draw();
 
 /*
-* UniformBuffer
+* Camera
 * ModelLoader
 */
 
@@ -85,6 +86,14 @@ static void launchApp() {
 		"src/sebphil/shader/fragment/FragmentStandard.glsl"
 		);
 	programs.push_back(program);
+
+	// UniformBuffer
+	glm::vec3 colorUbo(1, 1, 0);
+
+	otg::UniformBuffer ubo;
+	ubo.addElement({ otg::UniformType::Vector3, &colorUbo });
+	ubo.fillBuffer();
+	ubo.bindTo(*screenProgram, "Matrices", 0);
 
 	// Model
 	std::shared_ptr<otg::TextureImage> texture = std::make_shared<otg::TextureImage>(
