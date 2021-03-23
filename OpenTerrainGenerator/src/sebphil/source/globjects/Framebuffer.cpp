@@ -140,7 +140,7 @@ namespace otg {
 	void Framebuffer::clear() {
 
 		glClearNamedFramebufferfv(glHandle, GL_COLOR, 0, clearColor);
-		glClearNamedFramebufferfi(glHandle, GL_DEPTH_STENCIL, 0, 0, 0);
+		glClearNamedFramebufferfi(glHandle, GL_DEPTH_STENCIL, 0, 1, 0);
 	}
 
 	void Framebuffer::copyColorTo(std::int32_t width, std::int32_t height, otg::Framebuffer& other) {

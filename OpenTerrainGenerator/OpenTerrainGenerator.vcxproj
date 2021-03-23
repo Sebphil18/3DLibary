@@ -24,6 +24,7 @@
     <ClCompile Include="src\sebphil\source\application\FrameClock.cpp" />
     <ClCompile Include="src\sebphil\source\application\RenderLoop.cpp" />
     <ClCompile Include="src\sebphil\source\application\Window.cpp" />
+    <ClCompile Include="src\sebphil\source\camera\Camera.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\ApplicationException.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\FileInputException.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\FramebufferException.cpp" />
@@ -55,6 +56,7 @@
     <ClCompile Include="src\sebphil\source\io\FileReader.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\Mesh.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\Model.cpp" />
+    <ClCompile Include="src\sebphil\source\modelstructure\ScreenMesh.cpp" />
     <ClCompile Include="src\vendor\glad\glad.c" />
   </ItemGroup>
   <ItemGroup>
@@ -95,7 +97,9 @@
     <ClInclude Include="src\sebphil\header\modelstructure\Mesh.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Model.h" />
     <ClInclude Include="src\sebphil\header\globjects\TextureType.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\ScreenMesh.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Vertex.h" />
+    <ClInclude Include="src\sebphil\header\camera\Camera.h" />
     <ClInclude Include="src\vendor\stb\stbimage.h" />
   </ItemGroup>
   <ItemGroup>

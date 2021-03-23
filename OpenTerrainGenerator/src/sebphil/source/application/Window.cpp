@@ -65,7 +65,12 @@ void otg::Window::framebufferSizeCallback(GLFWwindow* window, int width, int hei
 }
 
 void otg::Window::setUpOpenGL() {
-	glEnable(GL_DEPTH_TEST | GL_FRAMEBUFFER_SRGB | GL_BLEND);
+
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_FRAMEBUFFER_SRGB);
+	glEnable(GL_BLEND);
+
+	glDepthFunc(GL_LESS);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 

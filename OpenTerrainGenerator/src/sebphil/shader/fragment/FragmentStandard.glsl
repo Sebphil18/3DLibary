@@ -9,7 +9,6 @@ struct Material {
 uniform Material material;
 
 in VertexData {
-	float testUniform;
 	vec3 color;
 	vec2 texCoord;
 } vertexIn;

@@ -8,6 +8,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtx/quaternion.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 #include "application/Application.h"
 #include "application/Window.h"
@@ -28,31 +29,70 @@
 #include "globjects/RenderBuffer.h"
 #include "globjects/MultisampleRenderBuffer.h"
 #include "globjects/Framebuffer.h"
+
 #include "io/Image.h"
 #include "modelstructure/Mesh.h"
+#include "modelstructure/ScreenMesh.h"
 #include "modelstructure/Model.h"
+#include "camera/Camera.h"
 #include "stb/stbimage.h"
 
 // standard VertexFormat: position | normal | tangent | bitangent | textureCoordinates
-static std::vector<otg::Vertex> screenVertices = {
-	{ glm::vec3(-1, -0.1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
-	{ glm::vec3(1, -1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
-	{ glm::vec3(1, 1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
-	{ glm::vec3(-1, 1, 0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) }
+static std::vector<otg::Vertex> cubeVertices = {
+	// front
+	{ glm::vec3(-0.5, -0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
+	{ glm::vec3(0.5, -0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
+	{ glm::vec3(0.5, 0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
+	{ glm::vec3(-0.5, 0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) },
+
+	//right
+	{ glm::vec3(0.5, -0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
+	{ glm::vec3(0.5, -0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
+	{ glm::vec3(0.5, 0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
+	{ glm::vec3(0.5, 0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) },
+
+	//left
+	{ glm::vec3(-0.5, -0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
+	{ glm::vec3(-0.5, -0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
+	{ glm::vec3(-0.5, 0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
+	{ glm::vec3(-0.5, 0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) },
+	
+	//back
+	{ glm::vec3(-0.5, -0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
+	{ glm::vec3(0.5, -0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
+	{ glm::vec3(0.5, 0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
+	{ glm::vec3(-0.5, 0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) },
+
+	// top
+	{ glm::vec3(-0.5, 0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
+	{ glm::vec3(0.5, 0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
+	{ glm::vec3(0.5, 0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
+	{ glm::vec3(-0.5, 0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) },
+
+	// bottom
+	{ glm::vec3(-0.5, -0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
+	{ glm::vec3(0.5, -0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
+	{ glm::vec3(0.5, -0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
+	{ glm::vec3(-0.5, -0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) },
 };
 
-static std::vector<unsigned int> screenIndices = {
-	0, 1, 3,
-	1, 2, 3,
+static std::vector<unsigned int> cubeIndices = {
+	0, 1, 2, 0, 2, 3,
+	4, 5, 6, 4, 6, 7,
+	8, 9, 10, 8, 10, 11,
+	12, 13, 14, 12, 14, 15,
+	16, 17, 18, 16, 18, 19,
+	20, 21, 22, 20, 22, 23
 };
 
-static otg::Mesh* meshPtr;
+static std::shared_ptr<otg::ScreenMesh> screen;
 static otg::ShaderProgram* programPtr;
 
 static std::vector<std::shared_ptr<otg::Model>> models;
 static std::vector<std::shared_ptr<otg::ShaderProgram>> programs;
 
 static void launchApp();
+
 static void update(otg::FrameClock& clock);
 static void draw();
 
@@ -70,7 +110,8 @@ static void launchApp() {
 	otg::Application app;
 
 	otg::Window window("OpenTerrainGenerator");
-	GLFWwindow* const glfwWindow = window.getGlfwWindow();
+	int width = window.getWidth();
+	int height = window.getHeight();
 
 	otg::DebugMessenger debugMessenger;
 
@@ -87,62 +128,69 @@ static void launchApp() {
 		);
 	programs.push_back(program);
 
-	// UniformBuffer
-	glm::vec3 colorUbo(1, 1, 0);
-
-	otg::UniformBuffer ubo;
-	ubo.addElement({ otg::UniformType::Vector3, &colorUbo });
-	ubo.fillBuffer();
-	ubo.bindTo(*screenProgram, "Matrices", 0);
-
 	// Model
 	std::shared_ptr<otg::TextureImage> texture = std::make_shared<otg::TextureImage>(
 		"rec\\textures\\testtexture\\TestTexture.png",
 		otg::TextureType::Albedo
 		);
 
-	otg::MeshData meshData;
-	meshData.indices = screenIndices;
-	meshData.vertices = screenVertices;
-	meshData.material = { 0, 0 };
-	meshData.textures.push_back(texture);
-
-	otg::ModelData modelData;
-	modelData.meshes.push_back(meshData);
-
-	std::shared_ptr<otg::Model> model = std::make_shared<otg::Model>(modelData);
+	std::shared_ptr<otg::Model> model = std::make_shared<otg::Model>();
+	model->meshes.emplace_back(cubeVertices, cubeIndices);
+	model->addTexture(texture, 0);
+	model->setRotation(glm::vec3(0.5, 0.5, 0));
+	model->setPosition(glm::vec3(0, 1, 0));
 	models.push_back(model);
 
-	// Framebuffer
-	int width = window.getWidth();
-	int height = window.getHeight();
+	// Matrices
+	otg::UniformBuffer ubo;
 
-	std::shared_ptr<otg::Texture> screenTexture = std::make_shared<otg::Texture>(width, height, otg::TextureType::ColorAttachment);
-	otg::RenderBuffer renderBuffer(width, height, otg::TextureType::DepthStencilAttachment);
+	glm::mat4 world = model->getWorldMatrix();
+	glm::mat4 normal = model->getNormalMatrix();
 
-	otg::Framebuffer framebuffer;
-	framebuffer.attachTexture(*screenTexture);
-	framebuffer.attachRenderBuffer(renderBuffer);
-	framebuffer.validate();
+	otg::Camera cam(width, height);
+	cam.setPosition(glm::vec3(0, 0, 2));
+	glm::mat4 view = cam.getViewMatrix();
+	glm::mat4 projection = cam.getProjectionMatrix();
 
-	// MULTISAMPLING
-	otg::Framebuffer multiFramebuffer;
-	otg::MultisampleTexture multiTexture(width, height);
+	ubo.addElement({ otg::UniformType::Matrix4, glm::value_ptr(world) });
+	ubo.addElement({ otg::UniformType::Matrix4, glm::value_ptr(normal) });
+	ubo.addElement({ otg::UniformType::Matrix4, glm::value_ptr(view) });
+	ubo.addElement({ otg::UniformType::Matrix4, glm::value_ptr(projection) });
+	ubo.fillBuffer();
+
+	ubo.bindTo(*program, "Matrices", 0);
+
+	// Multisampling
 	otg::MultisampleRenderBuffer multiRbo(width, height);
+	otg::MultisampleTexture multiTex(width, height);
+	otg::Framebuffer multiFbo;
+	
+	multiFbo.attachRenderBuffer(multiRbo);
+	multiFbo.attachTexture(multiTex);
+	multiFbo.validate();
 
-	multiFramebuffer.attachTexture(multiTexture);
-	multiFramebuffer.attachRenderBuffer(multiRbo);
-	multiFramebuffer.validate();
-
-	multiFramebuffer.bind();
+	multiFbo.bind();
+	multiFbo.clear();
 	model->draw(*program);
-	multiFramebuffer.unbind();
+	multiFbo.unbind();
 
-	multiFramebuffer.copyColorTo(width, height, framebuffer);
+	// Framebuffer
+	std::shared_ptr<otg::Texture> screenTexture = std::make_shared<otg::Texture>(width, height, otg::TextureType::ColorAttachment);
+	otg::RenderBuffer rbo(width, height, otg::TextureType::DepthStencilAttachment);
+	otg::Framebuffer fbo;
 
-	// update model-textures so it will display only the screenTexture
-	model->clearTextures(0);
-	model->addTexture(screenTexture, 0);
+	fbo.attachRenderBuffer(rbo);
+	fbo.attachTexture(*screenTexture);
+	fbo.validate();
+
+	multiFbo.copyColorTo(width, height, fbo);
+
+	// Setup screen
+	screen = std::make_shared<otg::ScreenMesh>();
+	screen->addTexture(screenTexture);
+
+	// renderloop
+	GLFWwindow* const glfwWindow = window.getGlfwWindow();
 
 	otg::RenderLoop loop(glfwWindow);
 	loop.setUpdateFunc(update);
@@ -159,5 +207,5 @@ static void draw() {
 	glClearColor(1, 0, 1, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-	models[0]->draw(*programs[0]);
+	screen->draw(*programs[0]);
 }

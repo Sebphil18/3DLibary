@@ -3,18 +3,23 @@
 layout(location = 0) in vec3 vPosition;
 layout(location = 4) in vec2 texCoord;
 
-uniform float testUni;
+layout(std140) uniform Matrices {
+	mat4 worldMat;
+	mat4 normalMat;
+	mat4 viewMat;
+	mat4 projectionMat;
+} matrices;
 
 out VertexData {
-	float testUniform;
 	vec3 color;
 	vec2 texCoord;
 } vertexOut;
 
 void main() {
 
-	gl_Position = vec4(vPosition, 1);
+	vec4 position = matrices.projectionMat * matrices.viewMat * matrices.worldMat * vec4(vPosition, 1);
 
-	vertexOut.testUniform = testUni;
+	gl_Position = position;
+
 	vertexOut.texCoord = texCoord;
 }

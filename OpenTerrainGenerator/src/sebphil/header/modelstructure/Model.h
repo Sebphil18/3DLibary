@@ -25,12 +25,12 @@ namespace otg {
 	class Model {
 
 	public:
+		std::vector<Mesh> meshes;
+
 		Model() noexcept;
 		Model(const ModelData& data) noexcept;
 
 		void draw(ShaderProgram& program);
-
-		void addMesh(const Mesh& mesh);
 
 		void setData(const ModelData& data);
 
@@ -41,16 +41,17 @@ namespace otg {
 		void setScale(glm::vec3 scale);
 		void setRotation(glm::vec3 rotation);
 
-		Mesh& getMesh(std::size_t index);
-		glm::mat4 getWorldMat() const;
+		glm::mat4 getWorldMatrix() const;
+		glm::mat4 getNormalMatrix() const;
 
 	private:
 		WorldProperties properties;
 		Transformations transforms;
 
-		std::vector<Mesh> meshes;
+		glm::mat4 worldMatrix;
 
 		void constructMeshes(const ModelData& data);
+		void updateWorldMatrix();
 
 	};
 

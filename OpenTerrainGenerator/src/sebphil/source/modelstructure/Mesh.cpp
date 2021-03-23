@@ -170,13 +170,8 @@ namespace otg {
 			break;
 		case TextureType::Height: setTexUniName(iterators.heightTextures, "material.heightTex", uniName);
 			break;
-		case TextureType::ColorAttachment: setTexUniName(iterators.albedoTextures, "material.albedoTex", uniName);
-			break;
-		case TextureType::DepthStencilAttachment: setTexUniName(iterators.albedoTextures, "material.albedoTex", uniName);
-			break;
-
 		default:
-			uniName = "[Mesh] texturetype is none or is not available";
+			setTexUniName(iterators.albedoTextures, "material.albedoTex", uniName);
 		}
 
 		return uniName;
