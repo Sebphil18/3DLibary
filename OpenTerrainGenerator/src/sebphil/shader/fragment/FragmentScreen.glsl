@@ -14,7 +14,7 @@ in VertexData {
 
 void main() {
 
-	vec4 texColor = texture(material.albedoTex0, vec2(vertexIn.texCoord.x, 1 - vertexIn.texCoord.y));
+	vec4 texColor = texture(material.albedoTex0, vertexIn.texCoord);
 
 	color = texColor;
 }

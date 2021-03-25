@@ -7,6 +7,7 @@ namespace otg {
 	class Camera {
 
 	public:
+		Camera();
 		Camera(std::uint32_t width, std::uint32_t height);
 		Camera(std::uint32_t width, std::uint32_t height, glm::vec3 position);
 
@@ -28,6 +29,8 @@ namespace otg {
 
 		glm::vec3 position, target, up, right;
 		glm::mat4 view, projection;
+
+		void init();
 
 		void constructAxis();
 		void updateView();

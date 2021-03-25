@@ -13,8 +13,8 @@ namespace otg {
 		MultisampleRenderBuffer(const MultisampleRenderBuffer& other) noexcept;
 		MultisampleRenderBuffer(MultisampleRenderBuffer&& other) noexcept;
 
-		MultisampleRenderBuffer& operator==(const MultisampleRenderBuffer& other) noexcept;
-		MultisampleRenderBuffer& operator==(MultisampleRenderBuffer&& other) noexcept;
+		MultisampleRenderBuffer& operator=(const MultisampleRenderBuffer& other) noexcept;
+		MultisampleRenderBuffer& operator=(MultisampleRenderBuffer&& other) noexcept;
 
 		~MultisampleRenderBuffer() noexcept;
 

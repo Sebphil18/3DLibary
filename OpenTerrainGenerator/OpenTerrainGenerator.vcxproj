@@ -94,6 +94,7 @@
     <ClInclude Include="src\sebphil\header\io\FileReader.h" />
     <ClInclude Include="src\sebphil\header\exceptions\FileInputException.h" />
     <ClInclude Include="src\sebphil\header\io\Image.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\CubeData.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Mesh.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Model.h" />
     <ClInclude Include="src\sebphil\header\globjects\TextureType.h" />

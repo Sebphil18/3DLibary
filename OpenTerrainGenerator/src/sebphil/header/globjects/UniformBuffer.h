@@ -8,14 +8,16 @@ namespace otg{
 
 	struct UniformElement {
 		UniformType type;
-		void* data;
+		void* data = nullptr;
 		std::uint32_t size = UniformTypes::getSize(type);
+		std::uint32_t offset = 0;
 	};
 
 	class UniformBuffer : public GlObject {
 
 	public:	
 		UniformBuffer() noexcept;
+		UniformBuffer(std::uint32_t capacity) noexcept;
 		UniformBuffer(const UniformBuffer& other) noexcept;
 		UniformBuffer(UniformBuffer&& other) noexcept;
 
@@ -25,18 +27,23 @@ namespace otg{
 		~UniformBuffer() noexcept;
 
 		void addElement(const UniformElement& element);
-		void setElement(std::size_t index, UniformElement element);
-		void removeElement(std::size_t index);
-
-		void fillBuffer();
+		void setElementData(std::uint32_t index, void* data);
 
 		void bindTo(ShaderProgram& program, const std::string& blockName, std::uint32_t bindingPoint);
 
 	private:
 		std::uint32_t size;
+		std::uint32_t capacity;
 		std::vector<UniformElement> elements;
 
 		void createRenderBuffer();
+		void allocateMemory();
+
+		bool isTooSmall();
+		void adjustToSize();
+		void fillBuffer();
+		void setElementData(const UniformElement& element);
+
 		std::uint32_t getBlockIndex(const ShaderProgram& program, const std::string& blockName);
 
 	};

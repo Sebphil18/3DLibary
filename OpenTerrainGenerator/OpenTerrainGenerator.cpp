@@ -29,6 +29,7 @@
 #include "globjects/RenderBuffer.h"
 #include "globjects/MultisampleRenderBuffer.h"
 #include "globjects/Framebuffer.h"
+#include "modelstructure/CubeData.h"
 
 #include "io/Image.h"
 #include "modelstructure/Mesh.h"
@@ -36,54 +37,6 @@
 #include "modelstructure/Model.h"
 #include "camera/Camera.h"
 #include "stb/stbimage.h"
-
-// standard VertexFormat: position | normal | tangent | bitangent | textureCoordinates
-static std::vector<otg::Vertex> cubeVertices = {
-	// front
-	{ glm::vec3(-0.5, -0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
-	{ glm::vec3(0.5, -0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
-	{ glm::vec3(0.5, 0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
-	{ glm::vec3(-0.5, 0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) },
-
-	//right
-	{ glm::vec3(0.5, -0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
-	{ glm::vec3(0.5, -0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
-	{ glm::vec3(0.5, 0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
-	{ glm::vec3(0.5, 0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) },
-
-	//left
-	{ glm::vec3(-0.5, -0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
-	{ glm::vec3(-0.5, -0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
-	{ glm::vec3(-0.5, 0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
-	{ glm::vec3(-0.5, 0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) },
-	
-	//back
-	{ glm::vec3(-0.5, -0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
-	{ glm::vec3(0.5, -0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
-	{ glm::vec3(0.5, 0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
-	{ glm::vec3(-0.5, 0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) },
-
-	// top
-	{ glm::vec3(-0.5, 0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
-	{ glm::vec3(0.5, 0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
-	{ glm::vec3(0.5, 0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
-	{ glm::vec3(-0.5, 0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) },
-
-	// bottom
-	{ glm::vec3(-0.5, -0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
-	{ glm::vec3(0.5, -0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
-	{ glm::vec3(0.5, -0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },
-	{ glm::vec3(-0.5, -0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) },
-};
-
-static std::vector<unsigned int> cubeIndices = {
-	0, 1, 2, 0, 2, 3,
-	4, 5, 6, 4, 6, 7,
-	8, 9, 10, 8, 10, 11,
-	12, 13, 14, 12, 14, 15,
-	16, 17, 18, 16, 18, 19,
-	20, 21, 22, 20, 22, 23
-};
 
 static std::shared_ptr<otg::ScreenMesh> screen;
 static otg::ShaderProgram* programPtr;
@@ -97,6 +50,7 @@ static void update(otg::FrameClock& clock);
 static void draw();
 
 /*
+* TODO: add support for resizing Textures and RenderBuffers
 * Camera
 * ModelLoader
 */
@@ -117,7 +71,7 @@ static void launchApp() {
 
 	// ShaderPrograms
 	std::shared_ptr<otg::ShaderProgram> screenProgram = std::make_shared<otg::ShaderProgram>(
-		"src/sebphil/shader/vertex/VertexScreen.glsl", 
+		"src/sebphil/shader/vertex/VertexScreen.glsl",
 		"src/sebphil/shader/fragment/FragmentScreen.glsl"
 		);
 	programs.push_back(screenProgram);
@@ -137,27 +91,23 @@ static void launchApp() {
 	std::shared_ptr<otg::Model> model = std::make_shared<otg::Model>();
 	model->meshes.emplace_back(cubeVertices, cubeIndices);
 	model->addTexture(texture, 0);
-	model->setRotation(glm::vec3(0.5, 0.5, 0));
-	model->setPosition(glm::vec3(0, 1, 0));
+	model->setRotation(glm::vec3(0.3, 0.4, 0));
 	models.push_back(model);
 
 	// Matrices
-	otg::UniformBuffer ubo;
+	otg::Camera cam(width, height);
+	cam.setPosition(glm::vec3(0, 0, 2));
 
 	glm::mat4 world = model->getWorldMatrix();
 	glm::mat4 normal = model->getNormalMatrix();
-
-	otg::Camera cam(width, height);
-	cam.setPosition(glm::vec3(0, 0, 2));
 	glm::mat4 view = cam.getViewMatrix();
 	glm::mat4 projection = cam.getProjectionMatrix();
 
+	otg::UniformBuffer ubo(4 * 64);
 	ubo.addElement({ otg::UniformType::Matrix4, glm::value_ptr(world) });
 	ubo.addElement({ otg::UniformType::Matrix4, glm::value_ptr(normal) });
 	ubo.addElement({ otg::UniformType::Matrix4, glm::value_ptr(view) });
 	ubo.addElement({ otg::UniformType::Matrix4, glm::value_ptr(projection) });
-	ubo.fillBuffer();
-
 	ubo.bindTo(*program, "Matrices", 0);
 
 	// Multisampling

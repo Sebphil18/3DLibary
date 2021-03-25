@@ -257,6 +257,9 @@
     <ClInclude Include="src\sebphil\header\modelstructure\ScreenMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\sebphil\header\modelstructure\CubeData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\sebphil\shader\vertex\VertexStandard.glsl" />

@@ -3,15 +3,22 @@
 
 namespace otg {
 
+	Camera::Camera() : 
+		position(glm::vec3(0, 0, 5)),
+		target(glm::vec3(0, 0, 0)),
+		fov(65), near(0.01), far(500),
+		width(800), height(800)
+	{
+		init();
+	}
+
 	Camera::Camera(std::uint32_t width, std::uint32_t height) :
 		position(glm::vec3(0, 0, 5)),
 		target(glm::vec3(0, 0, 0)),
 		fov(65), near(0.01), far(500),
 		width(width), height(height)
 	{
-		constructAxis();
-		updateView();
-		updateProjection();
+		init();
 	}
 
 	Camera::Camera(std::uint32_t width, std::uint32_t height, glm::vec3 position) :
@@ -20,6 +27,10 @@ namespace otg {
 		fov(65), near(0.01), far(500),
 		width(width), height(height)
 	{
+		init();
+	}
+
+	void Camera::init() {
 		constructAxis();
 		updateView();
 		updateProjection();

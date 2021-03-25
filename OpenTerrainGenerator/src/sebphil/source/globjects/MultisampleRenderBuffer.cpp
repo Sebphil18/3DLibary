@@ -22,7 +22,7 @@ namespace otg {
 		createRenderBuffer();
 	}
 
-	MultisampleRenderBuffer& MultisampleRenderBuffer::operator==(const MultisampleRenderBuffer& other) noexcept {
+	MultisampleRenderBuffer& MultisampleRenderBuffer::operator=(const MultisampleRenderBuffer& other) noexcept {
 
 		width = other.width;
 		height = other.height;
@@ -49,7 +49,7 @@ namespace otg {
 	{
 	}
 
-	MultisampleRenderBuffer& MultisampleRenderBuffer::operator==(MultisampleRenderBuffer&& other) noexcept {
+	MultisampleRenderBuffer& MultisampleRenderBuffer::operator=(MultisampleRenderBuffer&& other) noexcept {
 
 		GlObject::operator=(std::move(other));
 

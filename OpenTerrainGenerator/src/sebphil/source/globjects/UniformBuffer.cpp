@@ -5,24 +5,34 @@
 
 namespace otg {
 
-	UniformBuffer::UniformBuffer() noexcept : 
-		size(0)
+	UniformBuffer::UniformBuffer() noexcept :
+		size(0), capacity(64 * 4)
 	{
 		createRenderBuffer();
 	}
 
-	UniformBuffer::UniformBuffer(const UniformBuffer& other) noexcept :
-		size(other.size), elements(other.elements) 	
+	UniformBuffer::UniformBuffer(std::uint32_t capacity) noexcept : 
+		size(0), capacity(capacity)
 	{
 		createRenderBuffer();
+		allocateMemory();
+	}
+
+	UniformBuffer::UniformBuffer(const UniformBuffer& other) noexcept :
+		size(other.size), capacity(other.capacity), elements(other.elements) 	
+	{
+		createRenderBuffer();
+		allocateMemory();
 	}
 
 	UniformBuffer& UniformBuffer::operator=(const UniformBuffer& other) noexcept {
 
 		size = other.size;
+		capacity = other.capacity;
 		elements = other.elements;
 		
 		createRenderBuffer();
+		allocateMemory();
 
 		return *this;
 	}
@@ -33,6 +43,7 @@ namespace otg {
 
 	UniformBuffer::UniformBuffer(UniformBuffer&& other) noexcept : 
 		size(std::move(other.size)),
+		capacity(std::move(other.capacity)),
 		elements(std::move(other.elements)),
 		GlObject(std::move(other))
 	{
@@ -54,37 +65,51 @@ namespace otg {
 
 	void UniformBuffer::addElement(const UniformElement& element) {
 
+		elements.push_back({ element.type, element.data, element.size, size });
 		size += element.size;
-		elements.push_back(element);
+
+		if (isTooSmall())
+			adjustToSize();
+		else
+			setElementData(elements[elements.size() - 1]);
 	}
 
-	void UniformBuffer::setElement(std::size_t index, UniformElement element) {
-		
-		size -= element.size;
-
-		elements[index] = element;
-		size += element.size;
+	bool UniformBuffer::isTooSmall() {
+		return capacity < size;
 	}
 
-	void UniformBuffer::removeElement(std::size_t index) {
+	void UniformBuffer::adjustToSize() {
 
-		size -= elements[index].size;
-		elements.erase(elements.begin() + index);
+		capacity = size;
+		allocateMemory();
+
+		fillBuffer();
+	}
+
+	void UniformBuffer::allocateMemory() {
+		glNamedBufferData(glHandle, capacity, nullptr, GL_STATIC_DRAW);
 	}
 
 	void UniformBuffer::fillBuffer() {
 
-		glNamedBufferData(glHandle, size, nullptr, GL_STATIC_DRAW);
+		for (const UniformElement& element : elements)
+			setElementData(element);
+	}
 
-		std::size_t offset = 0;
-		for (std::size_t i = 0; i < elements.size(); i++) {
-			
-			const UniformElement& element = elements[i];
+	void UniformBuffer::setElementData(std::uint32_t index, void* data) {
 
-			glNamedBufferSubData(glHandle, offset, element.size, element.data);
+		UniformElement& element = elements[index];
+		element.data = data;
 
-			offset += element.size;
-		}
+		setElementData(elements[index]);
+	}
+
+	void UniformBuffer::setElementData(const UniformElement& element) {
+
+		if (element.data == nullptr)
+			return;
+
+		glNamedBufferSubData(glHandle, element.offset, element.size, element.data);
 	}
 
 	void UniformBuffer::bindTo(ShaderProgram& program, const std::string& blockName, std::uint32_t bindingPoint) {
