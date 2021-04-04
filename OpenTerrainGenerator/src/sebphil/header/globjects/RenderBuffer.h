@@ -17,10 +17,13 @@ namespace otg {
 
 		~RenderBuffer() noexcept;
 
+		void setSize(std::int32_t width, std::int32_t height);
+
 	private:
 		std::int32_t width, height;
 
 		void createRenderbuffer();
+		void specifyStorage();
 
 	};
 

@@ -22,6 +22,8 @@ namespace otg {
 
 		void generateMipmap();
 
+		void setSize(std::int32_t width, std::int32_t height);
+
 	protected:
 		Image img;
 
@@ -29,6 +31,7 @@ namespace otg {
 		void createTexture();
 		void specifyStorage();
 		void specifySubImg();
+		void deleteTexture();
 
 	};
 

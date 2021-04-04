@@ -5,13 +5,13 @@
 namespace otg {
 
 	Texture::Texture() noexcept : 
-		img({ nullptr, 0, 0, 0 }), TextureTypes()
+		img({ nullptr, 1, 1, 0 }), TextureTypes()
 	{
 		createTexture();
 	}
 
 	otg::Texture::Texture(TextureType type) noexcept :
-		img({ nullptr, 0, 0, 0 }), TextureTypes(type)
+		img({ nullptr, 1, 1, 0 }), TextureTypes(type)
 	{
 		createTexture();
 	}
@@ -43,12 +43,24 @@ namespace otg {
 		img = other.img;
 		type = other.type;
 
+		deleteTexture();
 		initTexture();
 		specifySubImg();
 
 		return *this;
 	}
 	
+	void Texture::setSize(std::int32_t width, std::int32_t height) {
+
+		img.width = width;
+		img.height = height;
+
+		// because DSA only supports immutable textures; a new texture has to be created
+		deleteTexture();
+		initTexture();
+		specifySubImg();
+	}
+
 	void Texture::initTexture() {
 		createTexture();
 		specifyStorage();
@@ -70,8 +82,13 @@ namespace otg {
 
 	void Texture::specifySubImg() {
 
-		if (img.buffer != nullptr)
-			glTextureSubImage2D(glHandle, 0, 0, 0, img.width, img.height, GL_RGBA, getGlDataType(type), img.buffer);
+		if (img.buffer != nullptr) {
+
+			if(img.channels == 3)
+				glTextureSubImage2D(glHandle, 0, 0, 0, img.width, img.height, GL_RGB, getGlDataType(type), img.buffer);
+			else
+				glTextureSubImage2D(glHandle, 0, 0, 0, img.width, img.height, GL_RGBA, getGlDataType(type), img.buffer);
+		}
 	}
 
 	Texture::Texture(Texture&& other) noexcept :
@@ -92,6 +109,10 @@ namespace otg {
 	}
 
 	Texture::~Texture() noexcept {
+		deleteTexture();
+	}
+
+	void Texture::deleteTexture() {
 		glDeleteTextures(1, &glHandle);
 	}
 
@@ -102,5 +123,4 @@ namespace otg {
 		glTextureParameteri(glHandle, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTextureParameterf(glHandle, GL_TEXTURE_LOD_BIAS, 0.1);
 	}
-
 }

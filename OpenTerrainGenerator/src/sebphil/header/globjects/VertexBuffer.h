@@ -30,8 +30,6 @@ namespace otg {
 
 		void* data;
 
-		void init();
-
 		void createBuffer();
 		void fillBuffer();
 

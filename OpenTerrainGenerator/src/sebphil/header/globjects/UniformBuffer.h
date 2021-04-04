@@ -36,13 +36,11 @@ namespace otg{
 		std::uint32_t capacity;
 		std::vector<UniformElement> elements;
 
-		void createRenderBuffer();
-		void allocateMemory();
+		void createBuffer();
 
-		bool isTooSmall();
-		void adjustToSize();
+		void adjustBuffer();
+		void adjustMemory();
 		void fillBuffer();
-		void setElementData(const UniformElement& element);
 
 		std::uint32_t getBlockIndex(const ShaderProgram& program, const std::string& blockName);
 

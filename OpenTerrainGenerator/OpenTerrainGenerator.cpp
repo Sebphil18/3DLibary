@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <unordered_map>
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -29,30 +30,28 @@
 #include "globjects/RenderBuffer.h"
 #include "globjects/MultisampleRenderBuffer.h"
 #include "globjects/Framebuffer.h"
-#include "modelstructure/CubeData.h"
 
 #include "io/Image.h"
+
+#include "modelstructure/CubeData.h"
 #include "modelstructure/Mesh.h"
 #include "modelstructure/ScreenMesh.h"
 #include "modelstructure/Model.h"
+#include "modelstructure/ModelLoader.h"
+#include "modelstructure/TextureRegister.h"
+#include "modelstructure/ModelDataConverter.h"
+
 #include "camera/Camera.h"
+#include "scene/Scene.h"
+
 #include "stb/stbimage.h"
 
-static std::shared_ptr<otg::ScreenMesh> screen;
-static otg::ShaderProgram* programPtr;
-
 static std::vector<std::shared_ptr<otg::Model>> models;
-static std::vector<std::shared_ptr<otg::ShaderProgram>> programs;
-
+static std::unordered_map<std::string, std::shared_ptr<otg::ShaderProgram>> programs;
 static void launchApp();
 
-static void update(otg::FrameClock& clock);
-static void draw();
-
-/*
-* TODO: add support for resizing Textures and RenderBuffers
-* Camera
-* ModelLoader
+/* TODO: DefferedModelData
+*	- global (static) TextureRegister so no texture is loaded twice
 */
 
 int main() {
@@ -60,6 +59,9 @@ int main() {
 }
 
 static void launchApp() {
+
+	// TODO: move into image loading??
+	stbi_set_flip_vertically_on_load(true);
 
 	otg::Application app;
 
@@ -69,93 +71,116 @@ static void launchApp() {
 
 	otg::DebugMessenger debugMessenger;
 
-	// ShaderPrograms
-	std::shared_ptr<otg::ShaderProgram> screenProgram = std::make_shared<otg::ShaderProgram>(
-		"src/sebphil/shader/vertex/VertexScreen.glsl",
-		"src/sebphil/shader/fragment/FragmentScreen.glsl"
-		);
-	programs.push_back(screenProgram);
+	GLFWwindow* winHandle = window.getGlfwWindow();
+	otg::FrameClock clock;
 
-	std::shared_ptr<otg::ShaderProgram> program = std::make_shared<otg::ShaderProgram>(
+	// Cube
+	otg::ModelLoader loader("rec/shapes/monkey/Monkey.obj");
+	std::shared_ptr<otg::Model> cube = std::make_shared<otg::Model>(loader.getData());
+	models.push_back(cube);
+
+	// ScreenMesh
+	otg::ScreenMesh screen;
+
+	// ShaderProgram
+	programs["main"] = std::make_shared<otg::ShaderProgram>(
 		"src/sebphil/shader/vertex/VertexStandard.glsl",
 		"src/sebphil/shader/fragment/FragmentStandard.glsl"
 		);
-	programs.push_back(program);
 
-	// Model
-	std::shared_ptr<otg::TextureImage> texture = std::make_shared<otg::TextureImage>(
-		"rec\\textures\\testtexture\\TestTexture.png",
-		otg::TextureType::Albedo
+	programs["screen"] = std::make_shared<otg::ShaderProgram>(
+		"src/sebphil/shader/vertex/VertexScreen.glsl",
+		"src/sebphil/shader/fragment/FragmentScreen.glsl"
 		);
 
-	std::shared_ptr<otg::Model> model = std::make_shared<otg::Model>();
-	model->meshes.emplace_back(cubeVertices, cubeIndices);
-	model->addTexture(texture, 0);
-	model->setRotation(glm::vec3(0.3, 0.4, 0));
-	models.push_back(model);
-
-	// Matrices
-	otg::Camera cam(width, height);
-	cam.setPosition(glm::vec3(0, 0, 2));
-
-	glm::mat4 world = model->getWorldMatrix();
-	glm::mat4 normal = model->getNormalMatrix();
-	glm::mat4 view = cam.getViewMatrix();
-	glm::mat4 projection = cam.getProjectionMatrix();
-
-	otg::UniformBuffer ubo(4 * 64);
-	ubo.addElement({ otg::UniformType::Matrix4, glm::value_ptr(world) });
-	ubo.addElement({ otg::UniformType::Matrix4, glm::value_ptr(normal) });
-	ubo.addElement({ otg::UniformType::Matrix4, glm::value_ptr(view) });
-	ubo.addElement({ otg::UniformType::Matrix4, glm::value_ptr(projection) });
-	ubo.bindTo(*program, "Matrices", 0);
-
-	// Multisampling
-	otg::MultisampleRenderBuffer multiRbo(width, height);
-	otg::MultisampleTexture multiTex(width, height);
-	otg::Framebuffer multiFbo;
+	// UniformBuffer
+	otg::UniformBuffer matrices;
+	matrices.addElement({ otg::UniformType::Matrix4 });
+	matrices.addElement({ otg::UniformType::Matrix4 });
+	matrices.addElement({ otg::UniformType::Matrix4 });
+	matrices.addElement({ otg::UniformType::Matrix4 });
+	matrices.bindTo(*programs["main"], "Matrices", 0);
 	
-	multiFbo.attachRenderBuffer(multiRbo);
-	multiFbo.attachTexture(multiTex);
-	multiFbo.validate();
-
-	multiFbo.bind();
-	multiFbo.clear();
-	model->draw(*program);
-	multiFbo.unbind();
+	// Camera
+	otg::Camera cam;
+	cam.setWidth(window.getWidth());
+	cam.setHeight(window.getHeight());
+	cam.setPosition(glm::vec3(0, 0, -3));
 
 	// Framebuffer
-	std::shared_ptr<otg::Texture> screenTexture = std::make_shared<otg::Texture>(width, height, otg::TextureType::ColorAttachment);
-	otg::RenderBuffer rbo(width, height, otg::TextureType::DepthStencilAttachment);
-	otg::Framebuffer fbo;
+	otg::Framebuffer multiFbo;
+	otg::MultisampleTexture multiTex(width, height, 6);
+	otg::MultisampleRenderBuffer multiRbo(width, height, 6);
 
-	fbo.attachRenderBuffer(rbo);
-	fbo.attachTexture(*screenTexture);
-	fbo.validate();
+	multiFbo.attachTexture(multiTex);
+	multiFbo.attachRenderBuffer(multiRbo);
+	multiFbo.validate();
 
-	multiFbo.copyColorTo(width, height, fbo);
+	otg::Framebuffer screenFbo;
+	std::shared_ptr<otg::Texture> screenTex = std::make_shared<otg::Texture>(width, height, otg::TextureType::ColorAttachment);
+	otg::RenderBuffer screenRbo(width, height, otg::TextureType::DepthStencilAttachment);
 
-	// Setup screen
-	screen = std::make_shared<otg::ScreenMesh>();
-	screen->addTexture(screenTexture);
+	screenFbo.attachTexture(*screenTex);
+	screenFbo.attachRenderBuffer(screenRbo);
+	screenFbo.validate();
 
-	// renderloop
-	GLFWwindow* const glfwWindow = window.getGlfwWindow();
+	screen.addTexture(screenTex);
 
-	otg::RenderLoop loop(glfwWindow);
-	loop.setUpdateFunc(update);
-	loop.setDrawFunc(draw);
-	loop.start();
-}
+	// Callbacks
+	window.setSizeCallback([&](GLFWwindow* window, int width, int height) {
+		glViewport(0, 0, width, height);
+		cam.setSize(width, height);
+		});
 
-static void update(otg::FrameClock& clock) {
-	clock.update();
-}
+	window.setKeyCallback([&](GLFWwindow* window, int key, int scancode, int action, int mods) {
 
-static void draw() {
+		switch (key) {
 
-	glClearColor(1, 0, 1, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		case GLFW_KEY_ESCAPE:
+			glfwSetWindowShouldClose(window, true);
+		}
 
-	screen->draw(*programs[0]);
+		});
+
+	// RenderLoop
+	while (!window.shouldClose()) {
+
+		clock.tick();
+
+		cube->setRotation(glm::vec3(0.01 * clock.getCurrentFrame(), 0, 0));
+
+		glClearColor(0.1, 0.1, 0.1, 1);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glClear(GL_STENCIL_BUFFER_BIT);
+		
+		glm::mat4 view = cam.getViewMatrix();
+		glm::mat4 projection = cam.getProjectionMatrix();
+
+		matrices.setElementData(2, glm::value_ptr(view));
+		matrices.setElementData(3, glm::value_ptr(projection));
+
+		for (std::shared_ptr<otg::Model>& model : models) {
+
+			glm::mat4 world = model->getWorldMatrix();
+			glm::mat4 normal = model->getNormalMatrix();
+
+			matrices.setElementData(0, glm::value_ptr(world));
+			matrices.setElementData(1, glm::value_ptr(normal));
+
+			multiFbo.clear();
+			multiFbo.bind();
+			model->draw(*programs["main"]);
+			multiFbo.unbind();
+
+			screenFbo.clear();
+			multiFbo.copyColorTo(width, height, screenFbo);
+
+			screen.draw(*programs["screen"]);
+		}
+
+		glfwSwapBuffers(winHandle);
+		glfwPollEvents();
+	}
+
 }

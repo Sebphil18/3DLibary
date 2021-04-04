@@ -34,7 +34,8 @@ namespace otg {
 		src = other.src;
 		type = other.type;
 
-		createShader();
+		loadSource();
+		tryToCompile();
 
 		return *this;
 	}

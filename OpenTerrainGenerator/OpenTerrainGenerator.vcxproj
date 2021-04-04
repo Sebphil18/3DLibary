@@ -56,7 +56,10 @@
     <ClCompile Include="src\sebphil\source\io\FileReader.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\Mesh.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\Model.cpp" />
+    <ClCompile Include="src\sebphil\source\modelstructure\ModelDataConverter.cpp" />
+    <ClCompile Include="src\sebphil\source\modelstructure\ModelLoader.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\ScreenMesh.cpp" />
+    <ClCompile Include="src\sebphil\source\modelstructure\TextureRegister.cpp" />
     <ClCompile Include="src\vendor\glad\glad.c" />
   </ItemGroup>
   <ItemGroup>
@@ -98,9 +101,13 @@
     <ClInclude Include="src\sebphil\header\modelstructure\Mesh.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Model.h" />
     <ClInclude Include="src\sebphil\header\globjects\TextureType.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\ModelDataConverter.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\ModelLoader.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\ScreenMesh.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\TextureRegister.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Vertex.h" />
     <ClInclude Include="src\sebphil\header\camera\Camera.h" />
+    <ClInclude Include="src\sebphil\header\scene\Scene.h" />
     <ClInclude Include="src\vendor\stb\stbimage.h" />
   </ItemGroup>
   <ItemGroup>
@@ -212,7 +219,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\Projekte\GLFW\glfw-3.3.2.bin.WIN64\include;D:\Projekte\Glad\include;D:\Projekte\Assimp\include;D:\Projekte\GLM\glm;src\sebphil\header;D:\Projekte\GitRepos;src\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

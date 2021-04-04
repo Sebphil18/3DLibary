@@ -2,86 +2,85 @@
 #include <memory>
 #include "glad/glad.h"
 
-otg::IndexBuffer::IndexBuffer() noexcept :
-	usage(GL_STATIC_DRAW), size(0), data(nullptr)
-{
-	createBuffer();
-}
+namespace otg {
 
-otg::IndexBuffer::IndexBuffer(std::size_t size, void* data, std::uint32_t usage) noexcept :
-	usage(usage), size(size), data(data)
-{
-	init();
-}
+	IndexBuffer::IndexBuffer() noexcept :
+		usage(GL_STATIC_DRAW), size(0), data(nullptr) {
+		createBuffer();
+	}
 
-otg::IndexBuffer::IndexBuffer(const IndexBuffer& otherIbo) noexcept :
-	IndexBuffer(otherIbo.size, otherIbo.data, otherIbo.usage)
-{
-}
+	IndexBuffer::IndexBuffer(std::size_t size, void* data, std::uint32_t usage) noexcept :
+		usage(usage), size(size), data(data) {
+		init();
+	}
 
-otg::IndexBuffer& otg::IndexBuffer::operator=(const IndexBuffer& otherIbo) noexcept {
+	void IndexBuffer::init() {
+		createBuffer();
+		fillBuffer();
+	}
 
-	usage = otherIbo.usage;
-	size = otherIbo.size;
-	data = otherIbo.data;
+	void IndexBuffer::createBuffer() {
 
-	init();
+		glCreateBuffers(1, &glHandle);
+	}
 
-	return *this;
-}
+	IndexBuffer::IndexBuffer(const IndexBuffer& otherIbo) noexcept :
+		IndexBuffer(otherIbo.size, otherIbo.data, otherIbo.usage) {
+	}
 
-void otg::IndexBuffer::init() {
-	createBuffer();
-	fillBuffer();
-}
+	IndexBuffer& IndexBuffer::operator=(const IndexBuffer& otherIbo) noexcept {
 
-void otg::IndexBuffer::createBuffer() {
+		usage = otherIbo.usage;
+		size = otherIbo.size;
+		data = otherIbo.data;
 
-	glCreateBuffers(1, &glHandle);
-}
+		fillBuffer();
 
-void otg::IndexBuffer::setData(std::size_t size, void* data, std::uint32_t usage) {
+		return *this;
+	}
 
-	this->usage = usage;
-	this->size = size;
-	this->data = data;
+	void IndexBuffer::setData(std::size_t size, void* data, std::uint32_t usage) {
 
-	fillBuffer();
-}
+		this->usage = usage;
+		this->size = size;
+		this->data = data;
 
-void otg::IndexBuffer::fillBuffer() {
+		fillBuffer();
+	}
 
-	glNamedBufferData(glHandle, size, data, usage);
-}
+	void IndexBuffer::fillBuffer() {
 
-otg::IndexBuffer::IndexBuffer(IndexBuffer&& otherIbo) noexcept : 
-	GlObject(std::move(otherIbo)),
-	usage(std::move(otherIbo.usage)),
-	size(std::move(otherIbo.size)),
-	data(std::move(otherIbo.data))
-{
-}
+		glNamedBufferData(glHandle, size, data, usage);
+	}
 
-otg::IndexBuffer& otg::IndexBuffer::operator=(IndexBuffer&& otherIbo) noexcept {
-	
-	GlObject::operator=(std::move(otherIbo));
+	IndexBuffer::IndexBuffer(IndexBuffer&& otherIbo) noexcept :
+		GlObject(std::move(otherIbo)),
+		usage(std::move(otherIbo.usage)),
+		size(std::move(otherIbo.size)),
+		data(std::move(otherIbo.data)) {
+	}
 
-	usage = std::move(otherIbo.usage);
-	size = std::move(otherIbo.size);
-	data = std::move(otherIbo.data);
+	IndexBuffer& IndexBuffer::operator=(IndexBuffer&& otherIbo) noexcept {
 
-	return *this;
-}
+		GlObject::operator=(std::move(otherIbo));
 
-otg::IndexBuffer::~IndexBuffer() noexcept {
-	deleteBuffer();
-}
+		usage = std::move(otherIbo.usage);
+		size = std::move(otherIbo.size);
+		data = std::move(otherIbo.data);
 
-void otg::IndexBuffer::deleteBuffer() {
+		return *this;
+	}
 
-	glDeleteBuffers(1, &glHandle);
-}
+	IndexBuffer::~IndexBuffer() noexcept {
+		deleteBuffer();
+	}
 
-std::size_t otg::IndexBuffer::getElementCount() const {
-	return size / sizeof(int);
+	void IndexBuffer::deleteBuffer() {
+
+		glDeleteBuffers(1, &glHandle);
+	}
+
+	std::size_t IndexBuffer::getElementCount() const {
+		return size / sizeof(int);
+	}
 }

@@ -1,10 +1,11 @@
 #include "globjects/MultisampleTexture.h"
 #include "glad/glad.h"
+#include <iostream>
 
 namespace otg {
 
 	MultisampleTexture::MultisampleTexture() noexcept :
-		samples(4), img({nullptr, 0, 0, 0}), TextureTypes(TextureType::Multisample)
+		samples(4), img({nullptr, 1, 1, 4}), TextureTypes(TextureType::Multisample)
 	{
 		createTexture();
 	}
@@ -39,9 +40,19 @@ namespace otg {
 		type = other.type;
 		samples = other.samples;
 
+		delteTexture();
 		initTexture();
 
 		return *this;
+	}
+
+	void MultisampleTexture::setSize(std::int32_t width, std::int32_t height) {
+
+		img.width = width;
+		img.height = height;
+
+		delteTexture();
+		initTexture();
 	}
 
 	void MultisampleTexture::initTexture() {
@@ -77,6 +88,10 @@ namespace otg {
 	}
 
 	MultisampleTexture::~MultisampleTexture() noexcept {
+		delteTexture();
+	}
+
+	void MultisampleTexture::delteTexture() {
 		glDeleteTextures(1, &glHandle);
 	}
 

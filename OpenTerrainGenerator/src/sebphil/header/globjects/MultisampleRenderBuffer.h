@@ -10,6 +10,7 @@ namespace otg {
 	public:
 		MultisampleRenderBuffer() noexcept;
 		MultisampleRenderBuffer(std::int32_t width, std::int32_t height) noexcept;
+		MultisampleRenderBuffer(std::int32_t width, std::int32_t height, std::uint32_t samples) noexcept;
 		MultisampleRenderBuffer(const MultisampleRenderBuffer& other) noexcept;
 		MultisampleRenderBuffer(MultisampleRenderBuffer&& other) noexcept;
 
@@ -18,11 +19,14 @@ namespace otg {
 
 		~MultisampleRenderBuffer() noexcept;
 
+		void setSize(std::int32_t width, std::int32_t height);
+
 	private:
 		std::int32_t width, height;
 		std::uint32_t samples;
 
 		void createRenderBuffer();
+		void specifyStorage();
 
 	};
 

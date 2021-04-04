@@ -13,8 +13,6 @@ namespace otg {
 	}
 
 	VertexArray& otg::VertexArray::operator=(const VertexArray& otherVao) noexcept {
-		
-		createVertexArray();
 
 		return *this;
 	}

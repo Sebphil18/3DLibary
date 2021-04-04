@@ -31,6 +31,9 @@ namespace otg {
 		void loadTexture();
 		void tryLoadImg();
 		void loadImg();
+
+		void setSize(std::int32_t width, std::int32_t height) = delete;
+
 	};
 
 }

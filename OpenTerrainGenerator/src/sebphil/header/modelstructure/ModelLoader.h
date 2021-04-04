@@ -1,0 +1,71 @@
+#pragma once
+#include <string>
+#include <mutex>
+#include <future>
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
+#include "glm/glm.hpp"
+#include "modelstructure/Model.h"
+#include "modelstructure/TextureRegister.h"
+#include "globjects/TextureImage.h"
+
+namespace otg {
+
+	class ModelLoader {
+
+	public:
+		ModelLoader(const std::string& filePath);
+
+		bool isLoaded();
+
+		ModelData getData();
+
+	private:
+		std::string directory;
+		std::string fileName;
+		std::string filePath;
+
+		const aiScene* scene;
+
+		std::mutex loadingLock;
+		std::future<void> worker;
+
+		DeferredModelData data;
+		std::unordered_map<std::string, std::shared_ptr<otg::TextureImage>> loadedTextures;
+
+		void resolveFilepath();
+
+		// executed asynchronously
+		void loadModel();
+
+		void examinNode(aiNode* node);
+		void loadMeshes(aiNode* node);
+		void expandNode(aiNode* node);
+
+		void loadVertices(aiMesh* mesh, DeferredMeshData& meshData);
+
+		glm::vec3 getPosition(std::uint32_t vertexIndex, aiMesh* mesh);
+		glm::vec3 getNormal(std::uint32_t vertexIndex, aiMesh* mesh);
+		glm::vec3 getTangent(std::uint32_t vertexIndex, aiMesh* mesh);
+		glm::vec3 getBitangent(std::uint32_t vertexIndex, aiMesh* mesh);
+		glm::vec2 getTexCoords(std::uint32_t vertexIndex, aiMesh* mesh);
+
+		static glm::vec3 convertVector(aiVector3D aiVec3);
+		static glm::vec2 convertVector(aiVector2D aiVec2);
+
+		void loadIndices(aiMesh* mesh, DeferredMeshData& meshData);
+
+		void loadMaterial(aiMesh* mesh, DeferredMeshData& meshData);
+		void loadTextures(aiTextureType type, aiMaterial* material, DeferredMeshData& data);
+
+		void loadMaterialProperties(aiMaterial* material, DeferredMeshData& meshData);
+		
+		// Please note that the last two arguments don't do anything... they need to exist because AI_MATKEY_XXXX extends to 'const char*, uint, uint'
+		// (e.g. "some text", 0, 0)
+		float getMaterialFloat(aiMaterial* material, const char* property, int, int);
+		glm::vec3 getMaterialColor(aiMaterial* material, const char* property, int, int);
+
+	};
+
+}

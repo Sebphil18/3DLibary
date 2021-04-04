@@ -8,14 +8,15 @@ namespace otg {
 
 	public:
 		Camera();
-		Camera(std::uint32_t width, std::uint32_t height);
-		Camera(std::uint32_t width, std::uint32_t height, glm::vec3 position);
+		Camera(int width, int height);
+		Camera(int width, int height, glm::vec3 position);
 
 		void setPosition(glm::vec3 position);
 		void setTarget(glm::vec3 target);
 		void setFov(float fov);
-		void setWidth(std::uint32_t width);
-		void setHeight(std::uint32_t height);
+		void setWidth(int width);
+		void setHeight(int height);
+		void setSize(int width, int height);
 
 		glm::vec3 getPosition() const;
 		glm::vec3 getTarget() const;
@@ -25,7 +26,7 @@ namespace otg {
 
 	private:
 		float fov, near, far;
-		std::uint32_t width, height;
+		int width, height;
 
 		glm::vec3 position, target, up, right;
 		glm::mat4 view, projection;

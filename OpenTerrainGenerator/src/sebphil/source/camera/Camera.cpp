@@ -12,7 +12,7 @@ namespace otg {
 		init();
 	}
 
-	Camera::Camera(std::uint32_t width, std::uint32_t height) :
+	Camera::Camera(int width, int height) :
 		position(glm::vec3(0, 0, 5)),
 		target(glm::vec3(0, 0, 0)),
 		fov(65), near(0.01), far(500),
@@ -21,7 +21,7 @@ namespace otg {
 		init();
 	}
 
-	Camera::Camera(std::uint32_t width, std::uint32_t height, glm::vec3 position) :
+	Camera::Camera(int width, int height, glm::vec3 position) :
 		position(position),
 		target(glm::vec3(0, 0, 0)),
 		fov(65), near(0.01), far(500),
@@ -72,21 +72,33 @@ namespace otg {
 		updateProjection();
 	}
 
-	void Camera::setWidth(std::uint32_t width) {
+	void Camera::setWidth(int width) {
 
 		this->width = width;
 
 		updateProjection();
 	}
 
-	void Camera::setHeight(std::uint32_t height) {
+	void Camera::setHeight(int height) {
 
 		this->height = height;
 
 		updateProjection();
 	}
 
+	void Camera::setSize(int width, int height) {
+
+		this->width = width;
+		this->height = height;
+
+		updateProjection();
+	}
+
 	void Camera::updateProjection() {
+
+		if (height == 0)
+			return;
+
 		projection = glm::perspective(fov, (float)width / height, near, far);
 	}
 

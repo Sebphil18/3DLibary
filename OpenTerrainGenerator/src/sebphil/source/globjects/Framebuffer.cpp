@@ -5,7 +5,7 @@
 
 namespace otg {
 
-	float Framebuffer::clearColor[4] = { 1, 0, 1, 1 };
+	float Framebuffer::clearColor[4] = { 0.01, 0, 0.01, 1 };
 
 	Framebuffer::Framebuffer() noexcept :
 		colorAttachement(0), target(GL_FRAMEBUFFER)
@@ -19,11 +19,6 @@ namespace otg {
 	}
 
 	Framebuffer& Framebuffer::operator=(const Framebuffer& other) noexcept {
-
-		createFramebuffer();
-
-		colorAttachement = 0;
-		target = GL_FRAMEBUFFER;
 
 		return *this;
 	}
@@ -53,7 +48,6 @@ namespace otg {
 		glDeleteFramebuffers(1, & glHandle);
 	}
 
-	// TODO: ugly (setTextureAttachment)
 	void Framebuffer::attachTexture(const Texture& texture) {
 
 		TextureType type = texture.getType();
@@ -65,7 +59,7 @@ namespace otg {
 			break;
 
 		default:
-			std::uint32_t attachmentSlot = GL_COLOR_ATTACHMENT0 + colorAttachement++;
+			std::uint32_t attachmentSlot = GL_COLOR_ATTACHMENT0;
 			glNamedFramebufferTexture(glHandle, attachmentSlot, texture.getGlHandle(), 0);
 			break;
 		}
@@ -94,7 +88,6 @@ namespace otg {
 		}
 	}
 
-	// TODO: copy of above code!!!
 	void Framebuffer::attachRenderBuffer(const MultisampleRenderBuffer& renderbuffer) {
 
 		TextureType type = renderbuffer.getType();

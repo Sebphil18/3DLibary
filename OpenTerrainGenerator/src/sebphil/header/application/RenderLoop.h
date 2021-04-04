@@ -2,37 +2,45 @@
 #include <functional>
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "application/Window.h"
 #include "application/FrameClock.h"
+
+#include "modelstructure/Model.h"
+#include "globjects/UniformBuffer.h"
+#include "globjects/Texture.h"
+#include "globjects/Framebuffer.h"
+#include "globjects/MultisampleTexture.h"
+#include "globjects/MultisampleRenderBuffer.h"
+#include "modelstructure/ScreenMesh.h"
+#include "camera/Camera.h"
+#include "scene/Scene.h"
 
 namespace otg {
 	class RenderLoop {
 
 	public:
-		RenderLoop(GLFWwindow* window);
+		RenderLoop(Window& window);
 
-		void start();
-		void stop();
+		void start(Scene& scene);
 		
-		bool isRunning() const;
-
-		void setUpdateFunc(const std::function<void(FrameClock&)>& function);
-		void setDrawFunc(const std::function<void()>& function);
 		void setInputFunc(const std::function<void(GLFWwindow* window)>& function);
 
 	private:
 		bool active;
 
-		GLFWwindow* window;
+		Window* window;
 		FrameClock clock;
 
-		std::function<void(FrameClock&)> update;
-		std::function<void()> draw;
-		std::function<void(GLFWwindow*)> processInput;
+		void setUpCam(Camera& cam);
+		void addCubeModel(std::vector<std::shared_ptr<Model>>& models);
+		void setUpCallbacks(Scene& scene);
 
-		void tick();
+		void tick(Scene& scene);
+		void update(Scene& scene);
+		void draw(Scene& scene);
 
-		static void standardUpdate(FrameClock& clock);
-		static void standardDraw();
+		void processInput();
+
 		static void standardInputProcessing(GLFWwindow* window);
 
 	};

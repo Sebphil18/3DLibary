@@ -5,7 +5,7 @@
 namespace otg {
 
 	RenderBuffer::RenderBuffer() noexcept :
-		width(0), height(0), TextureTypes(TextureType::DepthStencilAttachment)
+		width(1), height(1), TextureTypes(TextureType::DepthStencilAttachment)
 	{
 		createRenderbuffer();
 	}
@@ -27,7 +27,7 @@ namespace otg {
 		height = other.height;
 		type = other.type;
 
-		createRenderbuffer();
+		specifyStorage();
 
 		return *this;
 	}
@@ -35,6 +35,19 @@ namespace otg {
 	void RenderBuffer::createRenderbuffer() {
 
 		glCreateRenderbuffers(1, &glHandle);
+
+		specifyStorage();
+	}
+
+	void RenderBuffer::setSize(std::int32_t width, std::int32_t height) {
+
+		this->width = width;
+		this->height = height;
+
+		specifyStorage();
+	}
+
+	void RenderBuffer::specifyStorage() {
 
 		std::uint32_t format = getGlFormat(type);
 		glNamedRenderbufferStorage(glHandle, format, width, height);

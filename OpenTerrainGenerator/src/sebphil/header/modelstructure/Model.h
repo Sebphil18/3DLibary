@@ -1,4 +1,5 @@
 #pragma once
+#include <unordered_map>
 #include "glm/glm.hpp"
 #include "glm/gtx/quaternion.hpp"
 #include "modelstructure/Mesh.h"
@@ -8,6 +9,10 @@ namespace otg {
 
 	struct ModelData {
 		std::vector<MeshData> meshes;
+	};
+
+	struct DeferredModelData {
+		std::vector<DeferredMeshData> meshes;
 	};
 
 	struct WorldProperties {

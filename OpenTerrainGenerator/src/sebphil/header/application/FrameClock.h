@@ -12,7 +12,7 @@ namespace otg {
 	public:
 		FrameClock();
 
-		void update();
+		void tick();
 
 		double getFrameRate() const;
 		double getFrameTime() const;

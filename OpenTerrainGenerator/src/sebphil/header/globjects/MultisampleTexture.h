@@ -19,6 +19,8 @@ namespace otg {
 
 		~MultisampleTexture() noexcept;
 
+		void setSize(std::int32_t width, std::int32_t height);
+
 	private:
 		std::uint32_t samples;
 		Image img;
@@ -26,6 +28,7 @@ namespace otg {
 		void initTexture();
 		void createTexture();
 		void specifyStorage();
+		void delteTexture();
 
 	};
 

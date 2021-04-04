@@ -1,69 +1,106 @@
 #include "application/RenderLoop.h"
 #include <iostream>
+#include <math.h>
+#include "glm/gtc/type_ptr.hpp"
+#include "modelstructure/CubeData.h"
 
-otg::RenderLoop::RenderLoop(GLFWwindow* window) :
-	window(window), active(false)
-{
-	update = standardUpdate;
-	draw = standardDraw;
-	processInput = standardInputProcessing;
-}
+namespace otg {
+	
+	RenderLoop::RenderLoop(Window& window) : 
+		window(&window), active(false)
+	{
+	}
 
-void otg::RenderLoop::start() {
+	// TODO: ForwardPipeline class
+	void RenderLoop::start(Scene& scene) {
 
-	active = true;
-	glfwMakeContextCurrent(window);
+		active = true;
+		window->focus();
 
-	while (!glfwWindowShouldClose(window) && active)
-		tick();
-}
+		setUpCallbacks(scene);
+		setUpCam(scene.cam);
+		addCubeModel(scene.models);
 
-void otg::RenderLoop::tick() {
+		while (!window->shouldClose())
+			tick(scene);
+	}
 
-	update(clock);
-	draw();
+	void RenderLoop::setUpCam(Camera& cam) {
 
-	glfwSwapBuffers(window);
+		cam.setPosition(glm::vec3(0, 0, -2));
+		cam.setWidth(window->getWidth());
+		cam.setHeight(window->getHeight());
+	}
 
-	glfwPollEvents();
-	processInput(window);
+	void RenderLoop::addCubeModel(std::vector<std::shared_ptr<Model>>& models) {
 
-}
+		std::shared_ptr<Model> cube = std::make_shared<Model>();
+		std::shared_ptr<TextureImage> texture = std::make_shared<TextureImage>("rec/textures/testtexture/HdrTest.png", TextureType::Albedo);
+		cube->meshes.emplace_back(cubeVertices, cubeIndices);
+		cube->addTexture(texture, 0);
+		cube->setRotation(glm::vec3(1, 1, 1));
 
-void otg::RenderLoop::standardUpdate(FrameClock& clock) {
+		models.push_back(cube);
+	}
 
-	clock.update();
-}
+	void RenderLoop::setUpCallbacks(Scene& scene) {
 
-void otg::RenderLoop::standardDraw() {
+		// TODO: too long; move into ForwardPipeline class (when created)
+		window->setSizeCallback([&](GLFWwindow* window, int width, int height) {
 
-	glClearColor(1, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-}
+			glViewport(0, 0, width, height);
+			scene.cam.setWidth(width);
+			scene.cam.setHeight(height);
 
-void otg::RenderLoop::standardInputProcessing(GLFWwindow* window) {
+			});
 
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE))
-		glfwSetWindowShouldClose(window, true);
+		window->setKeyCallback([&](GLFWwindow* window, int key, int scancode, int action, int mods) {
 
-}
+			switch (key) {
 
-void otg::RenderLoop::stop() {
-	active = false;
-}
+			case GLFW_KEY_ESCAPE:
+				glfwSetWindowShouldClose(window, true);
+				break;
+			}
 
-bool otg::RenderLoop::isRunning() const {
-	return active;
-}
+			});
 
-void otg::RenderLoop::setUpdateFunc(const std::function<void(FrameClock&)>& function) {
-	update = function;
-}
+	}
 
-void otg::RenderLoop::setDrawFunc(const std::function<void()>& function) {
-	draw = function;
-}
+	void RenderLoop::tick(Scene& scene) {
 
-void otg::RenderLoop::setInputFunc(const std::function<void(GLFWwindow* window)>& function) {
-	processInput = function;
+		update(scene);
+		draw(scene);
+
+		glfwSwapBuffers(window->getGlfwWindow());
+		glfwPollEvents();
+
+		processInput();
+	}
+
+	void RenderLoop::update(Scene& scene) {
+
+		clock.tick();
+
+		//unsigned long frame = clock.getCurrentFrame();
+		//scene.models[0]->setRotation(glm::vec3(sin(frame * 0.02), cos(frame * 0.02), frame * 0.01));
+
+	}
+
+	void RenderLoop::draw(Scene& scene) {
+
+		glClearColor(0.01, 0.01, 0.01, 1);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	}
+
+	void RenderLoop::processInput() {
+
+		GLFWwindow* glfwHandle = window->getGlfwWindow();
+
+		if (glfwGetKey(glfwHandle, GLFW_KEY_W)) {
+			//std::cout << "w pressed \n";
+		}
+	}
+
 }

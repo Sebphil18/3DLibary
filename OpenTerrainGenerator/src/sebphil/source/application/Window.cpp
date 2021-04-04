@@ -3,107 +3,167 @@
 #include "exceptions/ApplicationException.h"
 #include "debugflags/DebugFlags.h"
 
-otg::Window::Window(const std::string& title, int width, int height):
-	title(title), width(width), height(height)
-{
-	setWindowHints();
-	generateWindow();
+namespace otg {
 
-	setWindowCallbacks();
+	std::unordered_map<GLFWwindow*, WindowSizeCallback> Window::sizeCallbacks;
+	std::unordered_map<GLFWwindow*, WindowInputCallback> Window::inputCallbacks;
+	std::unordered_map<GLFWwindow*, WindowCoursorPosCallback> Window::coursorPosCallbacks;
 
-	setUpOpenGL();
-}
+	Window::Window(const std::string& title, int width, int height) :
+		title(title), width(width), height(height) {
+		setWindowHints();
+		generateWindow();
 
-void otg::Window::setWindowHints() {
+		setWindowCallbacks();
 
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, SEB_DEBUG_MODE);
-
-	glfwWindowHint(GLFW_DOUBLEBUFFER, true);
-}
-
-void otg::Window::generateWindow() {
-
-	try {
-
-		makeContext();
-
-	} catch (ApplicationException& exception) {
-
-		std::cout << exception.what() << "\n";
+		setUpOpenGL();
 	}
-}
 
-void otg::Window::makeContext() {
-	createWindow();
-	glfwMakeContextCurrent(window);
-	loadGlBindings();
-}
+	void Window::setWindowHints() {
 
-void otg::Window::createWindow() {
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, SEB_DEBUG_MODE);
+		glfwWindowHint(GLFW_SAMPLES, 4);
 
-	window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+		glfwWindowHint(GLFW_DOUBLEBUFFER, true);
+	}
 
-	if (!window)
-		throw ApplicationException("Could not create window: " + title);
-}
+	void Window::generateWindow() {
 
-void otg::Window::loadGlBindings() {
+		try {
 
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		throw ApplicationException("Could not load OpenGL-Bindings (please be sure to bind a context first).");
-}
+			makeContext();
 
-void otg::Window::setWindowCallbacks() noexcept {
-	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
-}
+		} catch (ApplicationException& exception) {
 
-void otg::Window::framebufferSizeCallback(GLFWwindow* window, int width, int height) noexcept {
-	glViewport(0, 0, width, height);
-}
+			std::cout << exception.what() << "\n";
+		}
+	}
 
-void otg::Window::setUpOpenGL() {
+	void Window::makeContext() {
+		createWindow();
+		glfwMakeContextCurrent(window);
+		loadGlBindings();
+	}
 
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_FRAMEBUFFER_SRGB);
-	glEnable(GL_BLEND);
+	void Window::createWindow() {
 
-	glDepthFunc(GL_LESS);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
+		window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 
-otg::Window::~Window() {
-	glfwDestroyWindow(window);
-}
+		if (!window)
+			throw ApplicationException("Could not create window: " + title);
+	}
 
-void otg::Window::focus() const noexcept {
+	void Window::loadGlBindings() {
 
-	glfwMakeContextCurrent(window);
-	glfwRequestWindowAttention(window);
-}
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+			throw ApplicationException("Could not load OpenGL-Bindings (please be sure to bind a context first).");
+	}
 
-int otg::Window::getWidth() const noexcept {
+	void Window::setWindowCallbacks() noexcept {
 
-	int width, height;
-	glfwGetWindowSize(window, &width, &height);
+		glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+		glfwSetKeyCallback(window, keyCallback);
+		glfwSetCursorPosCallback(window, coursorPosCallback);
+	}
 
-	return width;
-}
+	void Window::framebufferSizeCallback(GLFWwindow* window, int width, int height) noexcept {
 
-int otg::Window::getHeight() const noexcept {
+		auto itr = sizeCallbacks.find(window);
 
-	int width, height;
-	glfwGetWindowSize(window, &width, &height);
+		if (itr != sizeCallbacks.end()) {
 
-	return height;
-}
+			WindowSizeCallback callback = itr->second;
+			callback(window, width, height);
+		}
+	}
 
-GLFWwindow* const otg::Window::getGlfwWindow() const noexcept {
-	return window;
-}
+	void Window::keyCallback(GLFWwindow* window, int  key, int scancode, int action, int mods) {
 
-void otg::Window::setFramebufferSizeCallback(GLFWframebuffersizefun func) {
-	glfwSetFramebufferSizeCallback(window, func);
+		auto itr = inputCallbacks.find(window);
+
+		if (itr != inputCallbacks.end()) {
+
+			WindowInputCallback callback = itr->second;
+			callback(window, key, scancode, action, mods);
+		}
+	}
+
+	void Window::coursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
+
+		auto itr = coursorPosCallbacks.find(window);
+
+		if (itr != coursorPosCallbacks.end()) {
+
+			WindowCoursorPosCallback callback = itr->second;
+			callback(window, xpos, ypos);
+		}
+	}
+
+	void Window::setUpOpenGL() {
+
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_BLEND);
+		glEnable(GL_MULTISAMPLE);
+
+		glDepthFunc(GL_LESS);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+
+	Window::~Window() {
+
+		glfwDestroyWindow(window);
+		removeCallbacks();
+	}
+
+	void Window::removeCallbacks() {
+
+		sizeCallbacks.erase(window);
+		inputCallbacks.erase(window);
+		coursorPosCallbacks.erase(window);
+	}
+
+	void Window::focus() const noexcept {
+
+		glfwMakeContextCurrent(window);
+		glfwRequestWindowAttention(window);
+	}
+
+	int Window::getWidth() const noexcept {
+
+		int width, height;
+		glfwGetWindowSize(window, &width, &height);
+
+		return width;
+	}
+
+	int Window::getHeight() const noexcept {
+
+		int width, height;
+		glfwGetWindowSize(window, &width, &height);
+
+		return height;
+	}
+
+	GLFWwindow* const Window::getGlfwWindow() const noexcept {
+		return window;
+	}
+
+	void Window::setSizeCallback(const WindowSizeCallback& callback) {
+		sizeCallbacks[window] = callback;
+	}
+
+	void Window::setKeyCallback(const WindowInputCallback& callback) {
+		inputCallbacks[window] = callback;
+	}
+
+	void Window::setCoursorPosCallback(const WindowCoursorPosCallback& callback) {
+		coursorPosCallbacks[window] = callback;
+	}
+
+	bool Window::shouldClose() const {
+		return glfwWindowShouldClose(window);
+	}
 }

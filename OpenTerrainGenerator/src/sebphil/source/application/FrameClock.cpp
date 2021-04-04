@@ -6,7 +6,7 @@ otg::FrameClock::FrameClock() {
 	frame = { 0, 0, 0, 0 };
 }
 
-void otg::FrameClock::update() {
+void otg::FrameClock::tick() {
 
 	updateFrame();
 }

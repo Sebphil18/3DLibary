@@ -4,7 +4,7 @@
 namespace otg {
 
 	struct Image {
-		unsigned char* buffer;
+		unsigned char* buffer = nullptr;
 		int width, height, channels;
 	};
 

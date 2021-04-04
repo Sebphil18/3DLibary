@@ -6,12 +6,14 @@ otg::VertexBuffer::VertexBuffer() noexcept :
 	usage(GL_STATIC_DRAW), size(0), data(nullptr)
 {
 	createBuffer();
+	fillBuffer();
 }
 
 otg::VertexBuffer::VertexBuffer(std::size_t size, void* data, std::uint32_t usage) noexcept :
 	usage(usage), size(size), data(data)
 {
-	init();
+	createBuffer();
+	fillBuffer();
 }
 
 otg::VertexBuffer::VertexBuffer(const VertexBuffer& otherVbo) noexcept :
@@ -25,14 +27,9 @@ otg::VertexBuffer& otg::VertexBuffer::operator=(const VertexBuffer& otherVbo) no
 	size = otherVbo.size;
 	data = otherVbo.data;
 
-	init();
+	fillBuffer();
 
 	return *this;
-}
-
-void otg::VertexBuffer::init() {
-	createBuffer();
-	fillBuffer();
 }
 
 void otg::VertexBuffer::createBuffer() {

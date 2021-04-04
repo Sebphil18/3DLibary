@@ -16,6 +16,12 @@ namespace otg {
 		createRenderBuffer();
 	}
 
+	MultisampleRenderBuffer::MultisampleRenderBuffer(std::int32_t width, std::int32_t height, std::uint32_t samples) noexcept : 
+		width(width), height(height), samples(samples), TextureTypes(TextureType::DepthStencilAttachment)
+	{
+		createRenderBuffer();
+	}
+
 	MultisampleRenderBuffer::MultisampleRenderBuffer(const MultisampleRenderBuffer& other) noexcept :
 		width(other.width), height(other.height), samples(other.samples), TextureTypes(other.type)
 	{
@@ -29,12 +35,27 @@ namespace otg {
 		samples = other.samples;
 		type = other.type;
 
+		specifyStorage();
+
 		return *this;
 	}
 
 	void MultisampleRenderBuffer::createRenderBuffer() {
 
 		glCreateRenderbuffers(1, &glHandle);
+
+		specifyStorage();
+	}
+
+	void MultisampleRenderBuffer::setSize(std::int32_t width, std::int32_t height) {
+
+		this->width = width;
+		this->height = height;
+
+		specifyStorage();
+	}
+
+	void MultisampleRenderBuffer::specifyStorage() {
 
 		std::uint32_t format = getGlFormat(type);
 		glNamedRenderbufferStorageMultisample(glHandle, samples, format, width, height);

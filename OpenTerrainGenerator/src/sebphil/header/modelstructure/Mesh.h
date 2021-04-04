@@ -17,13 +17,28 @@ namespace otg {
 	struct Material {
 		float roughness;
 		float metalness;
+		glm::vec3 albedoColor;
+		glm::vec3 specularColor;
+		glm::vec3 ambientColor;
 	};
 
 	struct MeshData {
 		std::vector<Vertex> vertices;
 		std::vector<std::uint32_t> indices;
 		std::vector<std::shared_ptr<Texture>> textures;
-		Material material = {0, 0};
+		Material material = { 0, 0, glm::vec3(1, 0, 1), glm::vec3(0), glm::vec3(0) };
+	};
+
+	struct DeferredTexture {
+		std::string filePath;
+		TextureType type;
+	};
+
+	struct DeferredMeshData {
+		std::vector<Vertex> vertices;
+		std::vector<std::uint32_t> indices;
+		std::vector<DeferredTexture> texturePaths;
+		Material material = { 0, 0, glm::vec3(1, 0, 1), glm::vec3(0), glm::vec3(0) };
 	};
 
 	class Mesh {
@@ -33,7 +48,7 @@ namespace otg {
 			std::uint32_t roughnessTextures = 0;
 			std::uint32_t occlussionTextures = 0;
 			std::uint32_t metalnessTextures = 0;
-			std::uint32_t heightTextures = 0;
+			std::uint32_t displacementTextures = 0;
 		};
 
 	public:
@@ -42,6 +57,7 @@ namespace otg {
 		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<std::shared_ptr<Texture>>& textures) noexcept;
 		Mesh(const Mesh& mesh) noexcept;
 		Mesh(const MeshData& data) noexcept;
+		Mesh(Mesh&& other) = default;
 
 		Mesh& operator=(const Mesh& mesh) noexcept;
 
