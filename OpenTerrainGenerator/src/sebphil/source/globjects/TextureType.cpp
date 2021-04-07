@@ -34,7 +34,7 @@ namespace otg {
 			return TextureType::Roughness;
 
 		case aiTextureType_METALNESS:
-			return TextureType::Metalness;
+			return TextureType::Metallic;
 
 		case aiTextureType_AMBIENT:
 			return TextureType::Ambient;

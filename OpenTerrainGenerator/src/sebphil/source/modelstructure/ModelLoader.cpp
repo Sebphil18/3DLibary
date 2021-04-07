@@ -25,7 +25,7 @@ namespace otg {
 		std::scoped_lock<std::mutex> lock(loadingLock);
 
 		Assimp::Importer importer;
-		scene = importer.ReadFile(filePath, aiProcessPreset_TargetRealtime_Fast);
+		scene = importer.ReadFile(filePath, aiProcessPreset_TargetRealtime_Quality | aiProcess_CalcTangentSpace);
 
 		// TODO: error-handling
 		if (!scene) {
@@ -66,9 +66,10 @@ namespace otg {
 			Vertex vertex;
 			vertex.position = getPosition(vertIndex, mesh);
 			vertex.normal = getNormal(vertIndex, mesh);
-			vertex.tangent = getTangent(vertIndex, mesh);
-			vertex.bitangent = getBitangent(vertIndex, mesh);
 			vertex.texCoord = getTexCoords(vertIndex, mesh);
+
+			setTangents(vertIndex, mesh, vertex);
+
 			meshData.vertices.push_back(vertex);
 		}
 	}
@@ -87,8 +88,18 @@ namespace otg {
 		return convertVector(normal);
 	}
 
-	glm::vec3 ModelLoader::getTangent(std::uint32_t vertexIndex, aiMesh* mesh) {
+	void ModelLoader::setTangents(std::uint32_t vertexIndex, aiMesh* mesh, Vertex& vertex) {
 
+		if (mesh->HasTangentsAndBitangents()) {
+			vertex.tangent = getTangent(vertexIndex, mesh);
+			vertex.bitangent = getBitangent(vertexIndex, mesh);
+		} else {
+			vertex.tangent = glm::vec3(0);
+			vertex.bitangent = glm::vec3(0);
+		}
+	}
+
+	glm::vec3 ModelLoader::getTangent(std::uint32_t vertexIndex, aiMesh* mesh) {
 		aiVector3D tangent = mesh->mTangents[vertexIndex];
 
 		return convertVector(tangent);
@@ -139,7 +150,8 @@ namespace otg {
 			aiMaterial* material = scene->mMaterials[matIndex];
 
 			loadTextures(aiTextureType_DIFFUSE, material, meshData);
-			loadTextures(aiTextureType_SPECULAR, material, meshData);
+			loadTextures(aiTextureType_DIFFUSE_ROUGHNESS, material, meshData);
+			loadTextures(aiTextureType_METALNESS, material, meshData);
 			loadTextures(aiTextureType_NORMALS, material, meshData);
 
 			loadMaterialProperties(material, meshData);
@@ -163,7 +175,7 @@ namespace otg {
 	void ModelLoader::loadMaterialProperties(aiMaterial* material, DeferredMeshData& meshData) {
 
 		meshData.material.roughness = getMaterialFloat(material, AI_MATKEY_SHININESS);
-		meshData.material.metalness = getMaterialFloat(material, AI_MATKEY_REFLECTIVITY);
+		meshData.material.metallic = getMaterialFloat(material, AI_MATKEY_REFLECTIVITY);
 
 		meshData.material.albedoColor = getMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE);
 		meshData.material.specularColor = getMaterialColor(material, AI_MATKEY_COLOR_SPECULAR);

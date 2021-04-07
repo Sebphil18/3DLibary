@@ -129,6 +129,7 @@ namespace otg {
 		vao.use();
 
 		bindTextures(program);
+		bindMaterial(program);
 		drawTriangles();
 	}
 
@@ -144,9 +145,7 @@ namespace otg {
 
 			std::string uniName = getTexUniName(iterators, texture->getType());
 			program.setUniform(uniName, unit);
-
 		}
-
 	}
 
 	void Mesh::bindTexToUnit(const std::shared_ptr<Texture>& texture, int unit) {
@@ -164,7 +163,7 @@ namespace otg {
 			break;
 		case TextureType::Roughness: setTexUniName(iterators.roughnessTextures, "material.roughnessTex", uniName);
 			break;
-		case TextureType::Metalness: setTexUniName(iterators.metalnessTextures, "material.metalnessTex", uniName);
+		case TextureType::Metallic: setTexUniName(iterators.metallicTextures, "material.metallicTex", uniName);
 			break;
 		case TextureType::Occlussion: setTexUniName(iterators.occlussionTextures, "material.occlussionTex", uniName);
 			break;
@@ -180,6 +179,13 @@ namespace otg {
 	void Mesh::setTexUniName(std::uint32_t& iterator, const std::string& uniPrefix, std::string& uniName) {
 		uniName = uniPrefix + std::to_string(iterator);
 		iterator++;
+	}
+
+	void Mesh::bindMaterial(otg::ShaderProgram& program) {
+
+		program.setUniform("material.roughness", data.material.roughness);
+		program.setUniform("material.metallic", data.material.metallic);
+		program.setUniformVec("material.albedoColor", data.material.albedoColor);
 	}
 
 	void Mesh::drawTriangles() {

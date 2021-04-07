@@ -2,7 +2,7 @@
 
 out vec4 color;
 
-uniform float exposure = 1;
+uniform float exposure = 1.0;
 
 struct Material {
 	sampler2D albedoTex0;

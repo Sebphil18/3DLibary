@@ -9,7 +9,7 @@ namespace otg {
 	public:
 		enum class TextureType {
 			None, RGB, RGBA, SRGBA, Multisample, ColorAttachment, DepthStencilAttachment, RGBAFloat, 
-			Albedo, Displacement, Roughness, Metalness, Occlussion, Ambient, Normal
+			Albedo, Displacement, Roughness, Metallic, Occlussion, Ambient, Normal
 		};
 
 		TextureTypes() noexcept;

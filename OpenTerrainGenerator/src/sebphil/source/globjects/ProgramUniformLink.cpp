@@ -102,10 +102,7 @@ namespace otg {
 
 		auto itr = uniformLocations.find(uniformName);
 
-		if (itr == uniformLocations.end())
-			return false;
-		else
-			return true;
+		return itr != uniformLocations.end();
 	}
 
 	void otg::ProgramUniformLink::printUnusedUniform(const std::string& uniformName) {

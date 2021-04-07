@@ -75,9 +75,19 @@ static void launchApp() {
 	otg::FrameClock clock;
 
 	// Cube
-	otg::ModelLoader loader("rec/shapes/monkey/Monkey.obj");
-	std::shared_ptr<otg::Model> cube = std::make_shared<otg::Model>(loader.getData());
-	models.push_back(cube);
+	otg::ModelLoader loader("rec/shapes/sphere/SphereCopper.fbx");
+	std::shared_ptr<otg::Model> model = std::make_shared<otg::Model>(loader.getData());
+	model->meshes[0].setMaterial({ 0, 0, glm::vec3(0), glm::vec3(0), glm::vec3(0) });
+
+	std::shared_ptr<otg::TextureImage> roughnessMap = std::make_shared<otg::TextureImage>(
+		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/oldcopper/OldCopperRough.png", otg::TextureType::Roughness);
+	model->addTexture(roughnessMap, 0);
+
+	std::shared_ptr<otg::TextureImage> metallicMap = std::make_shared<otg::TextureImage>(
+		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/oldcopper/OldCopperMetallic.png", otg::TextureType::Metallic);
+	model->addTexture(metallicMap, 0);
+
+	models.push_back(model);
 
 	// ScreenMesh
 	otg::ScreenMesh screen;
@@ -128,8 +138,10 @@ static void launchApp() {
 
 	// Callbacks
 	window.setSizeCallback([&](GLFWwindow* window, int width, int height) {
+
 		glViewport(0, 0, width, height);
 		cam.setSize(width, height);
+
 		});
 
 	window.setKeyCallback([&](GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -147,7 +159,10 @@ static void launchApp() {
 
 		clock.tick();
 
-		cube->setRotation(glm::vec3(0.01 * clock.getCurrentFrame(), 0, 0));
+		model->setRotation(glm::vec3(0.01 * clock.getCurrentFrame(), 0, 0));
+		programs["main"]->use();
+		programs["main"]->setUniformVec("viewPos", cam.getPosition());
+		programs["main"]->setUniformVec("lightPos", glm::vec3(0.5, -1, -1.5));
 
 		glClearColor(0.1, 0.1, 0.1, 1);
 		glClear(GL_COLOR_BUFFER_BIT);

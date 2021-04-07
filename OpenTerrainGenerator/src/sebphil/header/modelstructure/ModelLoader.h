@@ -47,6 +47,7 @@ namespace otg {
 
 		glm::vec3 getPosition(std::uint32_t vertexIndex, aiMesh* mesh);
 		glm::vec3 getNormal(std::uint32_t vertexIndex, aiMesh* mesh);
+		void setTangents(std::uint32_t vertexIndex, aiMesh* mesh, Vertex& vertex);
 		glm::vec3 getTangent(std::uint32_t vertexIndex, aiMesh* mesh);
 		glm::vec3 getBitangent(std::uint32_t vertexIndex, aiMesh* mesh);
 		glm::vec2 getTexCoords(std::uint32_t vertexIndex, aiMesh* mesh);
@@ -61,8 +62,8 @@ namespace otg {
 
 		void loadMaterialProperties(aiMaterial* material, DeferredMeshData& meshData);
 		
-		// Please note that the last two arguments don't do anything... they need to exist because AI_MATKEY_XXXX extends to 'const char*, uint, uint'
-		// (e.g. "some text", 0, 0)
+		// Please note that the last two arguments don't do anything. They need to exist because AI_MATKEY_XXXX extends to 'const char*, uint, uint'
+		// (e.g. "some text", 0, 0) and enable therefore the support for using assimp's macros.
 		float getMaterialFloat(aiMaterial* material, const char* property, int, int);
 		glm::vec3 getMaterialColor(aiMaterial* material, const char* property, int, int);
 
