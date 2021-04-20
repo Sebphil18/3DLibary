@@ -40,7 +40,7 @@ namespace otg {
 		type = other.type;
 		samples = other.samples;
 
-		delteTexture();
+		deleteTexture();
 		initTexture();
 
 		return *this;
@@ -51,7 +51,7 @@ namespace otg {
 		img.width = width;
 		img.height = height;
 
-		delteTexture();
+		deleteTexture();
 		initTexture();
 	}
 
@@ -88,10 +88,10 @@ namespace otg {
 	}
 
 	MultisampleTexture::~MultisampleTexture() noexcept {
-		delteTexture();
+		deleteTexture();
 	}
 
-	void MultisampleTexture::delteTexture() {
+	void MultisampleTexture::deleteTexture() {
 		glDeleteTextures(1, &glHandle);
 	}
 

@@ -1,6 +1,7 @@
 #include "modelstructure/ModelLoader.h"
 #include <iostream>
 #include "modelstructure/ModelDataConverter.h"
+#include "exceptions/ModelLoadException.h"
 
 namespace otg {
 
@@ -21,20 +22,29 @@ namespace otg {
 
 	void ModelLoader::loadModel() {
 
-		// lock this (block if data is already loading); the data will be loaded when the current loading process is finished
+		// block if data is already loading; the new data will be loaded when the current loading process is finished
 		std::scoped_lock<std::mutex> lock(loadingLock);
 
 		Assimp::Importer importer;
 		scene = importer.ReadFile(filePath, aiProcessPreset_TargetRealtime_Quality | aiProcess_CalcTangentSpace);
 
-		// TODO: error-handling
-		if (!scene) {
-			std::cout << "ERROR::ModelLoader::Could not load '" << filePath << "': \n";
-			std::cout << importer.GetErrorString() << "\n\n";
-			return;
-		}
+		tryLoadModel(importer);
+	}
 
-		examinNode(scene->mRootNode);
+	void ModelLoader::tryLoadModel(const Assimp::Importer& importer) {
+
+		try {
+
+			if (!scene)
+				throw ModelLoadException(*this);
+
+			examinNode(scene->mRootNode);
+
+		} catch (const ModelLoadException& exception) {
+
+			std::cout << exception.what() << "\n";
+			std::cout << importer.GetErrorString() << "\n\n";
+		}
 	}
 
 	void ModelLoader::examinNode(aiNode* node) {
@@ -61,9 +71,9 @@ namespace otg {
 
 	void ModelLoader::loadVertices(aiMesh* mesh, DeferredMeshData& meshData) {
 
-		for (std::size_t vertIndex = 0; vertIndex < mesh->mNumVertices; vertIndex++) {
+		for (std::uint32_t vertIndex = 0; vertIndex < mesh->mNumVertices; vertIndex++) {
 
-			Vertex vertex;
+			Vertex vertex = {glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0)};
 			vertex.position = getPosition(vertIndex, mesh);
 			vertex.normal = getNormal(vertIndex, mesh);
 			vertex.texCoord = getTexCoords(vertIndex, mesh);
@@ -160,7 +170,7 @@ namespace otg {
 
 	void ModelLoader::loadTextures(aiTextureType type, aiMaterial* material, DeferredMeshData& meshData) {
 
-		for (int j = 0; j < material->GetTextureCount(type); j++) {
+		for (std::uint32_t j = 0; j < material->GetTextureCount(type); j++) {
 
 			aiString aiPath;
 			material->GetTexture(type, j, &aiPath);
@@ -210,11 +220,15 @@ namespace otg {
 		return status == std::future_status::ready;
 	}
 
-	ModelData ModelLoader::getData() {
+	ModelData ModelLoader::getData() const {
 
 		worker.wait();
 
 		return ModelDataConverter::convert(data);
+	}
+
+	std::string ModelLoader::getFilePath() const {
+		return filePath;
 	}
 
 }

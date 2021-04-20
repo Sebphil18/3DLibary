@@ -30,12 +30,15 @@
     <ClCompile Include="src\sebphil\source\exceptions\FramebufferException.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\GlfwException.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\ImageLoadException.cpp" />
+    <ClCompile Include="src\sebphil\source\exceptions\ModelLoadException.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\ShaderCompilationException.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\ProgramBuildException.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\UniformBufferException.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\CubeMapArray.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\DebugMessenger.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\Framebuffer.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\GlObject.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\HDRTexture.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\IndexBuffer.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\LayoutElementType.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\MultisampleRenderBuffer.cpp" />
@@ -54,6 +57,8 @@
     <ClCompile Include="src\sebphil\source\globjects\VertexBuffer.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\VertexBufferLayout.cpp" />
     <ClCompile Include="src\sebphil\source\io\FileReader.cpp" />
+    <ClCompile Include="src\sebphil\source\lighting\HDRTextureCube.cpp" />
+    <ClCompile Include="src\sebphil\source\lighting\SkyBoxLightProbe.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\Mesh.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\Model.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\ModelDataConverter.cpp" />
@@ -72,12 +77,15 @@
     <ClInclude Include="src\sebphil\header\exceptions\FramebufferException.h" />
     <ClInclude Include="src\sebphil\header\exceptions\GlfwException.h" />
     <ClInclude Include="src\sebphil\header\exceptions\ImageLoadException.h" />
+    <ClInclude Include="src\sebphil\header\exceptions\ModelLoadException.h" />
     <ClInclude Include="src\sebphil\header\exceptions\ProgramBuildException.h" />
     <ClInclude Include="src\sebphil\header\exceptions\ShaderCompilationException.h" />
     <ClInclude Include="src\sebphil\header\exceptions\UniformBufferException.h" />
+    <ClInclude Include="src\sebphil\header\globjects\CubeMapArray.h" />
     <ClInclude Include="src\sebphil\header\globjects\DebugMessenger.h" />
     <ClInclude Include="src\sebphil\header\globjects\Framebuffer.h" />
     <ClInclude Include="src\sebphil\header\globjects\GlObject.h" />
+    <ClInclude Include="src\sebphil\header\globjects\HDRTexture.h" />
     <ClInclude Include="src\sebphil\header\globjects\IndexBuffer.h" />
     <ClInclude Include="src\sebphil\header\globjects\LayoutElementType.h" />
     <ClInclude Include="src\sebphil\header\globjects\MultisampleRenderBuffer.h" />
@@ -97,6 +105,8 @@
     <ClInclude Include="src\sebphil\header\io\FileReader.h" />
     <ClInclude Include="src\sebphil\header\exceptions\FileInputException.h" />
     <ClInclude Include="src\sebphil\header\io\Image.h" />
+    <ClInclude Include="src\sebphil\header\lighting\HDRTextureCube.h" />
+    <ClInclude Include="src\sebphil\header\lighting\SkyBoxLightProbe.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\CubeData.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Mesh.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Model.h" />
@@ -111,8 +121,15 @@
     <ClInclude Include="src\vendor\stb\stbimage.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\sebphil\shader\fragment\IrradianceConvolution.glsl" />
+    <None Include="src\sebphil\shader\fragment\SkyBox.glsl" />
+    <None Include="src\sebphil\shader\fragment\EquirectangularToCube.glsl" />
     <None Include="src\sebphil\shader\fragment\FragmentScreen.glsl" />
     <None Include="src\sebphil\shader\fragment\FragmentStandard.glsl" />
+    <None Include="src\sebphil\shader\geometry\EquirectangularToCube.glsl" />
+    <None Include="src\sebphil\shader\vertex\IrradianceConvolution.glsl" />
+    <None Include="src\sebphil\shader\vertex\SkyBox.glsl" />
+    <None Include="src\sebphil\shader\vertex\EquirectangularToCube.glsl" />
     <None Include="src\sebphil\shader\vertex\VertexStandard.glsl" />
     <None Include="src\sebphil\shader\vertex\VertexScreen.glsl" />
   </ItemGroup>

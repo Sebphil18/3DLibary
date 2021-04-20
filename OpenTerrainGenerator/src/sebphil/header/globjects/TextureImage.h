@@ -7,7 +7,7 @@
 
 namespace otg {
 
-	class TextureImage : public Texture{
+	class TextureImage : public Texture {
 
 	public:
 		TextureImage() noexcept;

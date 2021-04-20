@@ -37,7 +37,7 @@ namespace otg {
 			return TextureType::Metallic;
 
 		case aiTextureType_AMBIENT:
-			return TextureType::Ambient;
+			return TextureType::Occlusion;
 
 		case aiTextureType_DISPLACEMENT:
 			return TextureType::Displacement;
@@ -58,6 +58,9 @@ namespace otg {
 		case TextureType::Multisample:
 			return GL_TEXTURE_2D_MULTISAMPLE;
 
+		case TextureType::CubeMapArray:
+			return GL_TEXTURE_CUBE_MAP_ARRAY;
+
 		default:
 			return GL_TEXTURE_2D;
 		}
@@ -69,6 +72,12 @@ namespace otg {
 
 		case TextureType::RGB:
 			return GL_RGB16;
+
+		case TextureType::RGBFloat:
+			return GL_RGB16F;
+
+		case TextureType::CubeMapArray:
+			return GL_RGB16F;
 
 		case TextureType::Albedo:
 			return GL_RGBA16F;
@@ -97,7 +106,13 @@ namespace otg {
 
 		switch (type) {
 
+		case TextureType::RGBFloat:
+			return GL_FLOAT;
+
 		case TextureType::RGBAFloat:
+			return GL_FLOAT;
+
+		case TextureType::CubeMapArray:
 			return GL_FLOAT;
 
 		default:

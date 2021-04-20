@@ -13,7 +13,6 @@
 
 namespace otg {
 
-	// TODO: implementation comes with shaders
 	struct Material {
 		float roughness;
 		float metallic;

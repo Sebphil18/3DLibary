@@ -19,7 +19,8 @@ namespace otg {
 
 		bool isLoaded();
 
-		ModelData getData();
+		ModelData getData() const;
+		std::string getFilePath() const;
 
 	private:
 		std::string directory;
@@ -38,6 +39,7 @@ namespace otg {
 
 		// executed asynchronously
 		void loadModel();
+		void tryLoadModel(const Assimp::Importer& importer);
 
 		void examinNode(aiNode* node);
 		void loadMeshes(aiNode* node);

@@ -141,6 +141,21 @@
     <ClCompile Include="src\sebphil\source\modelstructure\ModelDataConverter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sebphil\source\globjects\HDRTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\lighting\HDRTextureCube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\globjects\CubeMapArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\lighting\SkyBoxLightProbe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\exceptions\ModelLoadException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sebphil\header\application\Application.h">
@@ -281,11 +296,33 @@
     <ClInclude Include="src\sebphil\header\modelstructure\ModelDataConverter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\sebphil\header\globjects\HDRTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\lighting\HDRTextureCube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\globjects\CubeMapArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\lighting\SkyBoxLightProbe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\exceptions\ModelLoadException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\sebphil\shader\vertex\VertexStandard.glsl" />
     <None Include="src\sebphil\shader\fragment\FragmentScreen.glsl" />
     <None Include="src\sebphil\shader\fragment\FragmentStandard.glsl" />
     <None Include="src\sebphil\shader\vertex\VertexScreen.glsl" />
+    <None Include="src\sebphil\shader\vertex\EquirectangularToCube.glsl" />
+    <None Include="src\sebphil\shader\fragment\EquirectangularToCube.glsl" />
+    <None Include="src\sebphil\shader\geometry\EquirectangularToCube.glsl" />
+    <None Include="src\sebphil\shader\vertex\SkyBox.glsl" />
+    <None Include="src\sebphil\shader\fragment\SkyBox.glsl" />
+    <None Include="src\sebphil\shader\fragment\IrradianceConvolution.glsl" />
+    <None Include="src\sebphil\shader\vertex\IrradianceConvolution.glsl" />
   </ItemGroup>
 </Project>

@@ -57,7 +57,7 @@ namespace otg {
 		glm::vec3 yAxis(0, 1, 0);
 		glm::vec3 forward = glm::normalize(position - target);
 
-		right = glm::cross(forward, yAxis);
+		right = glm::cross(yAxis, forward);
 		up = glm::cross(forward, right);
 	}
 

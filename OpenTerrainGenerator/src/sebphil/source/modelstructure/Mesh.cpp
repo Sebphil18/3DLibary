@@ -165,7 +165,7 @@ namespace otg {
 			break;
 		case TextureType::Metallic: setTexUniName(iterators.metallicTextures, "material.metallicTex", uniName);
 			break;
-		case TextureType::Occlussion: setTexUniName(iterators.occlussionTextures, "material.occlussionTex", uniName);
+		case TextureType::Occlusion: setTexUniName(iterators.occlussionTextures, "material.occlusionTex", uniName);
 			break;
 		case TextureType::Displacement: setTexUniName(iterators.displacementTextures, "material.displacement", uniName);
 			break;

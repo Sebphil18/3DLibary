@@ -9,6 +9,7 @@ struct Material {
 	sampler2D albedoTex0;
 	sampler2D roughnessTex0;
 	sampler2D metallicTex0;
+	sampler2D occlusionTex0;
 
 	vec3 albedoColor;
 
@@ -20,6 +21,8 @@ uniform Material material;
 uniform vec3 viewPos;
 uniform vec3 lightPos;
 
+uniform samplerCubeArray envMap;
+
 in VertexData {
 	vec3 position;
 	vec3 normal;
@@ -30,6 +33,7 @@ float distributionGGX(vec3 normal, vec3 halfway, float roughness);
 float geometrySmith(vec3 normal, vec3 viewDir, vec3 lightDir, float roughness);
 float geometrySchlickGGX(vec3 normal, vec3 direction, float roughness);
 vec3 fresnelSchlick(vec3 viewDir, vec3 halfway, vec3 f0);
+vec3 fresnelSchlickRough(vec3 viewDir, vec3 halfway, vec3 f0, float roughness);
 
 void main() {
 
@@ -40,32 +44,35 @@ void main() {
 	vec3 texColor = texture(material.albedoTex0, vertexIn.texCoord).rgb;
 	float texRoughness = texture(material.roughnessTex0, vertexIn.texCoord).r;
 	float texMetallic = texture(material.metallicTex0, vertexIn.texCoord).r;
+	float texOcclusion = texture(material.occlusionTex0, vertexIn.texCoord).r;
 
 	// before loop
 	vec3 albedo = texColor + material.albedoColor;
 	float roughness = texRoughness + material.roughness;
 	float metallic = texMetallic + material.metallic;
+	float occlusion = texOcclusion;
 
 	vec3 viewDir = normalize(viewPos - vertexIn.position);
 	vec3 L0 = vec3(0);
 
-	// in loop
+	vec3 f0 = vec3(0.04);
+	f0 = mix(f0, albedo, metallic);
+
+	// in loop -----------------------------------------------------------
 	vec3 lightDir = normalize(lightPos - vertexIn.position);
 	vec3 halfway = normalize(lightDir + viewDir);
 
+	// BDRF
 	float dis = length(lightPos - vertexIn.position);
 	float attentuation = 1.0 / (dis * dis);
-	vec3 radiance = lightColor * attentuation;
-
-	// BDRF
-	vec3 f0 = vec3(0.04);
-	f0 = mix(f0, albedo, metallic);
+	vec3 lightRadiance = lightColor;
+	vec3 radiance = lightRadiance;
 
 	// determine active microfacets
 	float D = distributionGGX(normal, halfway, roughness);
 	float G = geometrySmith(normal, viewDir, lightDir, roughness);
-	// calculate reflacted light part
-	vec3 F = fresnelSchlick(viewDir, halfway, f0);
+	// calculate reflacted light
+	vec3 F = fresnelSchlickRough(viewDir, halfway, f0, roughness);
 
 	vec3 a = D * G * F;
 	float b = 4.0 * max(dot(normal, viewDir), 0.0001) * max(dot(normal, lightDir), 0.0001);
@@ -79,8 +86,17 @@ void main() {
 	float NdotL = max(dot(normal, lightDir), 0.0);
 
 	L0 += (kD * albedo / PI + specular) * radiance * NdotL;
+	// end of loop ---------------------------------------------------------------------------------------
 
-	color = vec4(L0 + albedo * 0.004, 1);
+	// IBL
+
+	vec3 kSAmb = fresnelSchlickRough(viewDir, normal, f0, roughness);
+	vec3 kDAmb = 1 - kSAmb;
+	vec3 irradianceAmb = texture(envMap, vec4(normal, 0)).rgb;
+	vec3 diffuseAmb = irradianceAmb * albedo;
+	vec3 ambientColor = (diffuseAmb * kDAmb) * occlusion;
+
+	color = vec4(L0 + ambientColor, 1);
 }
 
 float distributionGGX(vec3 normal, vec3 halfway, float roughness) {
@@ -121,10 +137,16 @@ float geometrySchlickGGX(vec3 normal, vec3 direction, float roughness) {
     return a / b;
 }
 
-
 vec3 fresnelSchlick(vec3 viewDir, vec3 halfway, vec3 f0) {
 
 	// when angle between viewDir and halfway is 90° most light gets reflacted and when angle is 0° no Light gets reflacted back to the observer
 	float reflectiveAngle = max(dot(halfway, viewDir), 0);
 	return f0 + (1 - f0) * pow(max(1 - reflectiveAngle, 0), 5);
+}
+
+vec3 fresnelSchlickRough(vec3 viewDir, vec3 halfway, vec3 f0, float roughness) {
+
+	// when angle between viewDir and halfway is 90° most light gets reflacted and when angle is 0° no Light gets reflacted back to the observer
+	float reflectiveAngle = max(dot(halfway, viewDir), 0);
+	return f0 + (max(vec3(1 - roughness), f0) - f0) * pow(max(1 - reflectiveAngle, 0), 5);
 }

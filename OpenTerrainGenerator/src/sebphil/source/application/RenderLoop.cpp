@@ -36,7 +36,7 @@ namespace otg {
 
 		std::shared_ptr<Model> cube = std::make_shared<Model>();
 		std::shared_ptr<TextureImage> texture = std::make_shared<TextureImage>("rec/textures/testtexture/HdrTest.png", TextureType::Albedo);
-		cube->meshes.emplace_back(cubeVertices, cubeIndices);
+		cube->meshes.emplace_back(unitCubeVertices, cubeIndices);
 		cube->addTexture(texture, 0);
 		cube->setRotation(glm::vec3(1, 1, 1));
 

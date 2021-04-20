@@ -8,7 +8,7 @@ namespace otg {
 	float Framebuffer::clearColor[4] = { 0.01, 0, 0.01, 1 };
 
 	Framebuffer::Framebuffer() noexcept :
-		colorAttachement(0), target(GL_FRAMEBUFFER)
+		target(GL_FRAMEBUFFER)
 	{
 		createFramebuffer();
 	}
@@ -29,7 +29,6 @@ namespace otg {
 
 	Framebuffer::Framebuffer(Framebuffer&& other) noexcept :
 		GlObject(std::move(other)),
-		colorAttachement(std::move(other.colorAttachement)),
 		target(std::move(other.target))
 	{
 	}
@@ -38,7 +37,6 @@ namespace otg {
 
 		GlObject::operator=(std::move(other));
 
-		colorAttachement = std::move(other.colorAttachement);
 		target = std::move(other.target);
 
 		return *this;
@@ -48,7 +46,7 @@ namespace otg {
 		glDeleteFramebuffers(1, & glHandle);
 	}
 
-	void Framebuffer::attachTexture(const Texture& texture) {
+	void Framebuffer::attachTexture(const Texture& texture, std::uint32_t attachmnetSlot) {
 
 		TextureType type = texture.getType();
 
@@ -59,19 +57,23 @@ namespace otg {
 			break;
 
 		default:
-			std::uint32_t attachmentSlot = GL_COLOR_ATTACHMENT0;
+			std::uint32_t attachmentSlot = GL_COLOR_ATTACHMENT0 + attachmnetSlot;
 			glNamedFramebufferTexture(glHandle, attachmentSlot, texture.getGlHandle(), 0);
 			break;
 		}
 	}
 
-	void Framebuffer::attachTexture(const MultisampleTexture& texture) {
+	void Framebuffer::attachTexture(const MultisampleTexture& texture, std::uint32_t attachmentSlot) {
 
-		glNamedFramebufferTexture(glHandle, GL_COLOR_ATTACHMENT0, texture.getGlHandle(), 0);
-		colorAttachement++;
+		glNamedFramebufferTexture(glHandle, GL_COLOR_ATTACHMENT0 + attachmentSlot, texture.getGlHandle(), 0);
 	}
 
-	void Framebuffer::attachRenderBuffer(const RenderBuffer& renderbuffer) {
+	void Framebuffer::attachTextureLayer(std::uint32_t textureHandle, std::uint32_t mipmapLevel, std::uint32_t level, std::uint32_t attachmentSlot) {
+
+		glNamedFramebufferTextureLayer(glHandle, GL_COLOR_ATTACHMENT0 + attachmentSlot, textureHandle, mipmapLevel, level);
+	}
+
+	void Framebuffer::attachRenderBuffer(const RenderBuffer& renderbuffer, std::uint32_t attachmentSlot) {
 
 		TextureType type = renderbuffer.getType();
 
@@ -82,13 +84,13 @@ namespace otg {
 			break;
 
 		default:
-			std::uint32_t attachmentSlot = GL_COLOR_ATTACHMENT0 + colorAttachement++;
-			glNamedFramebufferRenderbuffer(glHandle, attachmentSlot, GL_RENDERBUFFER, renderbuffer.getGlHandle());
+			std::uint32_t attachment = GL_COLOR_ATTACHMENT0 + attachmentSlot;
+			glNamedFramebufferRenderbuffer(glHandle, attachment, GL_RENDERBUFFER, renderbuffer.getGlHandle());
 			break;
 		}
 	}
 
-	void Framebuffer::attachRenderBuffer(const MultisampleRenderBuffer& renderbuffer) {
+	void Framebuffer::attachRenderBuffer(const MultisampleRenderBuffer& renderbuffer, std::uint32_t attachmentSlot) {
 
 		TextureType type = renderbuffer.getType();
 
@@ -99,8 +101,8 @@ namespace otg {
 			break;
 
 		default:
-			std::uint32_t attachmentSlot = GL_COLOR_ATTACHMENT0 + colorAttachement++;
-			glNamedFramebufferRenderbuffer(glHandle, attachmentSlot, GL_RENDERBUFFER, renderbuffer.getGlHandle());
+			std::uint32_t attachment = GL_COLOR_ATTACHMENT0 + attachmentSlot;
+			glNamedFramebufferRenderbuffer(glHandle, attachment, GL_RENDERBUFFER, renderbuffer.getGlHandle());
 			break;
 		}
 	}
@@ -143,5 +145,4 @@ namespace otg {
 	std::uint32_t Framebuffer::setTarget(std::uint32_t target) {
 		return target;
 	}
-
 }

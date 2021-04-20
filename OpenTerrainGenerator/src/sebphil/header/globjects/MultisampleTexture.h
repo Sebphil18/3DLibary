@@ -28,7 +28,7 @@ namespace otg {
 		void initTexture();
 		void createTexture();
 		void specifyStorage();
-		void delteTexture();
+		void deleteTexture();
 
 	};
 

@@ -55,7 +55,7 @@ namespace otg {
 		img.width = width;
 		img.height = height;
 
-		// because DSA only supports immutable textures; a new texture has to be created
+		// a new texture has to be created, because DSA only supports immutable textures
 		deleteTexture();
 		initTexture();
 		specifySubImg();

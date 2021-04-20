@@ -1,7 +1,7 @@
 #include "globjects/TextureImage.h"
 #include <iostream>
-#include "stb/stb_image.h"
 #include "glad/glad.h"
+#include "stb/stb_image.h"
 #include "exceptions/ImageLoadException.h"
 
 namespace otg {
@@ -29,7 +29,6 @@ namespace otg {
 
 		filePath = otherTex.filePath;
 
-		// TODO: This might lead to a bug because OpenGl will hold a data pointer to the original img.buffer which could be deleted before this object
 		tryLoadImg();
 
 		return *this;
