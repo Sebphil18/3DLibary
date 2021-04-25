@@ -16,14 +16,22 @@ namespace otg {
 		glm::lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 0, -1), glm::vec3(0, -1, 0)),
 	};
 
-	CubeMapArray::CubeMapArray(std::int32_t width, std::int32_t height, std::uint32_t count) noexcept : 
-		img({ nullptr, width, height, 0 }), count(count), TextureTypes(TextureType::CubeMapArray)
+	CubeMapArray::CubeMapArray(const ImageFormat& imgFormat, std::uint32_t count) noexcept : 
+		img({ nullptr, imgFormat.width, imgFormat.height, imgFormat.desiredChannels }), 
+		count(count), levels(1), TextureTypes(TextureType::CubeMapArray)
+	{
+		init();
+	}
+
+	CubeMapArray::CubeMapArray(const ImageFormat& imgFormat, std::uint32_t levels, std::uint32_t count) noexcept :
+		img({ nullptr, imgFormat.width, imgFormat.height, imgFormat.desiredChannels }),
+		count(count), levels(levels), TextureTypes(TextureType::CubeMapArray)
 	{
 		init();
 	}
 
 	CubeMapArray::CubeMapArray(const CubeMapArray& other) noexcept :
-		img(other.img), count(other.count), TextureTypes(other.type) 	
+		img(other.img), count(other.count), levels(other.levels), TextureTypes(other.type)
 	{
 		init();
 	}
@@ -56,7 +64,7 @@ namespace otg {
 	void CubeMapArray::createTexture() {
 
 		glCreateTextures(GL_TEXTURE_CUBE_MAP_ARRAY, 1, &glHandle);
-		glTextureStorage3D(glHandle, 1, getGlFormat(type), img.width, img.height, 6 * count);
+		glTextureStorage3D(glHandle, levels, getGlFormat(type), img.width, img.height, 6 * count);
 	}
 
 	void CubeMapArray::setParameters() {
@@ -64,13 +72,25 @@ namespace otg {
 		glTextureParameteri(glHandle, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTextureParameteri(glHandle, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTextureParameteri(glHandle, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-		glTextureParameteri(glHandle, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(glHandle, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		if (levels == 1) {
+			glTextureParameteri(glHandle, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTextureParameteri(glHandle, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		} else
+			enableMipmaps();
+	}
+
+	void CubeMapArray::enableMipmaps() {
+
+		glGenerateTextureMipmap(glHandle);
+		glTextureParameteri(glHandle, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTextureParameteri(glHandle, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	}
 
 	CubeMapArray::CubeMapArray(CubeMapArray&& other) noexcept :
 		img(std::move(other.img)),
 		count(std::move(other.count)),
+		levels(std::move(other.levels)),
 		TextureTypes(std::move(other.type)),
 		GlObject(std::move(other))
 	{
@@ -82,6 +102,7 @@ namespace otg {
 
 		img = std::move(other.img);
 		count = std::move(other.count);
+		levels = std::move(other.levels);
 		type = std::move(other.type);
 
 		return *this;
@@ -126,5 +147,13 @@ namespace otg {
 			hdrCube.draw(conversionProgram, i);
 		}
 		fbo.unbind();
+	}
+
+	std::int32_t CubeMapArray::getWidth() const {
+		return img.width;
+	}
+
+	std::int32_t CubeMapArray::getHeight() const {
+		return img.height;
 	}
 }

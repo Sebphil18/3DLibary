@@ -10,22 +10,24 @@
 #include "globjects/Texture.h"
 #include "globjects/TextureType.h"
 #include "modelstructure/Vertex.h"
+#include "glm/glm.hpp"
 
 namespace otg {
 
 	struct Material {
-		float roughness;
-		float metallic;
-		glm::vec3 albedoColor;
-		glm::vec3 specularColor;
-		glm::vec3 ambientColor;
+		float roughness = 0;
+		float metallic = 0;
+		float occlusion = 1;
+		glm::vec3 albedoColor = glm::vec3(1, 0, 1);
+		glm::vec3 specularColor = glm::vec3(1, 1, 0);
+		glm::vec3 ambientColor = glm::vec3(0, 1, 1);
 	};
 
 	struct MeshData {
 		std::vector<Vertex> vertices;
 		std::vector<std::uint32_t> indices;
 		std::vector<std::shared_ptr<Texture>> textures;
-		Material material = { 0, 0, glm::vec3(0), glm::vec3(0), glm::vec3(0) };
+		Material material;
 	};
 
 	struct DeferredTexture {
@@ -37,7 +39,7 @@ namespace otg {
 		std::vector<Vertex> vertices;
 		std::vector<std::uint32_t> indices;
 		std::vector<DeferredTexture> texturePaths;
-		Material material = { 0, 0, glm::vec3(0), glm::vec3(0), glm::vec3(0) };
+		Material material;
 	};
 
 	class Mesh {
@@ -93,7 +95,6 @@ namespace otg {
 		void updateVertexBuffer(std::size_t offset, std::size_t count);
 
 		void bindTextures(otg::ShaderProgram& program);
-		void bindTexToUnit(const std::shared_ptr<Texture>& texture, int unit);
 		std::string getTexUniName(TextureIterators& iterators, TextureType type);
 		void setTexUniName(std::uint32_t& iterator, const std::string& uniPrefix, std::string& uniName);
 
@@ -102,6 +103,8 @@ namespace otg {
 		void drawTriangles();
 		void drawIndices();
 		void drawVertices();
+
+		void unbindTextures(otg::ShaderProgram& program);
 
 	};
 

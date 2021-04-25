@@ -22,7 +22,7 @@ namespace otg {
 		void attachTexture(const Texture& texture, std::uint32_t attachmentSlot = 0);
 		void attachTexture(const MultisampleTexture& texture, std::uint32_t attachmentSlot = 0);
 		// TODO: too many arguments
-		void attachTextureLayer(std::uint32_t textureHandle, std::uint32_t mipmapLevel, std::uint32_t level, std::uint32_t attachmentSlot = 0);
+		void attachTextureLayer(std::uint32_t textureHandle, std::uint32_t mipmapLevel, std::uint32_t layer, std::uint32_t attachmentSlot = 0);
 
 		void attachRenderBuffer(const RenderBuffer& renderbuffer, std::uint32_t attachmentSlot = 0);
 		void attachRenderBuffer(const MultisampleRenderBuffer& renderbuffer, std::uint32_t attachmentSlot = 0);

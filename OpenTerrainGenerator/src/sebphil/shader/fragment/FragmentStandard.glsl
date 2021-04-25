@@ -15,6 +15,7 @@ struct Material {
 
 	float roughness;
 	float metallic;
+	float occlusion;
 };
 
 uniform Material material;
@@ -22,6 +23,9 @@ uniform vec3 viewPos;
 uniform vec3 lightPos;
 
 uniform samplerCubeArray envMap;
+
+uniform samplerCubeArray prefilterMap;
+uniform sampler2D brdf;
 
 in VertexData {
 	vec3 position;
@@ -50,7 +54,13 @@ void main() {
 	vec3 albedo = texColor + material.albedoColor;
 	float roughness = texRoughness + material.roughness;
 	float metallic = texMetallic + material.metallic;
-	float occlusion = texOcclusion;
+	float occlusion = texOcclusion + material.occlusion;
+
+	// DEBUG
+//	albedo = vec3(1, 0, 1);
+//	roughness = 0.1;
+//	metallic = 0.98;
+//	occlusion = 1;
 
 	vec3 viewDir = normalize(viewPos - vertexIn.position);
 	vec3 L0 = vec3(0);
@@ -65,7 +75,7 @@ void main() {
 	// BDRF
 	float dis = length(lightPos - vertexIn.position);
 	float attentuation = 1.0 / (dis * dis);
-	vec3 lightRadiance = lightColor;
+	vec3 lightRadiance = lightColor * attentuation;
 	vec3 radiance = lightRadiance;
 
 	// determine active microfacets
@@ -89,12 +99,25 @@ void main() {
 	// end of loop ---------------------------------------------------------------------------------------
 
 	// IBL
-
+	// diffuse
 	vec3 kSAmb = fresnelSchlickRough(viewDir, normal, f0, roughness);
 	vec3 kDAmb = 1 - kSAmb;
 	vec3 irradianceAmb = texture(envMap, vec4(normal, 0)).rgb;
 	vec3 diffuseAmb = irradianceAmb * albedo;
-	vec3 ambientColor = (diffuseAmb * kDAmb) * occlusion;
+
+	// specular
+	vec3 reflectedDir = reflect(-viewDir, normal);
+	const float maxLevel = 4;
+	float level = roughness * maxLevel;
+	vec3 prefilteredColor = textureLod(prefilterMap, vec4(reflectedDir, 0), level).rgb;
+
+	vec2 brdfSampleVector = vec2(max(dot(normal, viewDir), 0), roughness);
+	vec2 envBRDF = texture(brdf, brdfSampleVector).rg;
+
+	vec3 specIBL = prefilteredColor * (kSAmb * envBRDF.x + envBRDF.y);
+
+	// combine
+	vec3 ambientColor = (kDAmb * diffuseAmb + specIBL) * occlusion;
 
 	color = vec4(L0 + ambientColor, 1);
 }

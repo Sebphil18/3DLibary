@@ -68,9 +68,9 @@ namespace otg {
 		glNamedFramebufferTexture(glHandle, GL_COLOR_ATTACHMENT0 + attachmentSlot, texture.getGlHandle(), 0);
 	}
 
-	void Framebuffer::attachTextureLayer(std::uint32_t textureHandle, std::uint32_t mipmapLevel, std::uint32_t level, std::uint32_t attachmentSlot) {
+	void Framebuffer::attachTextureLayer(std::uint32_t textureHandle, std::uint32_t mipmapLevel, std::uint32_t layer, std::uint32_t attachmentSlot) {
 
-		glNamedFramebufferTextureLayer(glHandle, GL_COLOR_ATTACHMENT0 + attachmentSlot, textureHandle, mipmapLevel, level);
+		glNamedFramebufferTextureLayer(glHandle, GL_COLOR_ATTACHMENT0 + attachmentSlot, textureHandle, mipmapLevel, layer);
 	}
 
 	void Framebuffer::attachRenderBuffer(const RenderBuffer& renderbuffer, std::uint32_t attachmentSlot) {

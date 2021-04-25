@@ -100,4 +100,8 @@ namespace otg {
 		glDeleteTextures(1, &glHandle);
 	}
 
+	void HDRTexture::bindToUnit(std::uint32_t unit) {
+		glBindTextureUnit(unit, glHandle);
+	}
+
 }

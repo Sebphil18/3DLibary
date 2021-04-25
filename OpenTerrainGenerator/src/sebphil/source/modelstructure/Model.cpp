@@ -1,6 +1,7 @@
 #include "modelstructure/Model.h"
 #include "stb/stb_image.h"
 #include "glad/glad.h"
+#include "modelstructure/Mesh.h"
 
 namespace otg {
 
@@ -65,7 +66,7 @@ namespace otg {
 
 	void Model::updateWorldMatrix() {
 		glm::mat4 rotation = glm::toMat4(transforms.rotationQuat);
-		worldMatrix = rotation * transforms.translation * transforms.scale;
+		worldMatrix = transforms.translation * rotation * transforms.scale;
 	}
 
 	glm::mat4 Model::getWorldMatrix() const {

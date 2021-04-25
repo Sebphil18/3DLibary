@@ -30,7 +30,7 @@ namespace otg {
 		if (uniformLocation == -1) 
 			printUnusedUniform(uniformName);
 		else 
-			glUniform1i(uniformLocation, value);
+			glProgramUniform1i(programHandle, uniformLocation, value);
 	}
 
 	void ProgramUniformLink::setUniform(const std::string& uniformName, float value) {
@@ -40,7 +40,7 @@ namespace otg {
 		if (uniformLocation == -1) 
 			printUnusedUniform(uniformName);
 		else 
-			glUniform1f(uniformLocation, value);
+			glProgramUniform1f(programHandle, uniformLocation, value);
 	}
 
 	void otg::ProgramUniformLink::setUniformVec(const std::string& uniformName, glm::vec2 vec2) {
@@ -50,7 +50,7 @@ namespace otg {
 		if (uniformLocation == -1) 
 			printUnusedUniform(uniformName);
 		else 
-			glUniform2f(uniformLocation, vec2.x, vec2.y);
+			glProgramUniform2f(programHandle, uniformLocation, vec2.x, vec2.y);
 		
 	}
 
@@ -61,7 +61,7 @@ namespace otg {
 		if (uniformLocation == -1)
 			printUnusedUniform(uniformName);
 		else
-			glUniform3f(uniformLocation, vec3.x, vec3.y, vec3.z);
+			glProgramUniform3f(programHandle, uniformLocation, vec3.x, vec3.y, vec3.z);
 	}
 
 	void otg::ProgramUniformLink::setUniformVec(const std::string& uniformName, glm::vec4 vec4) {
@@ -71,7 +71,7 @@ namespace otg {
 		if (uniformLocation == -1)
 			printUnusedUniform(uniformName);
 		else
-			glUniform4f(uniformLocation, vec4.x, vec4.y, vec4.z, vec4.w);
+			glProgramUniform4f(programHandle, uniformLocation, vec4.x, vec4.y, vec4.z, vec4.w);
 	}
 
 	void otg::ProgramUniformLink::setUniformMat(const std::string& uniformName, glm::mat4 mat4, bool transpose) {
@@ -80,8 +80,8 @@ namespace otg {
 
 		if (uniformLocation == -1) 
 			printUnusedUniform(uniformName);
-		else 
-			glUniformMatrix4fv(uniformLocation, 1, transpose, glm::value_ptr(mat4));
+		else
+			glProgramUniformMatrix4fv(programHandle, uniformLocation, 1, transpose, glm::value_ptr(mat4));
 	}
 
 	std::int32_t otg::ProgramUniformLink::getUniformLocation(const std::string& uniformName) {

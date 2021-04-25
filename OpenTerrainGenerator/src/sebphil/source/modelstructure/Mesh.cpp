@@ -11,7 +11,6 @@ namespace otg {
 	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) noexcept : 
 		Mesh()
 	{
-
 		data.vertices = vertices;
 		data.indices = indices;
 
@@ -21,7 +20,6 @@ namespace otg {
 	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<std::shared_ptr<Texture>>& textures) noexcept :
 		Mesh()
 	{
-
 		data.vertices = vertices;
 		data.indices = indices;
 		data.textures = textures;
@@ -131,28 +129,24 @@ namespace otg {
 		bindTextures(program);
 		bindMaterial(program);
 		drawTriangles();
+		unbindTextures(program);
 	}
 
 	void Mesh::bindTextures(otg::ShaderProgram& program) {
 
 		TextureIterators iterators;
 
-		for (std::int32_t unit = 0; unit < static_cast<int>(data.textures.size()); unit++) {
+		for (std::int32_t unit = 1; unit <= static_cast<int>(data.textures.size()); unit++) {
 			
-			const std::shared_ptr<Texture>& texture = data.textures[unit];
+			const std::shared_ptr<Texture>& texture = data.textures[unit - 1];
 
-			bindTexToUnit(texture, unit);
+			texture->bindToUnit(unit);
 
 			std::string uniName = getTexUniName(iterators, texture->getType());
 			program.setUniform(uniName, unit);
 		}
 	}
 
-	void Mesh::bindTexToUnit(const std::shared_ptr<Texture>& texture, int unit) {
-		glBindTextureUnit(unit, texture->getGlHandle());
-	}
-
-	// TODO: too long!
 	std::string Mesh::getTexUniName(TextureIterators& iterators, otg::TextureType type) {
 
 		std::string uniName = "";
@@ -185,6 +179,7 @@ namespace otg {
 
 		program.setUniform("material.roughness", data.material.roughness);
 		program.setUniform("material.metallic", data.material.metallic);
+		program.setUniform("material.occlusion", data.material.occlusion);
 		program.setUniformVec("material.albedoColor", data.material.albedoColor);
 	}
 
@@ -204,6 +199,20 @@ namespace otg {
 	void Mesh::drawVertices() {
 		std::size_t vertexCount = data.vertices.size();
 		glDrawArrays(GL_TRIANGLES, 0, static_cast<std::uint32_t>(data.vertices.size()));
+	}
+
+	// TODO: inefficient
+	void Mesh::unbindTextures(otg::ShaderProgram& program) {
+
+		TextureIterators iterators;
+
+		for (std::int32_t unit = 1; unit <= static_cast<int>(data.textures.size()); unit++) {
+
+			const std::shared_ptr<Texture>& texture = data.textures[unit - 1];
+
+			std::string uniName = getTexUniName(iterators, texture->getType());
+			program.setUniform(uniName, 0);
+		}
 	}
 
 	std::uint32_t Mesh::getVaoHandle() const {

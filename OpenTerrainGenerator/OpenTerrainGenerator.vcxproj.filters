@@ -156,6 +156,9 @@
     <ClCompile Include="src\sebphil\source\exceptions\ModelLoadException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sebphil\source\lighting\SkyBoxReflectionProbe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sebphil\header\application\Application.h">
@@ -311,6 +314,9 @@
     <ClInclude Include="src\sebphil\header\exceptions\ModelLoadException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\sebphil\header\lighting\SkyBoxReflectionProbe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\sebphil\shader\vertex\VertexStandard.glsl" />
@@ -324,5 +330,9 @@
     <None Include="src\sebphil\shader\fragment\SkyBox.glsl" />
     <None Include="src\sebphil\shader\fragment\IrradianceConvolution.glsl" />
     <None Include="src\sebphil\shader\vertex\IrradianceConvolution.glsl" />
+    <None Include="src\sebphil\shader\fragment\PrefilterConvolution.glsl" />
+    <None Include="src\sebphil\shader\vertex\PrefilterConvolution.glsl" />
+    <None Include="src\sebphil\shader\fragment\BRDFConvolution.glsl" />
+    <None Include="src\sebphil\shader\vertex\BRDFConvolution.glsl" />
   </ItemGroup>
 </Project>

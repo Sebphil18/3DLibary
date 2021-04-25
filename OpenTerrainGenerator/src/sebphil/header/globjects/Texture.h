@@ -24,6 +24,11 @@ namespace otg {
 
 		void setSize(std::int32_t width, std::int32_t height);
 
+		void bindToUnit(std::uint32_t unit);
+
+		std::int32_t getWidth() const;
+		std::int32_t getHeight() const;
+
 	protected:
 		Image img;
 

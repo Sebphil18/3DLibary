@@ -17,6 +17,8 @@ namespace otg {
 
 		~HDRTexture() noexcept;
 
+		void bindToUnit(std::uint32_t unit);
+
 	private:
 		std::string filePath;
 		ImageFloat img;
@@ -31,7 +33,6 @@ namespace otg {
 		void fillStorage();
 
 		void deleteTexture();
-
 	};
 
 }

@@ -7,6 +7,6 @@ uniform samplerCubeArray cubeMap;
 
 void main() {
 	
-	vec4 texColor = texture(cubeMap, vec4(localPos, 0));
+	vec4 texColor = textureLod(cubeMap, vec4(localPos, 0), 0.6);
 	color = texColor;
 }

@@ -22,9 +22,8 @@ namespace otg {
 
 	void HDRTextureCube::draw(ShaderProgram& program, std::uint32_t face) {
 
-		glBindTextureUnit(0, texture->getGlHandle());
+		texture->bindToUnit(0);
 
-		program.use();
 		program.setUniform("equirectangularMap", 0);
 		program.setUniformMat("projection", projection);
 		program.setUniformMat("view", view[face]);

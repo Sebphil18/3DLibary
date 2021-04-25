@@ -45,6 +45,7 @@
 
 #include "lighting/HDRTextureCube.h"
 #include "lighting/SkyBoxLightProbe.h"
+#include "lighting/SkyBoxReflectionProbe.h"
 
 #include "camera/Camera.h"
 #include "scene/Scene.h"
@@ -54,6 +55,9 @@
 static std::vector<std::shared_ptr<otg::Model>> models;
 static std::unordered_map<std::string, std::shared_ptr<otg::ShaderProgram>> programs;
 static void launchApp();
+
+// TODO: add CubeMapArray support for meshes
+// TODO: refactor shaders
 
 int main() {
 	launchApp();
@@ -77,25 +81,33 @@ static void launchApp() {
 	// Model
 	otg::ModelLoader loader("rec/shapes/sphere/sphereobj.obj");
 	std::shared_ptr<otg::Model> model = std::make_shared<otg::Model>(loader.getData());
-	model->meshes[0].setMaterial({ 0, 0, glm::vec3(0), glm::vec3(0), glm::vec3(0) });
+	model->meshes[0].setMaterial({ 0, 0, 1, glm::vec3(0), glm::vec3(0), glm::vec3(0) });
 
 	std::shared_ptr<otg::TextureImage> albedoMap = std::make_shared<otg::TextureImage>(
-		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/stone/StoneAlbedo.png", otg::TextureType::Albedo);
+		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/tiles/Albedo.png", otg::TextureType::Albedo);
 	model->addTexture(albedoMap, 0);
 
 	std::shared_ptr<otg::TextureImage> roughnessMap = std::make_shared<otg::TextureImage>(
-		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/stone/StoneRough.png", otg::TextureType::Roughness);
+		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/tiles/Roughness.png", otg::TextureType::Roughness);
 	model->addTexture(roughnessMap, 0);
 
 	std::shared_ptr<otg::TextureImage> metallicMap = std::make_shared<otg::TextureImage>(
-		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/stone/StoneMetallic.png", otg::TextureType::Metallic);
+		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/tiles/Metallic.png", otg::TextureType::Metallic);
 	model->addTexture(metallicMap, 0);
 
-	std::shared_ptr<otg::TextureImage> occMap = std::make_shared<otg::TextureImage>(
-		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/stone/StoneOcclusion.png", otg::TextureType::Occlusion);
-	model->addTexture(occMap, 0);
+	/*std::shared_ptr<otg::TextureImage> occMap = std::make_shared<otg::TextureImage>(
+		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/ground/Occlusion.png", otg::TextureType::Occlusion);
+	model->addTexture(occMap, 0);*/
+
+	model->setPosition(glm::vec3(4, 0, 0));
 
 	models.push_back(model);
+
+	otg::ModelLoader loader2("rec/shapes/glados/Glados.obj");
+	std::shared_ptr<otg::Model> model2 = std::make_shared<otg::Model>(loader2.getData());
+	model2->setPosition(glm::vec3(-4, 0, 2));
+	model2->setRotation(glm::vec3(0, 3.14 / 2, 0));
+	models.push_back(model2);
 
 	// ScreenMesh
 	otg::ScreenMesh screen;
@@ -127,7 +139,7 @@ static void launchApp() {
 	otg::Camera cam;
 	cam.setWidth(window.getWidth());
 	cam.setHeight(window.getHeight());
-	cam.setPosition(glm::vec3(0, 0, -3));
+	cam.setPosition(glm::vec3(0, 0, -5));
 
 	// Framebuffer
 	otg::Framebuffer multiFbo;
@@ -171,19 +183,38 @@ static void launchApp() {
 		"src/sebphil/shader/vertex/EquirectangularToCube.glsl",
 		"src/sebphil/shader/fragment/EquirectangularToCube.glsl");
 
-	otg::ShaderProgram convolutionProgram(
+	programs["convolution"] = std::make_shared<otg::ShaderProgram>(
 		"src/sebphil/shader/vertex/IrradianceConvolution.glsl",
-		"src/sebphil/shader/fragment/IrradianceConvolution.glsl");
+		"src/sebphil/shader/fragment/IrradianceConvolution.glsl"
+		);
 
-	std::shared_ptr<otg::HDRTexture> equiRectTexture = std::make_shared<otg::HDRTexture>("rec/textures/hdr/outdoor/Night.hdr");
+	programs["brdfIntegration"] = std::make_shared<otg::ShaderProgram>(
+		"src/sebphil/shader/vertex/BRDFConvolution.glsl",
+		"src/sebphil/shader/fragment/BRDFConvolution.glsl"
+		);
 
-	otg::CubeMapArray cubeMap(512, 512);
-	cubeMap.fromEquirectengular(equiRectTexture, equirectConversionProgram);
-	cubeMap.bindToUnit(0);
+	programs["prefilter"] = std::make_shared<otg::ShaderProgram>(
+		"src/sebphil/shader/vertex/PrefilterConvolution.glsl",
+		"src/sebphil/shader/fragment/PrefilterConvolution.glsl"
+		);
+
+	std::shared_ptr<otg::HDRTexture> equiRectTexture = std::make_shared<otg::HDRTexture>("rec/textures/hdr/outdoor/Sunrise.hdr");
+
+	otg::CubeMapArray envMap({ 512, 512 });
+	envMap.fromEquirectengular(equiRectTexture, equirectConversionProgram);
+	envMap.bindToUnit(0);
 
 	// DiffuseIBL
-	otg::SkyBoxLightProbe skyBoxProbe(cubeMap, convolutionProgram);
+	otg::SkyBoxLightProbe skyBoxProbe(envMap, programs["convolution"]);
 	skyBoxProbe.bindToUnit(6);
+
+	// SpecularIBL
+	otg::SkyBoxReflectionProbe reflectionProbe(envMap, programs["prefilter"], programs["brdfIntegration"]);
+	reflectionProbe.bindPrefilterToUnit(7);
+	reflectionProbe.bindLookUpTexToUnit(8);
+
+	programs["main"]->setUniform("prefilterMap", 7);
+	programs["main"]->setUniform("brdf", 8);
 
 	// SkyBox
 	otg::Mesh skyBox(cubeVertices, cubeIndices);
@@ -193,7 +224,12 @@ static void launchApp() {
 
 		clock.tick();
 
-		model->setRotation(glm::vec3(0.01 * clock.getCurrentFrame(), 0, 0));
+		model->setRotation(glm::vec3(std::sin(0.002 * clock.getCurrentFrame()) * 2 * 3.14, 
+			std::cos(0.002 * clock.getCurrentFrame()) * 2 * 3.14,
+			0));
+
+		model2->setRotation(glm::vec3(0, 0.01 * clock.getCurrentFrame(), 0));
+
 		programs["main"]->use();
 		programs["main"]->setUniformVec("viewPos", cam.getPosition());
 		programs["main"]->setUniformVec("lightPos", glm::vec3(-1, 1, -1.5));
@@ -225,7 +261,6 @@ static void launchApp() {
 		
 		// TODO: SkyBox::draw();
 		glDepthFunc(GL_LEQUAL);
-		skyBoxProgram.use();
 		skyBoxProgram.setUniformMat("view", cam.getViewMatrix());
 		skyBoxProgram.setUniformMat("projection", cam.getProjectionMatrix());
 		skyBoxProgram.setUniform("cubeMap", 0);

@@ -24,7 +24,7 @@ namespace otg {
 	struct Transformations {
 		glm::mat4 translation = glm::mat4(1);
 		glm::mat4 scale = glm::mat4(1);
-		glm::quat rotationQuat;
+		glm::quat rotationQuat = glm::quat(glm::vec3(0, 0, 0));
 	};
 
 	class Model {

@@ -13,4 +13,9 @@ namespace otg {
 		std::int32_t width, height, channels;
 	};
 
+	struct ImageFormat {
+		std::int32_t width, height;
+		std::int32_t desiredChannels = 0;
+	};
+
 }
