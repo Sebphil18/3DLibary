@@ -1,5 +1,4 @@
 #pragma once
-#include <array>
 #include "globjects/Texture.h"
 #include "globjects/CubeMapArray.h"
 #include "globjects/ShaderProgram.h"

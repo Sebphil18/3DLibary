@@ -3,3 +3,5 @@ x64
 Debug/
 packages
 OpenTerrainGenerator.sln
+assimp-vc142-mtd.dll
+rec/

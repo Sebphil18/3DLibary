@@ -56,9 +56,9 @@ void main() {
 	float metallic = texMetallic + material.metallic;
 	float occlusion = texOcclusion + material.occlusion;
 
-	// DEBUG
+	 // DEBUG
 //	albedo = vec3(1, 0, 1);
-//	roughness = 0.1;
+//	roughness = 0.5;
 //	metallic = 0.98;
 //	occlusion = 1;
 

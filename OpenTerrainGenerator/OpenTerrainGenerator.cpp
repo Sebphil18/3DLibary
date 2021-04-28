@@ -57,6 +57,7 @@ static std::unordered_map<std::string, std::shared_ptr<otg::ShaderProgram>> prog
 static void launchApp();
 
 // TODO: add CubeMapArray support for meshes
+// TODO: add SkyBox class
 // TODO: refactor shaders
 
 int main() {
@@ -99,7 +100,7 @@ static void launchApp() {
 		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/ground/Occlusion.png", otg::TextureType::Occlusion);
 	model->addTexture(occMap, 0);*/
 
-	model->setPosition(glm::vec3(4, 0, 0));
+	//model->setPosition(glm::vec3(4, 0, 0));
 
 	models.push_back(model);
 
@@ -107,7 +108,7 @@ static void launchApp() {
 	std::shared_ptr<otg::Model> model2 = std::make_shared<otg::Model>(loader2.getData());
 	model2->setPosition(glm::vec3(-4, 0, 2));
 	model2->setRotation(glm::vec3(0, 3.14 / 2, 0));
-	models.push_back(model2);
+	//models.push_back(model2);
 
 	// ScreenMesh
 	otg::ScreenMesh screen;
@@ -139,7 +140,7 @@ static void launchApp() {
 	otg::Camera cam;
 	cam.setWidth(window.getWidth());
 	cam.setHeight(window.getHeight());
-	cam.setPosition(glm::vec3(0, 0, -5));
+	cam.setPosition(glm::vec3(1.5, 0, -1));
 
 	// Framebuffer
 	otg::Framebuffer multiFbo;
