@@ -147,34 +147,6 @@ namespace otg {
 		}
 	}
 
-	std::string Mesh::getTexUniName(TextureIterators& iterators, otg::TextureType type) {
-
-		std::string uniName = "";
-
-		switch (type) {
-
-		case TextureType::Albedo: setTexUniName(iterators.albedoTextures, "material.albedoTex", uniName);
-			break;
-		case TextureType::Roughness: setTexUniName(iterators.roughnessTextures, "material.roughnessTex", uniName);
-			break;
-		case TextureType::Metallic: setTexUniName(iterators.metallicTextures, "material.metallicTex", uniName);
-			break;
-		case TextureType::Occlusion: setTexUniName(iterators.occlussionTextures, "material.occlusionTex", uniName);
-			break;
-		case TextureType::Displacement: setTexUniName(iterators.displacementTextures, "material.displacement", uniName);
-			break;
-		default:
-			setTexUniName(iterators.albedoTextures, "material.albedoTex", uniName);
-		}
-
-		return uniName;
-	}
-
-	void Mesh::setTexUniName(std::uint32_t& iterator, const std::string& uniPrefix, std::string& uniName) {
-		uniName = uniPrefix + std::to_string(iterator);
-		iterator++;
-	}
-
 	void Mesh::bindMaterial(otg::ShaderProgram& program) {
 
 		program.setUniform("material.roughness", data.material.roughness);
@@ -213,6 +185,34 @@ namespace otg {
 			std::string uniName = getTexUniName(iterators, texture->getType());
 			program.setUniform(uniName, 0);
 		}
+	}
+
+	std::string Mesh::getTexUniName(TextureIterators& iterators, otg::TextureType type) {
+
+		std::string uniName = "";
+
+		switch (type) {
+
+		case TextureType::Albedo: setTexUniName(iterators.albedoTextures, "material.albedoTex", uniName);
+			break;
+		case TextureType::Roughness: setTexUniName(iterators.roughnessTextures, "material.roughnessTex", uniName);
+			break;
+		case TextureType::Metallic: setTexUniName(iterators.metallicTextures, "material.metallicTex", uniName);
+			break;
+		case TextureType::Occlusion: setTexUniName(iterators.occlussionTextures, "material.occlusionTex", uniName);
+			break;
+		case TextureType::Displacement: setTexUniName(iterators.displacementTextures, "material.displacement", uniName);
+			break;
+		default:
+			setTexUniName(iterators.albedoTextures, "material.albedoTex", uniName);
+		}
+
+		return uniName;
+	}
+
+	void Mesh::setTexUniName(std::uint32_t& iterator, const std::string& uniPrefix, std::string& uniName) {
+		uniName = uniPrefix + std::to_string(iterator);
+		iterator++;
 	}
 
 	std::uint32_t Mesh::getVaoHandle() const {

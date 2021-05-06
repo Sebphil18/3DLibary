@@ -8,15 +8,28 @@ namespace otg {
 
 	public:
 		Camera();
-		Camera(int width, int height);
-		Camera(int width, int height, glm::vec3 position);
+		Camera(glm::ivec2 dimensions);
+		Camera(glm::ivec2 dimensions, glm::vec3 position);
 
-		void setPosition(glm::vec3 position);
+		virtual void setPosition(glm::vec3 position);
 		void setTarget(glm::vec3 target);
-		void setFov(float fov);
+
 		void setWidth(int width);
 		void setHeight(int height);
 		void setSize(int width, int height);
+		void setSize(glm::ivec2 dimensions);
+
+		void setFov(float fov);
+		void setMovementSpeed(float movementSpeed);
+		void setSensitivity(float sensitivity);
+
+		virtual void move(glm::vec2 offset, float frameTime) {};
+		virtual void moveLeft(float frameTime);
+		virtual void moveRight(float frameTime);
+		virtual void moveDown(float frameTime);
+		virtual void moveUp(float frameTime);
+		virtual void moveForward(float frameTime);
+		virtual void moveBackwards(float frameTime);
 
 		glm::vec3 getPosition() const;
 		glm::vec3 getTarget() const;
@@ -24,18 +37,20 @@ namespace otg {
 		glm::mat4 getViewMatrix() const;
 		glm::mat4 getProjectionMatrix() const;
 
+	protected:
+		glm::vec3 position, target, up, right;
+		float movementSpeed, sensitivity;
+
+		void updateViewMatrix();
+		void updateProjection();
+
 	private:
 		float fov, near, far;
-		int width, height;
-
-		glm::vec3 position, target, up, right;
+		glm::ivec2 dimensions;
 		glm::mat4 view, projection;
 
 		void init();
-
 		void constructAxis();
-		void updateView();
-		void updateProjection();
 
 	};
 

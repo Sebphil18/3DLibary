@@ -7,7 +7,7 @@ namespace otg {
 
 	public:
 		enum class ShaderType {
-			Vertex, Geometry, Tesellation, Fragment, Compute
+			Vertex, Geometry, Fragment
 		};
 
 		static std::int32_t getGlType(ShaderType type);

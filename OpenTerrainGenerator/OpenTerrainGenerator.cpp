@@ -48,15 +48,19 @@
 #include "lighting/SkyBoxReflectionProbe.h"
 
 #include "camera/Camera.h"
-#include "scene/Scene.h"
+#include "camera/OrbitCamera.h"
 
 #include "stb/stbimage.h"
+
+namespace {
+	int a;
+}
 
 static std::vector<std::shared_ptr<otg::Model>> models;
 static std::unordered_map<std::string, std::shared_ptr<otg::ShaderProgram>> programs;
 static void launchApp();
 
-// TODO: add CubeMapArray support for meshes
+// TODO: add FPSCamera
 // TODO: add SkyBox class
 // TODO: refactor shaders
 
@@ -70,13 +74,13 @@ static void launchApp() {
 
 	otg::Application app;
 
-	otg::Window window("OpenTerrainGenerator");
-	int width = window.getWidth();
-	int height = window.getHeight();
+	otg::Window window1("OpenTerrainGenerator");
+	int initialWidth = window1.getWidth();
+	int initialHeight = window1.getHeight();
 
 	otg::DebugMessenger debugMessenger;
 
-	GLFWwindow* winHandle = window.getGlfwWindow();
+	GLFWwindow* winHandle = window1.getGlfwWindow();
 	otg::FrameClock clock;
 
 	// Model
@@ -137,23 +141,20 @@ static void launchApp() {
 	matrices.bindTo(*programs["main"], "Matrices", 0);
 	
 	// Camera
-	otg::Camera cam;
-	cam.setWidth(window.getWidth());
-	cam.setHeight(window.getHeight());
-	cam.setPosition(glm::vec3(1.5, 0, -1));
+	otg::OrbitCamera orbitCam({ initialWidth, initialHeight });
 
 	// Framebuffer
 	otg::Framebuffer multiFbo;
-	otg::MultisampleTexture multiTex(width, height, 6);
-	otg::MultisampleRenderBuffer multiRbo(width, height, 6);
+	otg::MultisampleTexture multiTex(initialWidth, initialHeight, 6);
+	otg::MultisampleRenderBuffer multiRbo(initialWidth, initialHeight, 6);
 
 	multiFbo.attachTexture(multiTex);
 	multiFbo.attachRenderBuffer(multiRbo);
 	multiFbo.validate();
 
 	otg::Framebuffer screenFbo;
-	std::shared_ptr<otg::Texture> screenTex = std::make_shared<otg::Texture>(width, height, otg::TextureType::ColorAttachment);
-	otg::RenderBuffer screenRbo(width, height, otg::TextureType::DepthStencilAttachment);
+	std::shared_ptr<otg::Texture> screenTex = std::make_shared<otg::Texture>(initialWidth, initialHeight, otg::TextureType::ColorAttachment);
+	otg::RenderBuffer screenRbo(initialWidth, initialHeight, otg::TextureType::DepthStencilAttachment);
 
 	screenFbo.attachTexture(*screenTex);
 	screenFbo.attachRenderBuffer(screenRbo);
@@ -162,24 +163,42 @@ static void launchApp() {
 	screen.addTexture(screenTex);
 
 	// Callbacks
-	window.setSizeCallback([&](GLFWwindow* window, int width, int height) {
+	window1.setSizeCallback([&](GLFWwindow* window, int width, int height) {
 
 		glViewport(0, 0, width, height);
-		cam.setSize(width, height);
+		orbitCam.setSize(width, height);
+
+		// TODO: resizeFbos
+		screenTex->setSize(width, height);
+		screenRbo.setSize(width, height);
+		multiTex.setSize(width, height);
+		multiRbo.setSize(width, height);
+
+		screenFbo.attachTexture(*screenTex);
+		screenFbo.attachRenderBuffer(screenRbo);
+
+		multiFbo.attachTexture(multiTex);
+		multiFbo.attachRenderBuffer(multiRbo);
 
 		});
 
-	window.setKeyCallback([&](GLFWwindow* window, int key, int scancode, int action, int mods) {
+	window1.setKeyCallback([&](GLFWwindow* window, int key, int scancode, int action, int mods) {
 
 		switch (key) {
 
 		case GLFW_KEY_ESCAPE:
 			glfwSetWindowShouldClose(window, true);
+
 		}
 
 		});
 
-	// CubeMap - convert equirectengular texture to cubemap
+	double scrollOffsetY = 0;
+
+	window1.setScrollCallback([&](GLFWwindow* window, double xoffset, double yoffset) {
+		scrollOffsetY = -yoffset;
+		});
+
 	otg::ShaderProgram equirectConversionProgram(
 		"src/sebphil/shader/vertex/EquirectangularToCube.glsl",
 		"src/sebphil/shader/fragment/EquirectangularToCube.glsl");
@@ -199,7 +218,7 @@ static void launchApp() {
 		"src/sebphil/shader/fragment/PrefilterConvolution.glsl"
 		);
 
-	std::shared_ptr<otg::HDRTexture> equiRectTexture = std::make_shared<otg::HDRTexture>("rec/textures/hdr/outdoor/Sunrise.hdr");
+	std::shared_ptr<otg::HDRTexture> equiRectTexture = std::make_shared<otg::HDRTexture>("rec/textures/hdr/bridge/Bridge2k.hdr");
 
 	otg::CubeMapArray envMap({ 512, 512 });
 	envMap.fromEquirectengular(equiRectTexture, equirectConversionProgram);
@@ -207,42 +226,50 @@ static void launchApp() {
 
 	// DiffuseIBL
 	otg::SkyBoxLightProbe skyBoxProbe(envMap, programs["convolution"]);
-	skyBoxProbe.bindToUnit(6);
 
 	// SpecularIBL
 	otg::SkyBoxReflectionProbe reflectionProbe(envMap, programs["prefilter"], programs["brdfIntegration"]);
-	reflectionProbe.bindPrefilterToUnit(7);
-	reflectionProbe.bindLookUpTexToUnit(8);
 
-	programs["main"]->setUniform("prefilterMap", 7);
-	programs["main"]->setUniform("brdf", 8);
+	skyBoxProbe.bindToUnit(10);
+	reflectionProbe.bindPrefilterToUnit(11);
+	reflectionProbe.bindLookUpTexToUnit(12);
+
+	programs["main"]->setUniform("envMap", 10);
+	programs["main"]->setUniform("prefilterMap", 11);
+	programs["main"]->setUniform("brdf", 12);
 
 	// SkyBox
 	otg::Mesh skyBox(cubeVertices, cubeIndices);
 
+	// MouseInput
+	float mouseDeltaX = 0;
+	float mouseDeltaY = 0;
+
+	double lastMouseX = -1;
+	double lastMouseY = -1;
+
 	// RenderLoop
-	while (!window.shouldClose()) {
+	while (!window1.shouldClose()) {
 
 		clock.tick();
 
-		model->setRotation(glm::vec3(std::sin(0.002 * clock.getCurrentFrame()) * 2 * 3.14, 
+		/*model->setRotation(glm::vec3(std::sin(0.002 * clock.getCurrentFrame()) * 2 * 3.14, 
 			std::cos(0.002 * clock.getCurrentFrame()) * 2 * 3.14,
 			0));
 
-		model2->setRotation(glm::vec3(0, 0.01 * clock.getCurrentFrame(), 0));
+		model2->setRotation(glm::vec3(0, 0.01 * clock.getCurrentFrame(), 0));*/
 
 		programs["main"]->use();
-		programs["main"]->setUniformVec("viewPos", cam.getPosition());
+		programs["main"]->setUniformVec("viewPos", orbitCam.getPosition());
 		programs["main"]->setUniformVec("lightPos", glm::vec3(-1, 1, -1.5));
-		programs["main"]->setUniform("envMap", 6);
 
 		glClearColor(0.1, 0.1, 0.1, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glClear(GL_STENCIL_BUFFER_BIT);
-		
-		glm::mat4 view = cam.getViewMatrix();
-		glm::mat4 projection = cam.getProjectionMatrix();
+
+		glm::mat4 view = orbitCam.getViewMatrix();
+		glm::mat4 projection = orbitCam.getProjectionMatrix();
 
 		matrices.setElementData(2, glm::value_ptr(view));
 		matrices.setElementData(3, glm::value_ptr(projection));
@@ -262,18 +289,55 @@ static void launchApp() {
 		
 		// TODO: SkyBox::draw();
 		glDepthFunc(GL_LEQUAL);
-		skyBoxProgram.setUniformMat("view", cam.getViewMatrix());
-		skyBoxProgram.setUniformMat("projection", cam.getProjectionMatrix());
+		skyBoxProgram.setUniformMat("view", orbitCam.getViewMatrix());
+		skyBoxProgram.setUniformMat("projection", orbitCam.getProjectionMatrix());
 		skyBoxProgram.setUniform("cubeMap", 0);
 		skyBox.draw(skyBoxProgram);
 		glDepthFunc(GL_LESS);
 
 		multiFbo.unbind();
 
+		// draw to screen-fbo
 		screenFbo.clear();
-		multiFbo.copyColorTo(width, height, screenFbo);
+		multiFbo.copyColorTo(window1.getWidth(), window1.getHeight(), screenFbo);
 
 		screen.draw(*programs["screen"]);
+
+		// TODO: INPUT HANDLING
+		// mouse input
+		double currentMouseX, currentMouseY;
+		glfwGetCursorPos(window1.getGlfwWindow(), &currentMouseX, &currentMouseY);
+
+		if (lastMouseX != -1 && lastMouseY != -1) {
+
+			mouseDeltaX = lastMouseX - currentMouseX;
+			mouseDeltaY = currentMouseY - lastMouseY;
+		}
+
+		lastMouseX = currentMouseX;
+		lastMouseY = currentMouseY;
+
+		if (scrollOffsetY != 0) {
+			orbitCam.moveForward(scrollOffsetY);
+			scrollOffsetY = 0;
+		}
+
+		// keyboard input
+		if (glfwGetKey(window1.getGlfwWindow(), GLFW_KEY_D) == GLFW_PRESS) {
+			orbitCam.moveRight(clock.getFrameTime());
+		} 
+		if (glfwGetKey(window1.getGlfwWindow(), GLFW_KEY_A) == GLFW_PRESS) {
+			orbitCam.moveLeft(clock.getFrameTime());
+		} 
+		if (glfwGetKey(window1.getGlfwWindow(), GLFW_KEY_W) == GLFW_PRESS) {
+			orbitCam.moveUp(clock.getFrameTime());
+		} 
+		if (glfwGetKey(window1.getGlfwWindow(), GLFW_KEY_S) == GLFW_PRESS) {
+			orbitCam.moveDown(clock.getFrameTime());
+		}
+		if (glfwGetMouseButton(window1.getGlfwWindow(), GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {
+			orbitCam.move({ mouseDeltaX, mouseDeltaY }, clock.getFrameTime());
+		}
 
 		glfwSwapBuffers(winHandle);
 		glfwPollEvents();

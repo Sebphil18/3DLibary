@@ -8,6 +8,7 @@ namespace otg {
 	std::unordered_map<GLFWwindow*, WindowSizeCallback> Window::sizeCallbacks;
 	std::unordered_map<GLFWwindow*, WindowInputCallback> Window::inputCallbacks;
 	std::unordered_map<GLFWwindow*, WindowCoursorPosCallback> Window::coursorPosCallbacks;
+	std::unordered_map<GLFWwindow*, WindowScrollCallback> Window::scrollCallbacks;
 
 	Window::Window(const std::string& title, int width, int height) :
 		title(title), width(width), height(height) {
@@ -67,6 +68,7 @@ namespace otg {
 		glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 		glfwSetKeyCallback(window, keyCallback);
 		glfwSetCursorPosCallback(window, coursorPosCallback);
+		glfwSetScrollCallback(window, scrollCallback);
 	}
 
 	void Window::framebufferSizeCallback(GLFWwindow* window, int width, int height) noexcept {
@@ -99,6 +101,17 @@ namespace otg {
 
 			WindowCoursorPosCallback callback = itr->second;
 			callback(window, xpos, ypos);
+		}
+	}
+
+	void Window::scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
+
+		auto itr = scrollCallbacks.find(window);
+
+		if (itr != scrollCallbacks.end()) {
+
+			WindowScrollCallback callback = itr->second;
+			callback(window, xoffset, yoffset);
 		}
 	}
 
@@ -162,6 +175,10 @@ namespace otg {
 
 	void Window::setCoursorPosCallback(const WindowCoursorPosCallback& callback) {
 		coursorPosCallbacks[window] = callback;
+	}
+
+	void Window::setScrollCallback(const WindowScrollCallback& callback) {
+		scrollCallbacks[window] = callback;
 	}
 
 	bool Window::shouldClose() const {

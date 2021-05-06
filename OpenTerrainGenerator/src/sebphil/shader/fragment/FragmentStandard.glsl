@@ -57,9 +57,9 @@ void main() {
 	float occlusion = texOcclusion + material.occlusion;
 
 	 // DEBUG
-//	albedo = vec3(1, 0, 1);
-//	roughness = 0.5;
-//	metallic = 0.98;
+//	albedo = vec3(0, 1, 1);
+//	roughness = 0.1;
+//	metallic = 0.1;
 //	occlusion = 1;
 
 	vec3 viewDir = normalize(viewPos - vertexIn.position);

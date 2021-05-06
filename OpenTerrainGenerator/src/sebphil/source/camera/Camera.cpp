@@ -7,32 +7,34 @@ namespace otg {
 		position(glm::vec3(0, 0, 5)),
 		target(glm::vec3(0, 0, 0)),
 		fov(65), near(0.01), far(500),
-		width(800), height(800)
+		movementSpeed(1), sensitivity(0.5),
+		dimensions(1200, 800)
 	{
 		init();
 	}
 
-	Camera::Camera(int width, int height) :
+	Camera::Camera(glm::ivec2 dimensions) :
 		position(glm::vec3(0, 0, 5)),
 		target(glm::vec3(0, 0, 0)),
 		fov(65), near(0.01), far(500),
-		width(width), height(height)
+		movementSpeed(1), sensitivity(0.5),
+		dimensions(dimensions)
 	{
 		init();
 	}
 
-	Camera::Camera(int width, int height, glm::vec3 position) :
+	Camera::Camera(glm::ivec2 dimensions, glm::vec3 position) :
 		position(position),
 		target(glm::vec3(0, 0, 0)),
 		fov(65), near(0.01), far(500),
-		width(width), height(height)
+		movementSpeed(1), sensitivity(0.5),
+		dimensions(dimensions)
 	{
 		init();
 	}
 
 	void Camera::init() {
-		constructAxis();
-		updateView();
+		updateViewMatrix();
 		updateProjection();
 	}
 
@@ -40,16 +42,62 @@ namespace otg {
 
 		this->position = position;
 		
-		constructAxis();
-		updateView();
+		updateViewMatrix();
 	}
 
 	void Camera::setTarget(glm::vec3 target) {
 
 		this->target = target;
 		
+		updateViewMatrix();
+	}
+
+	void Camera::moveLeft(float frameTime) {
+		moveRight(-frameTime);
+	}
+
+	void Camera::moveRight(float frameTime) {
+
+		float delta = movementSpeed * frameTime;
+		glm::vec3 deltaPos = right * delta;
+
+		this->position += deltaPos;
+
+		updateViewMatrix();
+	}
+
+	void Camera::moveDown(float frameTime) {
+		moveUp(-frameTime);
+	}
+
+	void Camera::moveUp(float frameTime) {
+
+		float delta = movementSpeed * frameTime;
+		glm::vec3 deltaPos = up * delta;
+
+		this->position += deltaPos;
+
+		updateViewMatrix();
+	}
+
+	void Camera::moveBackwards(float frameTime) {
+		moveForward(-frameTime);
+	}
+
+	void Camera::moveForward(float frameTime) {
+
+		float delta = movementSpeed * frameTime;
+		glm::vec3 forward = target - position;
+		glm::vec3 deltaPos = forward * delta;
+
+		this->position += deltaPos;
+
+		updateViewMatrix();
+	}
+
+	void Camera::updateViewMatrix() {
 		constructAxis();
-		updateView();
+		view = glm::lookAt(position, target, up);
 	}
 
 	void Camera::constructAxis() {
@@ -61,10 +109,6 @@ namespace otg {
 		up = glm::cross(forward, right);
 	}
 
-	void Camera::updateView() {
-		view = glm::lookAt(position, target, up);
-	}
-
 	void Camera::setFov(float fov) {
 
 		this->fov = fov;
@@ -74,32 +118,48 @@ namespace otg {
 
 	void Camera::setWidth(int width) {
 
-		this->width = width;
+		this->dimensions.x = width;
 
 		updateProjection();
 	}
 
 	void Camera::setHeight(int height) {
 
-		this->height = height;
+		this->dimensions.y = height;
 
 		updateProjection();
 	}
 
 	void Camera::setSize(int width, int height) {
 
-		this->width = width;
-		this->height = height;
+		this->dimensions = { width, height };
+
+		updateProjection();
+	}
+
+	void Camera::setSize(glm::ivec2 dimensions) {
+
+		this->dimensions = dimensions;
 
 		updateProjection();
 	}
 
 	void Camera::updateProjection() {
 
-		if (height == 0)
+		if (dimensions.y == 0)
 			return;
 
-		projection = glm::perspective(fov, (float)width / height, near, far);
+		float aspectratio = static_cast<float>(dimensions.x) / dimensions.y;
+
+		projection = glm::perspective(glm::radians(fov), aspectratio, near, far);
+	}
+
+	void Camera::setMovementSpeed(float movementSpeed) {
+		this->movementSpeed = movementSpeed;
+	}
+
+	void Camera::setSensitivity(float sensitivity) {
+		this->sensitivity = sensitivity;
 	}
 
 	glm::vec3 Camera::getPosition() const {
