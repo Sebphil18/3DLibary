@@ -55,8 +55,6 @@ void main() {
 	vec3 normal = texture(material.normalTex0, vertexIn.texCoord).rgb;
 	normal = normalize(normal * 2 - 1);
 
-	normal = vec3(0, 0, 1);
-
 	// standard
 	vec3 texColor = texture(material.albedoTex0, vertexIn.texCoord).rgb;
 	float texRoughness = texture(material.roughnessTex0, vertexIn.texCoord).r;
@@ -70,9 +68,9 @@ void main() {
 	float occlusion = texOcclusion + material.occlusion;
 
 	 // DEBUG
-	albedo = vec3(0, 1, 1);
-	roughness = 0.1;
-	metallic = 0.99;
+//	albedo = vec3(0, 1, 1);
+//	roughness = 0.1;
+//	metallic = 0.99;
 	
 	occlusion = 1;
 
@@ -114,9 +112,10 @@ void main() {
 
 	// IBL
 	// diffuse
+
 	// TODO: normal mapping for IBL does not work yet
-//	viewDir = normalize(vertexIn.viewPos - vertexIn.position);
-//	normal = normalize(vertexIn.tbnMatrix * normal);
+	viewDir = normalize(vertexIn.viewPos - vertexIn.position);
+	normal = normalize(vertexIn.tbnMatrix * normal);
 
 	vec3 kSAmb = fresnelSchlickRough(normal, viewDir, f0, roughness);
 	vec3 kDAmb = 1 - kSAmb;
