@@ -162,6 +162,9 @@
     <ClCompile Include="src\sebphil\source\camera\OrbitCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sebphil\source\camera\FpsCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sebphil\header\application\Application.h">
@@ -324,6 +327,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\sebphil\header\camera\OrbitCamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\camera\FpsCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

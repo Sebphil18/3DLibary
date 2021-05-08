@@ -49,18 +49,14 @@
 
 #include "camera/Camera.h"
 #include "camera/OrbitCamera.h"
+#include "camera/FpsCamera.h"
 
 #include "stb/stbimage.h"
-
-namespace {
-	int a;
-}
 
 static std::vector<std::shared_ptr<otg::Model>> models;
 static std::unordered_map<std::string, std::shared_ptr<otg::ShaderProgram>> programs;
 static void launchApp();
 
-// TODO: add FPSCamera
 // TODO: add SkyBox class
 // TODO: refactor shaders
 
@@ -89,16 +85,21 @@ static void launchApp() {
 	model->meshes[0].setMaterial({ 0, 0, 1, glm::vec3(0), glm::vec3(0), glm::vec3(0) });
 
 	std::shared_ptr<otg::TextureImage> albedoMap = std::make_shared<otg::TextureImage>(
-		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/tiles/Albedo.png", otg::TextureType::Albedo);
+		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/grass/Albedo.png", otg::TextureType::Albedo);
 	model->addTexture(albedoMap, 0);
 
 	std::shared_ptr<otg::TextureImage> roughnessMap = std::make_shared<otg::TextureImage>(
-		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/tiles/Roughness.png", otg::TextureType::Roughness);
+		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/grass/Roughness.png", otg::TextureType::Roughness);
 	model->addTexture(roughnessMap, 0);
 
 	std::shared_ptr<otg::TextureImage> metallicMap = std::make_shared<otg::TextureImage>(
-		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/tiles/Metallic.png", otg::TextureType::Metallic);
+		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/grass/Metallic.png", otg::TextureType::Metallic);
 	model->addTexture(metallicMap, 0);
+
+	std::shared_ptr<otg::TextureImage> normalMap = std::make_shared<otg::TextureImage>(
+		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/grass/Normal.png", otg::TextureType::Normal
+		);
+	model->addTexture(normalMap, 0);
 
 	/*std::shared_ptr<otg::TextureImage> occMap = std::make_shared<otg::TextureImage>(
 		"C:/Users/User/source/repos/OpenTerrainGenerator/OpenTerrainGenerator/rec/textures/ground/Occlusion.png", otg::TextureType::Occlusion);
@@ -141,7 +142,7 @@ static void launchApp() {
 	matrices.bindTo(*programs["main"], "Matrices", 0);
 	
 	// Camera
-	otg::OrbitCamera orbitCam({ initialWidth, initialHeight });
+	otg::OrbitCamera cam({ initialWidth, initialHeight });
 
 	// Framebuffer
 	otg::Framebuffer multiFbo;
@@ -166,7 +167,7 @@ static void launchApp() {
 	window1.setSizeCallback([&](GLFWwindow* window, int width, int height) {
 
 		glViewport(0, 0, width, height);
-		orbitCam.setSize(width, height);
+		cam.setSize(width, height);
 
 		// TODO: resizeFbos
 		screenTex->setSize(width, height);
@@ -218,7 +219,7 @@ static void launchApp() {
 		"src/sebphil/shader/fragment/PrefilterConvolution.glsl"
 		);
 
-	std::shared_ptr<otg::HDRTexture> equiRectTexture = std::make_shared<otg::HDRTexture>("rec/textures/hdr/bridge/Bridge2k.hdr");
+	std::shared_ptr<otg::HDRTexture> equiRectTexture = std::make_shared<otg::HDRTexture>("rec/textures/hdr/outdoor/Sunrise.hdr");
 
 	otg::CubeMapArray envMap({ 512, 512 });
 	envMap.fromEquirectengular(equiRectTexture, equirectConversionProgram);
@@ -253,14 +254,8 @@ static void launchApp() {
 
 		clock.tick();
 
-		/*model->setRotation(glm::vec3(std::sin(0.002 * clock.getCurrentFrame()) * 2 * 3.14, 
-			std::cos(0.002 * clock.getCurrentFrame()) * 2 * 3.14,
-			0));
-
-		model2->setRotation(glm::vec3(0, 0.01 * clock.getCurrentFrame(), 0));*/
-
 		programs["main"]->use();
-		programs["main"]->setUniformVec("viewPos", orbitCam.getPosition());
+		programs["main"]->setUniformVec("viewPos", cam.getPosition());
 		programs["main"]->setUniformVec("lightPos", glm::vec3(-1, 1, -1.5));
 
 		glClearColor(0.1, 0.1, 0.1, 1);
@@ -268,8 +263,8 @@ static void launchApp() {
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glClear(GL_STENCIL_BUFFER_BIT);
 
-		glm::mat4 view = orbitCam.getViewMatrix();
-		glm::mat4 projection = orbitCam.getProjectionMatrix();
+		glm::mat4 view = cam.getViewMatrix();
+		glm::mat4 projection = cam.getProjectionMatrix();
 
 		matrices.setElementData(2, glm::value_ptr(view));
 		matrices.setElementData(3, glm::value_ptr(projection));
@@ -289,8 +284,8 @@ static void launchApp() {
 		
 		// TODO: SkyBox::draw();
 		glDepthFunc(GL_LEQUAL);
-		skyBoxProgram.setUniformMat("view", orbitCam.getViewMatrix());
-		skyBoxProgram.setUniformMat("projection", orbitCam.getProjectionMatrix());
+		skyBoxProgram.setUniformMat("view", cam.getViewMatrix());
+		skyBoxProgram.setUniformMat("projection", cam.getProjectionMatrix());
 		skyBoxProgram.setUniform("cubeMap", 0);
 		skyBox.draw(skyBoxProgram);
 		glDepthFunc(GL_LESS);
@@ -318,25 +313,25 @@ static void launchApp() {
 		lastMouseY = currentMouseY;
 
 		if (scrollOffsetY != 0) {
-			orbitCam.moveForward(scrollOffsetY);
+			cam.moveForward(scrollOffsetY);
 			scrollOffsetY = 0;
 		}
 
 		// keyboard input
 		if (glfwGetKey(window1.getGlfwWindow(), GLFW_KEY_D) == GLFW_PRESS) {
-			orbitCam.moveRight(clock.getFrameTime());
+			cam.moveRight(clock.getFrameTime());
 		} 
 		if (glfwGetKey(window1.getGlfwWindow(), GLFW_KEY_A) == GLFW_PRESS) {
-			orbitCam.moveLeft(clock.getFrameTime());
+			cam.moveLeft(clock.getFrameTime());
 		} 
 		if (glfwGetKey(window1.getGlfwWindow(), GLFW_KEY_W) == GLFW_PRESS) {
-			orbitCam.moveUp(clock.getFrameTime());
+			cam.moveUp(clock.getFrameTime());
 		} 
 		if (glfwGetKey(window1.getGlfwWindow(), GLFW_KEY_S) == GLFW_PRESS) {
-			orbitCam.moveDown(clock.getFrameTime());
+			cam.moveDown(clock.getFrameTime());
 		}
 		if (glfwGetMouseButton(window1.getGlfwWindow(), GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {
-			orbitCam.move({ mouseDeltaX, mouseDeltaY }, clock.getFrameTime());
+			cam.move({ mouseDeltaX, mouseDeltaY }, clock.getFrameTime());
 		}
 
 		glfwSwapBuffers(winHandle);

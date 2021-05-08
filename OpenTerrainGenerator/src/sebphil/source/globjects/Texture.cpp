@@ -76,8 +76,8 @@ namespace otg {
 		glTextureParameteri(glHandle, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	}
 
-	void Texture::specifyStorage() {
-		glTextureStorage2D(glHandle, 1, getGlFormat(type), img.width, img.height);
+	void Texture::specifyStorage(std::uint32_t mipmapLevels) {
+		glTextureStorage2D(glHandle, mipmapLevels, getGlFormat(type), img.width, img.height);
 	}
 
 	void Texture::specifySubImg() {
@@ -121,7 +121,6 @@ namespace otg {
 		glGenerateTextureMipmap(glHandle);
 
 		glTextureParameteri(glHandle, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTextureParameteri(glHandle, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	}
 
 	void Texture::bindToUnit(std::uint32_t unit) {

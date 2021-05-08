@@ -34,7 +34,7 @@ namespace otg {
 
 		void initTexture();
 		void createTexture();
-		void specifyStorage();
+		void specifyStorage(std::uint32_t mipmapLevels = 1);
 		void specifySubImg();
 		void deleteTexture();
 

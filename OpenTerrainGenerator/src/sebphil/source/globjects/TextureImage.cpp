@@ -12,7 +12,7 @@ namespace otg {
 	}
 
 	TextureImage::TextureImage(const std::string& filePath, TextureType type) noexcept :
-		filePath(filePath)
+		filePath(filePath), Texture(type)
 	{
 		this->type = type;
 		loadTexture();
@@ -45,7 +45,7 @@ namespace otg {
 	void TextureImage::loadTexture() {
 
 		tryLoadImg();
-		specifyStorage();
+		specifyStorage(4);
 		specifySubImg();
 		generateMipmap();
 	}

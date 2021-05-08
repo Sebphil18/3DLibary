@@ -25,6 +25,7 @@
     <ClCompile Include="src\sebphil\source\application\RenderLoop.cpp" />
     <ClCompile Include="src\sebphil\source\application\Window.cpp" />
     <ClCompile Include="src\sebphil\source\camera\Camera.cpp" />
+    <ClCompile Include="src\sebphil\source\camera\FpsCamera.cpp" />
     <ClCompile Include="src\sebphil\source\camera\OrbitCamera.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\ApplicationException.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\FileInputException.cpp" />
@@ -74,6 +75,7 @@
     <ClInclude Include="src\sebphil\header\application\FrameClock.h" />
     <ClInclude Include="src\sebphil\header\application\RenderLoop.h" />
     <ClInclude Include="src\sebphil\header\application\Window.h" />
+    <ClInclude Include="src\sebphil\header\camera\FpsCamera.h" />
     <ClInclude Include="src\sebphil\header\camera\MoveableCamera.h" />
     <ClInclude Include="src\sebphil\header\camera\OrbitCamera.h" />
     <ClInclude Include="src\sebphil\header\debugflags\DebugFlags.h" />

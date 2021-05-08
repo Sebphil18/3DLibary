@@ -50,6 +50,7 @@ namespace otg {
 			std::uint32_t occlussionTextures = 0;
 			std::uint32_t metallicTextures = 0;
 			std::uint32_t displacementTextures = 0;
+			std::uint32_t normalTextures = 0;
 		};
 
 	public:

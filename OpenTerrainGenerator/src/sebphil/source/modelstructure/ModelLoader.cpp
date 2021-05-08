@@ -26,7 +26,7 @@ namespace otg {
 		std::scoped_lock<std::mutex> lock(loadingLock);
 
 		Assimp::Importer importer;
-		scene = importer.ReadFile(filePath, aiProcessPreset_TargetRealtime_Quality | aiProcess_CalcTangentSpace);
+		scene = importer.ReadFile(filePath, aiProcessPreset_TargetRealtime_Quality | aiProcess_CalcTangentSpace | aiProcess_FlipUVs);
 
 		tryLoadModel(importer);
 	}

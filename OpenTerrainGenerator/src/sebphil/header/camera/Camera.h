@@ -39,18 +39,18 @@ namespace otg {
 
 	protected:
 		glm::vec3 position, target, up, right;
+		glm::mat4 view, projection;
 		float movementSpeed, sensitivity;
 
-		void updateViewMatrix();
+		virtual void updateViewMatrix();
+		virtual void constructAxis();
 		void updateProjection();
 
 	private:
 		float fov, near, far;
 		glm::ivec2 dimensions;
-		glm::mat4 view, projection;
 
 		void init();
-		void constructAxis();
 
 	};
 

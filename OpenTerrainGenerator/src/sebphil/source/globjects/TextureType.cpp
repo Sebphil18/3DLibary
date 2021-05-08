@@ -79,9 +79,6 @@ namespace otg {
 		case TextureType::CubeMapArray:
 			return GL_RGB16F;
 
-		case TextureType::Albedo:
-			return GL_RGBA16F;
-
 		case TextureType::RGBAFloat:
 			return GL_RGBA16F;
 
