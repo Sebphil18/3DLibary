@@ -34,14 +34,6 @@ namespace otg {
 			mesh.draw(program);
 	}
 
-	void Model::addTexture(const std::shared_ptr<Texture>& texture, std::size_t meshIndex) {
-		meshes[meshIndex].addTexture(texture);
-	}
-
-	void otg::Model::clearTextures(std::size_t meshIndex) {
-		meshes[meshIndex].clearTextures();
-	}
-
 	void Model::setPosition(glm::vec3 position) {
 
 		properties.position = position;

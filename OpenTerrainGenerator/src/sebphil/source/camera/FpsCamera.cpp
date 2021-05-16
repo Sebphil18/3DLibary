@@ -62,7 +62,7 @@ namespace otg {
 
 		up = glm::vec3(0, 1, 0);
 		forward = -glm::euclidean(angles);
-		right = glm::cross(forward, up);
+		right = glm::normalize(glm::cross(forward, up));
 	}
 
 }

@@ -17,12 +17,12 @@ namespace otg {
 		fillBuffer();
 	}
 
-	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<std::shared_ptr<Texture>>& textures) noexcept :
+	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Material& material) noexcept :
 		Mesh()
 	{
 		data.vertices = vertices;
 		data.indices = indices;
-		data.textures = textures;
+		data.material = material;
 
 		fillBuffer();
 	}
@@ -126,33 +126,10 @@ namespace otg {
 		program.use();
 		vao.use();
 
-		bindTextures(program);
-		bindMaterial(program);
+		data.material.bindTexture(program);
+		data.material.setUniforms(program);
 		drawTriangles();
-		unbindTextures(program);
-	}
-
-	void Mesh::bindTextures(otg::ShaderProgram& program) {
-
-		TextureIterators iterators;
-
-		for (std::int32_t unit = 1; unit <= static_cast<int>(data.textures.size()); unit++) {
-			
-			const std::shared_ptr<Texture>& texture = data.textures[unit - 1];
-
-			texture->bindToUnit(unit);
-
-			std::string uniName = getTexUniName(iterators, texture->getType());
-			program.setUniform(uniName, unit);
-		}
-	}
-
-	void Mesh::bindMaterial(otg::ShaderProgram& program) {
-
-		program.setUniform("material.roughness", data.material.roughness);
-		program.setUniform("material.metallic", data.material.metallic);
-		program.setUniform("material.occlusion", data.material.occlusion);
-		program.setUniformVec("material.albedoColor", data.material.albedoColor);
+		data.material.unbindTextures(program);
 	}
 
 	void Mesh::drawTriangles() {
@@ -171,66 +148,6 @@ namespace otg {
 	void Mesh::drawVertices() {
 		std::size_t vertexCount = data.vertices.size();
 		glDrawArrays(GL_TRIANGLES, 0, static_cast<std::uint32_t>(data.vertices.size()));
-	}
-
-	// TODO: inefficient
-	void Mesh::unbindTextures(otg::ShaderProgram& program) {
-
-		TextureIterators iterators;
-
-		for (std::int32_t unit = 1; unit <= static_cast<int>(data.textures.size()); unit++) {
-
-			const std::shared_ptr<Texture>& texture = data.textures[unit - 1];
-
-			std::string uniName = getTexUniName(iterators, texture->getType());
-			program.setUniform(uniName, 0);
-		}
-	}
-
-	std::string Mesh::getTexUniName(TextureIterators& iterators, otg::TextureType type) {
-
-		std::string uniName = "";
-
-		switch (type) {
-
-		case TextureType::Albedo: setTexUniName(iterators.albedoTextures, "material.albedoTex", uniName);
-			break;
-		case TextureType::Roughness: setTexUniName(iterators.roughnessTextures, "material.roughnessTex", uniName);
-			break;
-		case TextureType::Metallic: setTexUniName(iterators.metallicTextures, "material.metallicTex", uniName);
-			break;
-		case TextureType::Occlusion: setTexUniName(iterators.occlussionTextures, "material.occlusionTex", uniName);
-			break;
-		case TextureType::Displacement: setTexUniName(iterators.displacementTextures, "material.displacementTex", uniName);
-			break;
-		case TextureType::Normal: setTexUniName(iterators.normalTextures, "material.normalTex", uniName);
-			break;
-		default:
-			setTexUniName(iterators.albedoTextures, "material.albedoTex", uniName);
-		}
-
-		return uniName;
-	}
-
-	void Mesh::setTexUniName(std::uint32_t& iterator, const std::string& uniPrefix, std::string& uniName) {
-		uniName = uniPrefix + std::to_string(iterator);
-		iterator++;
-	}
-
-	std::uint32_t Mesh::getVaoHandle() const {
-		return vao.getGlHandle();
-	}
-
-	void Mesh::addTexture(const std::shared_ptr<Texture>& texture) {
-		data.textures.push_back(texture);
-	}
-
-	void Mesh::removeTexture(std::size_t index) {
-		data.textures.erase(data.textures.begin() + index);
-	}
-
-	void Mesh::clearTextures() {
-		data.textures.clear();
 	}
 
 	void Mesh::setMaterial(const Material& material) {

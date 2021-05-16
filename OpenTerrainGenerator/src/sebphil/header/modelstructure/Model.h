@@ -39,9 +39,6 @@ namespace otg {
 
 		void setData(const ModelData& data);
 
-		void addTexture(const std::shared_ptr<Texture>& texture, std::size_t meshIndex);
-		void clearTextures(std::size_t meshIndex);
-
 		void setPosition(glm::vec3 position);
 		void setScale(glm::vec3 scale);
 		void setRotation(glm::vec3 rotation);

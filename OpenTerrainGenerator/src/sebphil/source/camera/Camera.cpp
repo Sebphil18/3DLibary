@@ -6,7 +6,7 @@ namespace otg {
 	Camera::Camera() : 
 		position(glm::vec3(0, 0, 5)),
 		target(glm::vec3(0, 0, 0)),
-		fov(65), near(0.01), far(500),
+		fov(65), near(0.01), far(1000),
 		movementSpeed(1), sensitivity(0.5),
 		dimensions(1200, 800)
 	{
@@ -16,7 +16,7 @@ namespace otg {
 	Camera::Camera(glm::ivec2 dimensions) :
 		position(glm::vec3(0, 0, 5)),
 		target(glm::vec3(0, 0, 0)),
-		fov(65), near(0.01), far(500),
+		fov(65), near(0.01), far(1000),
 		movementSpeed(1), sensitivity(0.5),
 		dimensions(dimensions)
 	{
@@ -26,7 +26,7 @@ namespace otg {
 	Camera::Camera(glm::ivec2 dimensions, glm::vec3 position) :
 		position(position),
 		target(glm::vec3(0, 0, 0)),
-		fov(65), near(0.01), far(500),
+		fov(65), near(0.01), far(1000),
 		movementSpeed(1), sensitivity(0.5),
 		dimensions(dimensions)
 	{

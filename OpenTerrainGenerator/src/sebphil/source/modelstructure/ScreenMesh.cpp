@@ -20,4 +20,8 @@ namespace otg {
 	{
 	}
 
+	void ScreenMesh::addTexture(const std::shared_ptr<Texture>& texture) {
+		data.material.addTexture(texture);
+	}
+
 }

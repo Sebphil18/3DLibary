@@ -121,6 +121,7 @@ namespace otg {
 		glGenerateTextureMipmap(glHandle);
 
 		glTextureParameteri(glHandle, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTextureParameterf(glHandle, GL_TEXTURE_LOD_BIAS, 0);
 	}
 
 	void Texture::bindToUnit(std::uint32_t unit) {

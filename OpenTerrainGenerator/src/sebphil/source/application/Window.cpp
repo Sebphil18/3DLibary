@@ -128,8 +128,8 @@ namespace otg {
 
 	Window::~Window() {
 
-		glfwDestroyWindow(window);
 		removeCallbacks();
+		glfwDestroyWindow(window);
 	}
 
 	void Window::removeCallbacks() {

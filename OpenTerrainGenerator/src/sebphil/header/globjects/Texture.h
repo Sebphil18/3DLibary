@@ -5,6 +5,11 @@
 
 namespace otg {
 
+	struct DeferredTexture {
+		std::string filePath;
+		TextureType type;
+	};
+
 	class Texture : public GlObject, public TextureTypes {
 
 	public:

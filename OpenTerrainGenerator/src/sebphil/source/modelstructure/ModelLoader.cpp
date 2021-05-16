@@ -187,9 +187,10 @@ namespace otg {
 		meshData.material.roughness = getMaterialFloat(material, AI_MATKEY_SHININESS);
 		meshData.material.metallic = getMaterialFloat(material, AI_MATKEY_REFLECTIVITY);
 
-		meshData.material.albedoColor = getMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE);
-		meshData.material.specularColor = getMaterialColor(material, AI_MATKEY_COLOR_SPECULAR);
-		meshData.material.ambientColor = getMaterialColor(material, AI_MATKEY_COLOR_AMBIENT);
+		meshData.material.albedo = getMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE);
+		meshData.material.specular = getMaterialColor(material, AI_MATKEY_COLOR_SPECULAR);
+		meshData.material.ambient = getMaterialColor(material, AI_MATKEY_COLOR_AMBIENT);
+
 	}
 
 	float otg::ModelLoader::getMaterialFloat(aiMaterial* material, const char* property, int, int) {
@@ -215,6 +216,7 @@ namespace otg {
 			examinNode(node->mChildren[i]);
 	}
 
+	// workaround
 	bool ModelLoader::isLoaded() {
 		std::future_status status = worker.wait_for(std::chrono::seconds(0));
 		return status == std::future_status::ready;

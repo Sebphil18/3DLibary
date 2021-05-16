@@ -62,12 +62,14 @@
     <ClCompile Include="src\sebphil\source\lighting\HDRTextureCube.cpp" />
     <ClCompile Include="src\sebphil\source\lighting\SkyBoxLightProbe.cpp" />
     <ClCompile Include="src\sebphil\source\lighting\SkyBoxReflectionProbe.cpp" />
+    <ClCompile Include="src\sebphil\source\material\Material.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\Mesh.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\Model.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\ModelDataConverter.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\ModelLoader.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\ScreenMesh.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\TextureRegister.cpp" />
+    <ClCompile Include="src\sebphil\source\terrain\TerrainModelLoader.cpp" />
     <ClCompile Include="src\vendor\glad\glad.c" />
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +116,7 @@
     <ClInclude Include="src\sebphil\header\lighting\HDRTextureCube.h" />
     <ClInclude Include="src\sebphil\header\lighting\SkyBoxReflectionProbe.h" />
     <ClInclude Include="src\sebphil\header\lighting\SkyBoxLightProbe.h" />
+    <ClInclude Include="src\sebphil\header\material\Material.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\CubeData.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Mesh.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Model.h" />
@@ -125,6 +128,8 @@
     <ClInclude Include="src\sebphil\header\modelstructure\Vertex.h" />
     <ClInclude Include="src\sebphil\header\camera\Camera.h" />
     <ClInclude Include="src\sebphil\header\scene\Scene.h" />
+    <ClInclude Include="src\sebphil\header\terrain\Heightmap.h" />
+    <ClInclude Include="src\sebphil\header\terrain\TerrainModelLoader.h" />
     <ClInclude Include="src\vendor\stb\stbimage.h" />
   </ItemGroup>
   <ItemGroup>
@@ -264,6 +269,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

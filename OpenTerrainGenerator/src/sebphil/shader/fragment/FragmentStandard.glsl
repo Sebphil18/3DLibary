@@ -69,8 +69,9 @@ void main() {
 
 	 // DEBUG
 //	albedo = vec3(0, 1, 1);
-//	roughness = 0.1;
+//	roughness = 0.2;
 //	metallic = 0.99;
+//	normal = vec3(0, 0, 1);
 	
 	occlusion = 1;
 

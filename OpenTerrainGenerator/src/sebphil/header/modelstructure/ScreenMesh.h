@@ -11,6 +11,8 @@ namespace otg {
 		
 		ScreenMesh();
 
+		void addTexture(const std::shared_ptr<Texture>& texture);
+
 	};
 
 }
