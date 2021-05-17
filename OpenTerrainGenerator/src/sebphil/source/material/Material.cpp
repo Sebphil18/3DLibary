@@ -31,6 +31,10 @@ namespace otg {
 		return textures[index];
 	}
 
+	void Material::setTextures(const std::vector<std::shared_ptr<Texture>>& textures) {
+		this->textures = textures;
+	}
+
 	void Material::setUniforms(ShaderProgram& program) {
 
 		program.setUniform("material.roughness", roughness);

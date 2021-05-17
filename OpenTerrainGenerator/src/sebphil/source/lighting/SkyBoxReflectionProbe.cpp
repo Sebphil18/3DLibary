@@ -18,7 +18,7 @@ namespace otg {
 
 	void SkyBoxReflectionProbe::bake(CubeMapArray& envMap) {
 
-		envMap.bindToUnit(0);
+		envMap.bindToUnit(10);
 
 		std::int32_t viewportSettings[4];
 		glGetIntegerv(GL_VIEWPORT, viewportSettings);
@@ -32,7 +32,7 @@ namespace otg {
 	void SkyBoxReflectionProbe::prefilter() {
 
 		prefilterProgram->setUniformMat("projection", CubeMapArray::projection);
-		prefilterProgram->setUniform("envMap", 0);
+		prefilterProgram->setUniform("envMap", 10);
 
 		Mesh cube(cubeVertices, cubeIndices);
 

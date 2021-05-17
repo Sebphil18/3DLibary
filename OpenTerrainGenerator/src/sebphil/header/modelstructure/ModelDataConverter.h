@@ -13,9 +13,9 @@ namespace otg {
 	private:
 		static TextureRegister texRegister;
 
-		static void convertMeshes(const DeferredModelData& deferredModelData, ModelData& modelData);
+		static std::vector<MeshData> convertMeshes(const DeferredModelData& deferredModelData);
 		static Material convertMaterial(const DeferredMaterial& deferredMaterial);
-		static void convertTextures(const DeferredMeshData& deferredMeshData, MeshData& meshData);
+		static std::vector<std::shared_ptr<Texture>> convertTextures(const DeferredMaterial& material);
 
 	};
 

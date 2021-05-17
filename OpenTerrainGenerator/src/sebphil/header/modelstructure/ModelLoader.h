@@ -45,7 +45,8 @@ namespace otg {
 		void loadMeshes(aiNode* node);
 		void expandNode(aiNode* node);
 
-		void loadVertices(aiMesh* mesh, DeferredMeshData& meshData);
+		std::vector<Vertex> loadVertices(aiMesh* mesh);
+		Vertex getVertex(aiMesh* mesh, std::uint32_t vertexIndex);
 
 		glm::vec3 getPosition(std::uint32_t vertexIndex, aiMesh* mesh);
 		glm::vec3 getNormal(std::uint32_t vertexIndex, aiMesh* mesh);
@@ -57,12 +58,12 @@ namespace otg {
 		static glm::vec3 convertVector(aiVector3D aiVec3);
 		static glm::vec2 convertVector(aiVector2D aiVec2);
 
-		void loadIndices(aiMesh* mesh, DeferredMeshData& meshData);
+		std::vector<std::uint32_t> loadIndices(aiMesh* mesh);
 
-		void loadMaterial(aiMesh* mesh, DeferredMeshData& meshData);
-		void loadTextures(aiTextureType type, aiMaterial* material, DeferredMeshData& data);
+		void loadMaterial(aiMesh* mesh, DeferredMaterial& material);
+		void loadTextures(aiTextureType type, aiMaterial* material, DeferredMaterial& data);
 
-		void loadMaterialProperties(aiMaterial* material, DeferredMeshData& meshData);
+		void loadMaterialProperties(aiMaterial* aiMaterial, DeferredMaterial& material);
 		
 		// Please note that the last two arguments don't do anything. They need to exist because AI_MATKEY_XXXX extends to 'const char*, uint, uint'
 		// (e.g. "some text", 0, 0) and enable therefore the support for using assimp's macros.

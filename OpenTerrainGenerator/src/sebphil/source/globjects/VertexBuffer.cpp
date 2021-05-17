@@ -2,6 +2,7 @@
 #include <iostream>
 #include "glad/glad.h"
 
+// TODO: buffer allocates data array of length 0 on construction
 otg::VertexBuffer::VertexBuffer() noexcept :
 	usage(GL_STATIC_DRAW), size(0), data(nullptr)
 {

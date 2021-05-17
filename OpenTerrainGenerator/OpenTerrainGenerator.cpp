@@ -135,13 +135,15 @@ static void launchApp() {
 
 			glm::ivec2 cell = { x, y };
 
-			heightmap.setValue(cell, glm::simplex(glm::vec2(x, y) * 0.03f) * 2);
+			float value = 2 * (glm::simplex(glm::vec2(x, y) * 0.03f));
+
+			heightmap.setValue(cell, value * 2);
 		}
 	}
 
 	otg::TerrainModelLoader terrainLoader(heightmap);
 
-	std::shared_ptr<otg::Model> terrainModel = std::make_shared<otg::Model>(terrainLoader.getData());
+	std::shared_ptr<otg::Model> terrainModel = std::make_shared<otg::Model>(terrainLoader.getData(), GL_DYNAMIC_DRAW);
 
 	terrainModel->meshes[0].setMaterial(material);
 	terrainModel->setPosition({ -size / 2, -1, -size / 2 });
@@ -254,21 +256,19 @@ static void launchApp() {
 
 	otg::CubeMapArray envMap({ 512, 512 });
 	envMap.fromEquirectengular(equiRectTexture, equirectConversionProgram);
-	envMap.bindToUnit(0);
 
-	// DiffuseIBL
+	// IBL
 	otg::SkyBoxLightProbe skyBoxProbe(envMap, programs["convolution"]);
-
-	// SpecularIBL
 	otg::SkyBoxReflectionProbe reflectionProbe(envMap, programs["prefilter"], programs["brdfIntegration"]);
 
-	skyBoxProbe.bindToUnit(10);
-	reflectionProbe.bindPrefilterToUnit(11);
-	reflectionProbe.bindLookUpTexToUnit(12);
+	envMap.bindToUnit(10);
+	skyBoxProbe.bindToUnit(11);
+	reflectionProbe.bindPrefilterToUnit(12);
+	reflectionProbe.bindLookUpTexToUnit(13);
 
-	programs["main"]->setUniform("envMap", 10);
-	programs["main"]->setUniform("prefilterMap", 11);
-	programs["main"]->setUniform("brdf", 12);
+	programs["main"]->setUniform("envMap", 11);
+	programs["main"]->setUniform("prefilterMap", 12);
+	programs["main"]->setUniform("brdf", 13);
 
 	// SkyBox
 	otg::Mesh skyBox(cubeVertices, cubeIndices);
@@ -334,7 +334,7 @@ void drawSkyBox(const otg::Camera& camera, otg::Mesh& skyBoxMesh) {
 	glDepthFunc(GL_LEQUAL);
 	programs["skyBox"]->setUniformMat("view", camera.getViewMatrix());
 	programs["skyBox"]->setUniformMat("projection", camera.getProjectionMatrix());
-	programs["skyBox"]->setUniform("cubeMap", 11);
+	programs["skyBox"]->setUniform("cubeMap", 12);
 	skyBoxMesh.draw(*programs["skyBox"]);
 	glDepthFunc(GL_LESS);
 }

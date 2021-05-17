@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include "glm/glm.hpp"
 #include "glm/gtx/quaternion.hpp"
+#include "glad/glad.h"
 #include "modelstructure/Mesh.h"
 #include "globjects/TextureImage.h"
 
@@ -33,11 +34,11 @@ namespace otg {
 		std::vector<Mesh> meshes;
 
 		Model() noexcept;
-		Model(const ModelData& data) noexcept;
+		Model(const ModelData& data, std::uint32_t usage = GL_STATIC_DRAW) noexcept;
 
 		void draw(ShaderProgram& program);
 
-		void setData(const ModelData& data);
+		void setData(const ModelData& data, std::uint32_t usage = GL_STATIC_DRAW);
 
 		void setPosition(glm::vec3 position);
 		void setScale(glm::vec3 scale);
@@ -52,7 +53,7 @@ namespace otg {
 
 		glm::mat4 worldMatrix;
 
-		void constructMeshes(const ModelData& data);
+		void constructMeshes(const ModelData& data, std::uint32_t usage = GL_STATIC_DRAW);
 		void updateWorldMatrix();
 
 	};

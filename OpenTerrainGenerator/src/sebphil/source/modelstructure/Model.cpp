@@ -1,6 +1,5 @@
 #include "modelstructure/Model.h"
 #include "stb/stb_image.h"
-#include "glad/glad.h"
 #include "modelstructure/Mesh.h"
 
 namespace otg {
@@ -10,22 +9,22 @@ namespace otg {
 	{
 	}
 
-	Model::Model(const ModelData& data) noexcept  :
+	Model::Model(const ModelData& data, std::uint32_t usage) noexcept  :
 		worldMatrix(glm::mat4(1))
 	{
-		constructMeshes(data);
+		constructMeshes(data, usage);
 	}
 
-	void Model::setData(const ModelData& data) {
+	void Model::setData(const ModelData& data, std::uint32_t usage) {
 		
 		meshes.clear();
 
-		constructMeshes(data);
+		constructMeshes(data, usage);
 	}
 
-	void Model::constructMeshes(const ModelData& data) {
+	void Model::constructMeshes(const ModelData& data, std::uint32_t usage) {
 		for (const auto& meshData : data.meshes)
-			meshes.emplace_back(meshData);
+			meshes.emplace_back(meshData, usage);
 	}
 
 	void Model::draw(ShaderProgram& program) {

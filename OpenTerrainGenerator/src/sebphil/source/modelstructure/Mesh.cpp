@@ -1,5 +1,5 @@
 #include "modelstructure/Mesh.h"
-#include "glad/glad.h"
+#include <algorithm>
 
 namespace otg {
 
@@ -28,10 +28,17 @@ namespace otg {
 	}
 
 	Mesh::Mesh(const MeshData& data) noexcept :
-		data(data) {
-
+		data(data) 
+	{
 		setUpLayout();
 		fillBuffer();
+	}
+
+	Mesh::Mesh(const MeshData& data, std::uint32_t usage) noexcept :
+		data(data)
+	{
+		setUpLayout();
+		fillBuffer(usage);
 	}
 
 	Mesh::Mesh(const Mesh& otherMesh) noexcept :
@@ -82,18 +89,18 @@ namespace otg {
 		fillBuffer();
 	}
 
-	void Mesh::fillBuffer() {
+	void Mesh::fillBuffer(std::uint32_t usage) {
 
-		setVertexBufferData();
+		setVertexBufferData(usage);
 		setIndexBufferData();
 	}
 
-	void Mesh::setVertexBufferData() {
+	void Mesh::setVertexBufferData(std::uint32_t usage) {
 
 		if (!data.vertices.empty()) {
 
 			std::size_t verticesCount = data.vertices.size();
-			vbo.setData(verticesCount * sizeof(Vertex), &data.vertices[0], GL_STATIC_DRAW);
+			vbo.setData(verticesCount * sizeof(Vertex), &data.vertices[0], usage);
 		}
 	}
 
@@ -108,8 +115,10 @@ namespace otg {
 
 	void Mesh::updateVertices(const std::vector<Vertex>& vertices, std::size_t offset, std::size_t count) {
 
-		// TODO: implement more efficient method
-		this->data.vertices = vertices;
+		auto begin = vertices.begin();
+		std::size_t endOffset = offset + count;
+
+		std::copy(begin + offset, begin + endOffset, data.vertices.begin() + offset);
 
 		updateVertexBuffer(offset, count);
 	}

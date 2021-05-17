@@ -29,10 +29,10 @@ namespace otg {
 
 	void SkyBoxLightProbe::setUniforms(CubeMapArray& skybox) {
 
-		skybox.bindToUnit(0);
+		skybox.bindToUnit(10);
 
 		convolutionProgram->setUniformMat("projection", CubeMapArray::projection);
-		convolutionProgram->setUniform("envMap", 0);
+		convolutionProgram->setUniform("envMap", 10);
 	}
 
 	void SkyBoxLightProbe::convoluteSkybox() {

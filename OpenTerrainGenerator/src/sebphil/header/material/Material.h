@@ -28,6 +28,7 @@ namespace otg {
 		void setUniforms(ShaderProgram& program);
 		void bindTexture(ShaderProgram& program);
 		void unbindTextures(ShaderProgram& program);
+		void setTextures(const std::vector<std::shared_ptr<Texture>>& textures);
 
 		void setMetallic(float metallic);
 		void setRoughness(float roguhness);

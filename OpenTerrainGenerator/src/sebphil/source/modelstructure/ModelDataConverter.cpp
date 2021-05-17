@@ -7,23 +7,24 @@ namespace otg {
 	ModelData ModelDataConverter::convert(const DeferredModelData& deferredData) {
 
 		ModelData modelData;
-
-		convertMeshes(deferredData, modelData);
+		modelData.meshes = convertMeshes(deferredData);
 
 		return modelData;
 	}
 
-	void ModelDataConverter::convertMeshes(const DeferredModelData& deferredModelData, ModelData& modelData) {
+	std::vector<MeshData> ModelDataConverter::convertMeshes(const DeferredModelData& deferredModelData) {
+
+		std::vector<MeshData> meshes;
 
 		for (const DeferredMeshData& deferredMeshData : deferredModelData.meshes) {
 
 			MeshData meshData{ deferredMeshData.vertices, deferredMeshData.indices };
 			meshData.material = convertMaterial(deferredMeshData.material);
 
-			convertTextures(deferredMeshData, meshData);
-
-			modelData.meshes.push_back(meshData);
+			meshes.push_back(meshData);
 		}
+
+		return meshes;
 	}
 
 	Material ModelDataConverter::convertMaterial(const DeferredMaterial& deferredMaterial) {
@@ -38,16 +39,22 @@ namespace otg {
 		material.setSpecular(deferredMaterial.specular);
 		material.setAmbient(deferredMaterial.ambient);
 
+		material.setTextures(convertTextures(deferredMaterial));
+
 		return material;
 	}
 
-	void otg::ModelDataConverter::convertTextures(const DeferredMeshData& deferredMeshData, MeshData& meshData) {
+	std::vector<std::shared_ptr<Texture>> ModelDataConverter::convertTextures(const DeferredMaterial& material) {
 
-		for (const DeferredTexture& deferredTexture : deferredMeshData.texturePaths) {
+		std::vector<std::shared_ptr<Texture>> textures;
+
+		for (const DeferredTexture& deferredTexture : material.texturePaths) {
 
 			std::shared_ptr<TextureImage> image = texRegister.getTexture(deferredTexture.filePath, deferredTexture.type);
-			meshData.material.addTexture(image);
+			textures.push_back(image);
 		}
+
+		return textures;
 	}
 
 }

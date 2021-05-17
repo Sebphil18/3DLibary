@@ -61,27 +61,38 @@ namespace otg {
 			aiMesh* mesh = scene->mMeshes[meshIndex];
 			
 			DeferredMeshData meshData;
-			loadVertices(mesh, meshData);
-			loadIndices(mesh, meshData);
-			loadMaterial(mesh, meshData);
+			meshData.vertices = loadVertices(mesh);
+			meshData.indices = loadIndices(mesh);
+			// TODO: input variable
+			loadMaterial(mesh, meshData.material);
 
 			data.meshes.push_back(meshData);
 		}
 	}
 
-	void ModelLoader::loadVertices(aiMesh* mesh, DeferredMeshData& meshData) {
+	std::vector<Vertex> ModelLoader::loadVertices(aiMesh* mesh) {
+
+		std::vector<Vertex> vertices;
 
 		for (std::uint32_t vertIndex = 0; vertIndex < mesh->mNumVertices; vertIndex++) {
 
-			Vertex vertex = {glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0)};
-			vertex.position = getPosition(vertIndex, mesh);
-			vertex.normal = getNormal(vertIndex, mesh);
-			vertex.texCoord = getTexCoords(vertIndex, mesh);
-
+			Vertex vertex = getVertex(mesh, vertIndex);
 			setTangents(vertIndex, mesh, vertex);
 
-			meshData.vertices.push_back(vertex);
+			vertices.push_back(vertex);
 		}
+
+		return vertices;
+	}
+
+	Vertex ModelLoader::getVertex(aiMesh* mesh, std::uint32_t vertexIndex) {
+
+		Vertex vertex = { glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0) };
+		vertex.position = getPosition(vertexIndex, mesh);
+		vertex.normal = getNormal(vertexIndex, mesh);
+		vertex.texCoord = getTexCoords(vertexIndex, mesh);
+
+		return vertex;
 	}
 
 	glm::vec3 ModelLoader::getPosition(std::uint32_t vertexIndex, aiMesh* mesh) {
@@ -141,55 +152,59 @@ namespace otg {
 		return glm::vec2(aiVec2.x, aiVec2.y);
 	}
 
-	void ModelLoader::loadIndices(aiMesh* mesh, DeferredMeshData& meshData) {
+	std::vector<std::uint32_t> ModelLoader::loadIndices(aiMesh* mesh) {
+
+		std::vector<std::uint32_t> indices;
 
 		for (std::size_t j = 0; j < mesh->mNumFaces; j++) {
 
 			aiFace face = mesh->mFaces[j];
 
 			for (std::size_t index = 0; index < face.mNumIndices; index++)
-				meshData.indices.push_back(face.mIndices[index]);
+				indices.push_back(face.mIndices[index]);
 		}
+
+		return indices;
 	}
 
-	void ModelLoader::loadMaterial(aiMesh* mesh, DeferredMeshData& meshData) {
+	void ModelLoader::loadMaterial(aiMesh* mesh, DeferredMaterial& material) {
 
 		std::uint32_t matIndex = mesh->mMaterialIndex;
 		if (matIndex >= 0) {
 
-			aiMaterial* material = scene->mMaterials[matIndex];
+			aiMaterial* aiMaterial = scene->mMaterials[matIndex];
 
-			loadTextures(aiTextureType_DIFFUSE, material, meshData);
-			loadTextures(aiTextureType_DIFFUSE_ROUGHNESS, material, meshData);
-			loadTextures(aiTextureType_METALNESS, material, meshData);
-			loadTextures(aiTextureType_NORMALS, material, meshData);
+			loadTextures(aiTextureType_DIFFUSE, aiMaterial, material);
+			loadTextures(aiTextureType_DIFFUSE_ROUGHNESS, aiMaterial, material);
+			loadTextures(aiTextureType_METALNESS, aiMaterial, material);
+			loadTextures(aiTextureType_NORMALS, aiMaterial, material);
 
-			loadMaterialProperties(material, meshData);
+			loadMaterialProperties(aiMaterial, material);
 		}
 	}
 
-	void ModelLoader::loadTextures(aiTextureType type, aiMaterial* material, DeferredMeshData& meshData) {
+	void ModelLoader::loadTextures(aiTextureType type, aiMaterial* aiMaterial, DeferredMaterial& material) {
 
-		for (std::uint32_t j = 0; j < material->GetTextureCount(type); j++) {
+		for (std::uint32_t j = 0; j < aiMaterial->GetTextureCount(type); j++) {
 
 			aiString aiPath;
-			material->GetTexture(type, j, &aiPath);
+			aiMaterial->GetTexture(type, j, &aiPath);
 			std::string path(aiPath.C_Str());
 
 			std::cout << "DEBUG::MODELLOADER::Loading texture '" << path << "' from type" << type << " \n";
 
-			meshData.texturePaths.push_back({ path, TextureTypes::ofAiTextureType(type) });
+			material.texturePaths.push_back({ path, TextureTypes::ofAiTextureType(type) });
 		}
 	}
 
-	void ModelLoader::loadMaterialProperties(aiMaterial* material, DeferredMeshData& meshData) {
+	void ModelLoader::loadMaterialProperties(aiMaterial* aiMaterial, DeferredMaterial& material) {
 
-		meshData.material.roughness = getMaterialFloat(material, AI_MATKEY_SHININESS);
-		meshData.material.metallic = getMaterialFloat(material, AI_MATKEY_REFLECTIVITY);
+		material.roughness = getMaterialFloat(aiMaterial, AI_MATKEY_SHININESS);
+		material.metallic = getMaterialFloat(aiMaterial, AI_MATKEY_REFLECTIVITY);
 
-		meshData.material.albedo = getMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE);
-		meshData.material.specular = getMaterialColor(material, AI_MATKEY_COLOR_SPECULAR);
-		meshData.material.ambient = getMaterialColor(material, AI_MATKEY_COLOR_AMBIENT);
+		material.albedo = getMaterialColor(aiMaterial, AI_MATKEY_COLOR_DIFFUSE);
+		material.specular = getMaterialColor(aiMaterial, AI_MATKEY_COLOR_SPECULAR);
+		material.ambient = getMaterialColor(aiMaterial, AI_MATKEY_COLOR_AMBIENT);
 
 	}
 
