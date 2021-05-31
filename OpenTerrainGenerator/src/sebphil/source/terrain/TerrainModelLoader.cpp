@@ -26,10 +26,10 @@ namespace otg {
 	std::vector<Vertex> TerrainModelLoader::getVertices(const Heightmap<float>& heightmap) {
 
 		std::vector<Vertex> vertices;
-		vertices.reserve(dimensions.x * dimensions.y);
+		vertices.reserve(static_cast<std::size_t>(dimensions.x) * dimensions.y);
 
-		for (std::uint32_t x = 0; x < dimensions.x; x++) {
-			for (std::uint32_t z = 0; z < dimensions.y; z++) {
+		for (std::int32_t x = 0; x < dimensions.x; x++) {
+			for (std::int32_t z = 0; z < dimensions.y; z++) {
 
 				Vertex vertex = getVertex({ x, z }, heightmap);
 				vertices.push_back(vertex);
@@ -53,10 +53,10 @@ namespace otg {
 	std::vector<std::uint32_t> TerrainModelLoader::getFaces(const Heightmap<float>& heightmap) {
 
 		std::vector<std::uint32_t> indices;
-		indices.reserve(dimensions.x * dimensions.y);
+		indices.reserve(static_cast<std::size_t>(dimensions.x) * dimensions.y);
 
-		for (std::uint32_t x = 0; x < dimensions.x - 1; x++) {
-			for (std::uint32_t z = 0; z < dimensions.y - 1; z++) {
+		for (std::int32_t x = 0; x < dimensions.x - 1; x++) {
+			for (std::int32_t z = 0; z < dimensions.y - 1; z++) {
 
 				std::uint32_t i = heightmap.getIndex({ x, z });;
 				addFaces(i, dimensions.x, indices);
@@ -82,7 +82,7 @@ namespace otg {
 		std::vector<Vertex>& vertices = meshData.vertices;
 		std::vector<std::uint32_t>& indices = meshData.indices;
 
-		std::uint32_t faces = meshData.indices.size() / 3;
+		std::uint32_t faces = static_cast<std::uint32_t>(meshData.indices.size()) / 3;
 
 		for (std::uint32_t face = 0; face < faces; face++) {
 

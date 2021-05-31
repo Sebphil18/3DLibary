@@ -7,7 +7,7 @@ namespace otg {
 		position(glm::vec3(0, 0, 5)),
 		target(glm::vec3(0, 0, 0)),
 		fov(65), near(0.01), far(1000),
-		movementSpeed(1), sensitivity(0.5),
+		movementSpeed(1), sensitivity(0.005),
 		dimensions(1200, 800)
 	{
 		init();
@@ -17,9 +17,8 @@ namespace otg {
 		position(glm::vec3(0, 0, 5)),
 		target(glm::vec3(0, 0, 0)),
 		fov(65), near(0.01), far(1000),
-		movementSpeed(1), sensitivity(0.5),
-		dimensions(dimensions)
-	{
+		movementSpeed(1), sensitivity(0.005),
+		dimensions(dimensions) 	{
 		init();
 	}
 
@@ -27,7 +26,7 @@ namespace otg {
 		position(position),
 		target(glm::vec3(0, 0, 0)),
 		fov(65), near(0.01), far(1000),
-		movementSpeed(1), sensitivity(0.5),
+		movementSpeed(1), sensitivity(0.005),
 		dimensions(dimensions)
 	{
 		init();

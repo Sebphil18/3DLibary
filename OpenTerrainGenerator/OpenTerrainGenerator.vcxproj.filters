@@ -30,9 +30,6 @@
     <ClCompile Include="src\sebphil\source\application\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\sebphil\source\application\RenderLoop.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\sebphil\source\application\FrameClock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -171,6 +168,12 @@
     <ClCompile Include="src\sebphil\source\material\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sebphil\source\application\VirtualScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\lighting\SkyBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sebphil\header\application\Application.h">
@@ -183,9 +186,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\sebphil\header\application\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sebphil\header\application\RenderLoop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\sebphil\header\application\FrameClock.h">
@@ -329,9 +329,6 @@
     <ClInclude Include="src\sebphil\header\lighting\SkyBoxReflectionProbe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\sebphil\header\camera\MoveableCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\sebphil\header\camera\OrbitCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -345,6 +342,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\sebphil\header\material\Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\application\VirtualScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\lighting\SkyBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\modelstructure\LoadRegister.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\application\Mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

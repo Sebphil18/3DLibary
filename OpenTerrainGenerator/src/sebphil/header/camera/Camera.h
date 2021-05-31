@@ -23,7 +23,7 @@ namespace otg {
 		void setMovementSpeed(float movementSpeed);
 		void setSensitivity(float sensitivity);
 
-		virtual void move(glm::vec2 offset, float frameTime) {};
+		virtual void move(glm::vec2 offset) {};
 		virtual void moveLeft(float frameTime);
 		virtual void moveRight(float frameTime);
 		virtual void moveDown(float frameTime);

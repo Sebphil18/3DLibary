@@ -84,7 +84,6 @@ namespace otg {
 
 		glGenerateTextureMipmap(glHandle);
 		glTextureParameteri(glHandle, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTextureParameteri(glHandle, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	}
 
 	CubeMapArray::CubeMapArray(CubeMapArray&& other) noexcept :

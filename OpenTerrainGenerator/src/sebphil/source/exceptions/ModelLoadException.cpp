@@ -3,7 +3,7 @@
 namespace otg {
 
 	ModelLoadException::ModelLoadException(const ModelLoader& loader) {
-		msg = "ERROR::MODELLOADER::Coult not load model/scene '" + loader.getFilePath() + "'!";
+		msg = "ERROR::MODELLOADER::Could not load model/scene '" + loader.getFilePath() + "'!";
 	}
 
 	const char* ModelLoadException::what() const {

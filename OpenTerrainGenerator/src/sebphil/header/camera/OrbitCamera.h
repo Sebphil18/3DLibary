@@ -1,6 +1,5 @@
 #pragma once
 #include "Camera.h"
-#include "MoveableCamera.h"
 
 namespace otg {
 
@@ -16,7 +15,7 @@ namespace otg {
 
 		void setMiddlePoint(glm::vec3 middlePoint);
 
-		void move(glm::vec2 offset, float frameTime) override;
+		void move(glm::vec2 offset) override;
 		void moveRight(float frameTime) override;
 		void moveUp(float frameTime) override;
 		void moveForward(float delta) override;

@@ -4,9 +4,6 @@ layout(location = 0) in vec3 vPosition;
 
 out vec2 fLocalPos;
 
-uniform mat4 view;
-uniform mat4 projection;
-
 void main() {
     
     vec2 mappedPos = vec2(vPosition.x, vPosition.y);

@@ -9,7 +9,7 @@ layout(location = 4) in vec2 texCoord;
 uniform vec3 viewPos;
 uniform vec3 lightPos;
 
-layout(std140) uniform Matrices {
+layout(binding = 0, std140) uniform Matrices {
 	mat4 worldMat;
 	mat4 normalMat;
 	mat4 viewMat;

@@ -9,8 +9,10 @@ namespace otg {
 
 	struct DeferredMaterial {
 
-		float roughness, metallic, occlusion;
-		glm::vec3 albedo, specular, ambient;
+		float roughness = 0.5, metallic = 0.5, occlusion = 1;
+		glm::vec3 albedo = glm::vec3(0);
+		glm::vec3 specular = glm::vec3(0);
+		glm::vec3 ambient = glm::vec3(0);
 		std::vector<DeferredTexture> texturePaths;
 	};
 
@@ -23,12 +25,12 @@ namespace otg {
 		void addTexture(const std::shared_ptr<Texture>& texture);
 		void removeTexture(std::size_t index);
 		void clearTextures();
-		std::shared_ptr<Texture> getTexture(std::size_t index);
+		std::shared_ptr<Texture> loadTexture(std::size_t index);
 
 		void setUniforms(ShaderProgram& program);
 		void bindTexture(ShaderProgram& program);
 		void unbindTextures(ShaderProgram& program);
-		void setTextures(const std::vector<std::shared_ptr<Texture>>& textures);
+		void bindTextures(const std::vector<std::shared_ptr<Texture>>& textures);
 
 		void setMetallic(float metallic);
 		void setRoughness(float roguhness);

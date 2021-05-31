@@ -52,12 +52,10 @@ namespace otg {
 		updatePosition();
 	}
 
-	void OrbitCamera::move(glm::vec2 offset, float frameTime) {
-		
-		float scaling = sensitivity * frameTime;
+	void OrbitCamera::move(glm::vec2 offset) {
 
-		moveRight(offset.x * scaling);
-		moveUp(offset.y * scaling);
+		moveRight(offset.x * sensitivity);
+		moveUp(offset.y * sensitivity);
 
 		updatePosition();
 	}

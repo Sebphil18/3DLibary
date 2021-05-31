@@ -39,7 +39,7 @@ namespace otg {
 		material.setSpecular(deferredMaterial.specular);
 		material.setAmbient(deferredMaterial.ambient);
 
-		material.setTextures(convertTextures(deferredMaterial));
+		material.bindTextures(convertTextures(deferredMaterial));
 
 		return material;
 	}
@@ -50,7 +50,7 @@ namespace otg {
 
 		for (const DeferredTexture& deferredTexture : material.texturePaths) {
 
-			std::shared_ptr<TextureImage> image = texRegister.getTexture(deferredTexture.filePath, deferredTexture.type);
+			std::shared_ptr<TextureImage> image = texRegister.loadTexture(deferredTexture.filePath, deferredTexture.type);
 			textures.push_back(image);
 		}
 

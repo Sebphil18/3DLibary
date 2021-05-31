@@ -22,7 +22,7 @@
     <ClCompile Include="OpenTerrainGenerator.cpp" />
     <ClCompile Include="src\sebphil\source\application\Application.cpp" />
     <ClCompile Include="src\sebphil\source\application\FrameClock.cpp" />
-    <ClCompile Include="src\sebphil\source\application\RenderLoop.cpp" />
+    <ClCompile Include="src\sebphil\source\application\VirtualScreen.cpp" />
     <ClCompile Include="src\sebphil\source\application\Window.cpp" />
     <ClCompile Include="src\sebphil\source\camera\Camera.cpp" />
     <ClCompile Include="src\sebphil\source\camera\FpsCamera.cpp" />
@@ -60,6 +60,7 @@
     <ClCompile Include="src\sebphil\source\globjects\VertexBufferLayout.cpp" />
     <ClCompile Include="src\sebphil\source\io\FileReader.cpp" />
     <ClCompile Include="src\sebphil\source\lighting\HDRTextureCube.cpp" />
+    <ClCompile Include="src\sebphil\source\lighting\SkyBox.cpp" />
     <ClCompile Include="src\sebphil\source\lighting\SkyBoxLightProbe.cpp" />
     <ClCompile Include="src\sebphil\source\lighting\SkyBoxReflectionProbe.cpp" />
     <ClCompile Include="src\sebphil\source\material\Material.cpp" />
@@ -75,10 +76,10 @@
   <ItemGroup>
     <ClInclude Include="src\sebphil\header\application\Application.h" />
     <ClInclude Include="src\sebphil\header\application\FrameClock.h" />
-    <ClInclude Include="src\sebphil\header\application\RenderLoop.h" />
+    <ClInclude Include="src\sebphil\header\application\Mouse.h" />
+    <ClInclude Include="src\sebphil\header\application\VirtualScreen.h" />
     <ClInclude Include="src\sebphil\header\application\Window.h" />
     <ClInclude Include="src\sebphil\header\camera\FpsCamera.h" />
-    <ClInclude Include="src\sebphil\header\camera\MoveableCamera.h" />
     <ClInclude Include="src\sebphil\header\camera\OrbitCamera.h" />
     <ClInclude Include="src\sebphil\header\debugflags\DebugFlags.h" />
     <ClInclude Include="src\sebphil\header\exceptions\ApplicationException.h" />
@@ -114,10 +115,12 @@
     <ClInclude Include="src\sebphil\header\exceptions\FileInputException.h" />
     <ClInclude Include="src\sebphil\header\io\Image.h" />
     <ClInclude Include="src\sebphil\header\lighting\HDRTextureCube.h" />
+    <ClInclude Include="src\sebphil\header\lighting\SkyBox.h" />
     <ClInclude Include="src\sebphil\header\lighting\SkyBoxReflectionProbe.h" />
     <ClInclude Include="src\sebphil\header\lighting\SkyBoxLightProbe.h" />
     <ClInclude Include="src\sebphil\header\material\Material.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\CubeData.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\LoadRegister.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Mesh.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Model.h" />
     <ClInclude Include="src\sebphil\header\globjects\TextureType.h" />
@@ -251,14 +254,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Projekte\GLFW\glfw-3.3.2.bin.WIN64\include;D:\Projekte\Glad\include;D:\Projekte\Assimp\include;D:\Projekte\GLM\glm;src\sebphil\header;D:\Projekte\GitRepos;src\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projekte\GLFW\glfw-3.3.2.bin.WIN64\include;D:\Projekte\Glad\include;D:\Projekte\GitRepos\Assimp\assimp\include;D:\Projekte\GitRepos\GLM\glm;src\sebphil\header;src\vendor;D:\Projekte\GitRepos;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\Projekte\GLFW\glfw-3.3.2.bin.WIN64\lib-vc2019;D:\Projekte\Assimp\libary;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Projekte\GitRepos\GLFW\build\src\Release;D:\Projekte\GitRepos\Assimp\build\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -269,13 +272,18 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>D:\Projekte\GLFW\glfw-3.3.2.bin.WIN64\include;D:\Projekte\Glad\include;D:\Projekte\GitRepos\Assimp\assimp\include;D:\Projekte\GitRepos\GLM\glm;src\sebphil\header;src\vendor;D:\Projekte\GitRepos;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\Projekte\GitRepos\GLFW\build\src\Release;D:\Projekte\GitRepos\Assimp\build\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

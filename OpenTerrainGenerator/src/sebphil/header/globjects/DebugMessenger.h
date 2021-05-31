@@ -3,7 +3,7 @@
 #include <string>
 #include "glad/glad.h"
 
-// This is not nice to read but this signature isn't either :/
+// This is not nice to read but this signature is worse
 #define SEB_GL_MSG_CALLBACK_FUNC_PTR void (*glMessageCallback)(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 
 namespace otg {

@@ -10,7 +10,7 @@ namespace otg {
 		FpsCamera(glm::ivec2 dimensions);
 		FpsCamera(glm::ivec2 dimensions, glm::vec3 position);
 		
-		void move(glm::vec2 offsets, float frameTime) override;
+		void move(glm::vec2 offsets) override;
 		void moveForward(float frameTime) override;
 
 	private:

@@ -1,6 +1,7 @@
 #include "globjects/ShaderProgram.h"
 #include "glad/glad.h"
 #include "exceptions/ProgramBuildException.h"
+#include "exceptions/UniformBufferException.h"
 
 namespace otg {
 
@@ -48,7 +49,7 @@ namespace otg {
 			glAttachShader(glHandle, shaderHandle);
 	}
 
-	void otg::ShaderProgram::buildExecutable() {
+	void ShaderProgram::buildExecutable() {
 
 		try {
 
@@ -81,10 +82,10 @@ namespace otg {
 		glValidateProgram(glHandle);
 
 		if (validationFailed())
-			throw otg::ProgramBuildException(glHandle);
+			throw ProgramBuildException(glHandle);
 	}
 
-	bool otg::ShaderProgram::validationFailed() {
+	bool ShaderProgram::validationFailed() {
 
 		std::int32_t isValid;
 		glGetProgramiv(glHandle, GL_VALIDATE_STATUS, &isValid);
@@ -98,12 +99,38 @@ namespace otg {
 			glDetachShader(glHandle, shaderHandle);
 	}
 
-	otg::ShaderProgram::~ShaderProgram() {
+	ShaderProgram::~ShaderProgram() {
 		glDeleteProgram(glHandle);
 	}
 
-	void otg::ShaderProgram::use() const {
+	void ShaderProgram::use() const {
 		glUseProgram(glHandle);
+	}
+
+	void ShaderProgram::setUniformBlockBinding(std::uint32_t index, std::uint32_t bindingPoint) {
+		glUniformBlockBinding(glHandle, index, bindingPoint);
+	}
+
+	void ShaderProgram::setUniformBlockBinding(const std::string& blockName, std::uint32_t bindingPoint) {
+
+		std::uint32_t index = getBlockIndex(blockName);
+		glUniformBlockBinding(glHandle, index, bindingPoint);
+	}
+
+	std::uint32_t ShaderProgram::getBlockIndex(const std::string& blockName) {
+
+		std::uint32_t index = glGetUniformBlockIndex(glHandle, blockName.c_str());
+
+		try {
+
+			if (index == GL_INVALID_INDEX)
+				throw UniformBufferException(blockName);
+
+		} catch (const UniformBufferException& exception) {
+			std::cout << exception.what() << "\n";
+		}
+
+		return index;
 	}
 
 }

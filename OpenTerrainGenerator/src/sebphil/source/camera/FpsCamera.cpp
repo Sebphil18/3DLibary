@@ -39,7 +39,7 @@ namespace otg {
 		updateViewMatrix();
 	}
 
-	void FpsCamera::move(glm::vec2 offsets, float frameTime) {
+	void FpsCamera::move(glm::vec2 offsets) {
 
 		angles.x += offsets.y * sensitivity;
 		angles.y += offsets.x * sensitivity;

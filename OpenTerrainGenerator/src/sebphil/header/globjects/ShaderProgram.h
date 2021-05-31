@@ -18,6 +18,9 @@ namespace otg {
 
 		void use() const;
 
+		void setUniformBlockBinding(std::uint32_t index, std::uint32_t bindingPoint);
+		void setUniformBlockBinding(const std::string& blockName, std::uint32_t bindingPoint);
+
 	private:
 		std::vector<uint32_t> shaderHandles;
 
@@ -33,6 +36,8 @@ namespace otg {
 
 		void validateProgram();
 		bool validationFailed();
+
+		std::uint32_t getBlockIndex(const std::string& blockName);
 
 	};
 

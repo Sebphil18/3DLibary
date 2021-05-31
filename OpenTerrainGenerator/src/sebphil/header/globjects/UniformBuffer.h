@@ -29,7 +29,7 @@ namespace otg{
 		void addElement(const UniformElement& element);
 		void setElementData(std::uint32_t index, void* data);
 
-		void bindTo(ShaderProgram& program, const std::string& blockName, std::uint32_t bindingPoint);
+		void bindTo(std::uint32_t bindingPoint);
 
 	private:
 		std::uint32_t size;
@@ -41,9 +41,6 @@ namespace otg{
 		void adjustBuffer();
 		void adjustMemory();
 		void fillBuffer();
-
-		std::uint32_t getBlockIndex(const ShaderProgram& program, const std::string& blockName);
-
 	};
 
 }

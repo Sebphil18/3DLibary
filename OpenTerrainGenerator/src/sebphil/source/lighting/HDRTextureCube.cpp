@@ -22,9 +22,9 @@ namespace otg {
 
 	void HDRTextureCube::draw(ShaderProgram& program, std::uint32_t face) {
 
-		texture->bindToUnit(0);
+		texture->bindToUnit(9);
 
-		program.setUniform("equirectangularMap", 0);
+		program.setUniform("equirectangularMap", 9);
 		program.setUniformMat("projection", projection);
 		program.setUniformMat("view", view[face]);
 

@@ -19,6 +19,13 @@ namespace otg {
 
 		~MultisampleTexture() noexcept;
 
+		/// <summary>
+		/// This function will resize this texture, 
+		/// i.e. the original TEXTURE OBJECT WILL BE DESTROYED and a new one will be created.
+		/// Because of this the texture has to be reattached to all framebuffers after it got resized.
+		/// </summary>
+		/// <param name="width">of texture</param>
+		/// <param name="height">of texture</param>
 		void setSize(std::int32_t width, std::int32_t height);
 
 	private:

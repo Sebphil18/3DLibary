@@ -11,7 +11,8 @@ namespace otg {
 	std::unordered_map<GLFWwindow*, WindowScrollCallback> Window::scrollCallbacks;
 
 	Window::Window(const std::string& title, int width, int height) :
-		title(title), width(width), height(height) {
+		title(title), width(width), height(height) 
+	{
 		setWindowHints();
 		generateWindow();
 
@@ -26,7 +27,6 @@ namespace otg {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, SEB_DEBUG_MODE);
-		glfwWindowHint(GLFW_SAMPLES, 4);
 
 		glfwWindowHint(GLFW_DOUBLEBUFFER, true);
 	}

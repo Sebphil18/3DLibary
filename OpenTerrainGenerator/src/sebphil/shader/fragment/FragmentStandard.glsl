@@ -5,7 +5,7 @@
 out vec4 color;
 
 struct Material {
-
+	
 	sampler2D albedoTex0;
 	sampler2D roughnessTex0;
 	sampler2D metallicTex0;
@@ -27,6 +27,7 @@ uniform samplerCubeArray prefilterMap;
 uniform sampler2D brdf;
 
 in VertexData {
+
 	vec3 position;
 	vec3 normal;
 	vec2 texCoord;
@@ -51,9 +52,11 @@ vec3 fresnelSchlickRough(vec3 viewDir, vec3 halfway, vec3 f0, float roughness);
 void main() {
 
 	const vec3 lightColor = vec3(1, 1, 1);
-	//vec3 normal = normalize(vertexIn.normal);
-	vec3 normal = texture(material.normalTex0, vertexIn.texCoord).rgb;
-	normal = normalize(normal * 2 - 1);
+	vec3 normalTex = texture(material.normalTex0, vertexIn.texCoord).rgb;
+	vec3 normal = normalize(normalTex * 2 - 1);
+
+	if(normalTex == vec3(0))
+		normal = vec3(0, 0, 1);
 
 	// standard
 	vec3 texColor = texture(material.albedoTex0, vertexIn.texCoord).rgb;
@@ -136,7 +139,6 @@ void main() {
 
 	// combine
 	vec3 ambientColor = (kDAmb * diffuseAmb + specIBL) * occlusion;
-	//ambientColor = vec3(0);
 
 	color = vec4(L0 + ambientColor, 1);
 	//color = texture(material.normalTex0, vertexIn.texCoord);
@@ -190,10 +192,6 @@ vec3 fresnelSchlick(vec3 viewDir, vec3 halfway, vec3 f0) {
 }
 
 vec3 fresnelSchlickRough(vec3 viewDir, vec3 halfway, vec3 f0, float roughness) {
-	
-	/*
-	return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(max(1.0 - cosTheta, 0.0), 5.0);
-	*/
 
 	// when angle between viewDir and halfway is 90° most light gets reflacted and when angle is 0° no Light gets reflacted back to the observer
 	float reflectiveAngle = max(dot(halfway, viewDir), 0);

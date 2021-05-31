@@ -1,7 +1,5 @@
 #include "globjects/UniformBuffer.h"
-#include <iostream>
 #include "glad/glad.h"
-#include "exceptions/UniformBufferException.h"
 
 namespace otg {
 
@@ -102,28 +100,8 @@ namespace otg {
 		glNamedBufferSubData(glHandle, element.offset, element.size, element.data);
 	}
 
-	void UniformBuffer::bindTo(ShaderProgram& program, const std::string& blockName, std::uint32_t bindingPoint) {
-
-		std::uint32_t index = getBlockIndex(program, blockName);
-		
-		glUniformBlockBinding(program.getGlHandle(), index, bindingPoint);
-		glBindBufferBase(GL_UNIFORM_BUFFER, index, glHandle);
-	}
-
-	std::uint32_t otg::UniformBuffer::getBlockIndex(const ShaderProgram& program, const std::string& blockName) {
-
-		std::uint32_t index = glGetUniformBlockIndex(program.getGlHandle(), blockName.c_str());
-
-		try {
-
-			if (index == GL_INVALID_INDEX)
-				throw UniformBufferException(blockName);
-
-		} catch (const UniformBufferException& exception) {
-			std::cout << exception.what() << "\n";
-		}
-
-		return index;
+	void UniformBuffer::bindTo(std::uint32_t bindingPoint) {
+		glBindBufferBase(GL_UNIFORM_BUFFER, bindingPoint, glHandle);
 	}
 
 }
