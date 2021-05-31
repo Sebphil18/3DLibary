@@ -5,3 +5,4 @@ packages
 OpenTerrainGenerator.sln
 assimp-vc142-mtd.dll
 rec/
+OpenTerrainGenerator/src/vendor
