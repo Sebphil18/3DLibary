@@ -206,19 +206,19 @@ void addTerrain() {
 	material.setAlbedo(glm::vec3(0, 0, 0));
 
 	std::shared_ptr<otg::TextureImage> albedoMap = std::make_shared<otg::TextureImage>(
-		"rec/textures/grass/Albedo.png", otg::TextureType::Albedo);
+		"rec/textures/ground/Albedo.png", otg::TextureType::Albedo);
 	material.addTexture(albedoMap);
 
 	std::shared_ptr<otg::TextureImage> roughnessMap = std::make_shared<otg::TextureImage>(
-		"rec/textures/grass/Roughness.png", otg::TextureType::Roughness);
+		"rec/textures/ground/Roughness.png", otg::TextureType::Roughness);
 	material.addTexture(roughnessMap);
 
 	std::shared_ptr<otg::TextureImage> metallicMap = std::make_shared<otg::TextureImage>(
-		"rec/textures/grass/Metallic.png", otg::TextureType::Metallic);
+		"rec/textures/ground/Metallic.png", otg::TextureType::Metallic);
 	material.addTexture(metallicMap);
 
 	std::shared_ptr<otg::TextureImage> normalMap = std::make_shared<otg::TextureImage>(
-		"rec/textures/grass/Normal.png", otg::TextureType::Normal
+		"rec/textures/ground/Normal.png", otg::TextureType::Normal
 		);
 	material.addTexture(normalMap);
 
@@ -247,9 +247,9 @@ void addTerrain() {
 void addPreviewModel() {
 
 	otg::Material testMat;
-	testMat.setAlbedo(glm::vec3(0, 1, 1));
-	testMat.setRoughness(0.1);
-	testMat.setMetallic(0.8);
+	testMat.setAlbedo(glm::vec3(1, 1, 1));
+	testMat.setRoughness(0.3);
+	testMat.setMetallic(0.9);
 
 	otg::ModelLoader loader("rec/shapes/sphere/Sphere.obj");
 	std::shared_ptr<otg::Model> model = std::make_shared<otg::Model>(loader.getData());
@@ -300,7 +300,7 @@ void addPrograms() {
 
 otg::CubeMapArray getEnvMap() {
 
-	std::shared_ptr<otg::HDRTexture> equiRectTexture = std::make_shared<otg::HDRTexture>("rec/textures/hdr/outdoor/Sunrise.hdr");
+	std::shared_ptr<otg::HDRTexture> equiRectTexture = std::make_shared<otg::HDRTexture>("rec/textures/hdr/outdoor/Night.hdr");
 
 	otg::CubeMapArray envMap({ 512, 512 });
 	envMap.fromEquirectengular(equiRectTexture, *programs["equirectConv"]);

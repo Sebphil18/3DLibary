@@ -35,7 +35,7 @@ void main() {
 	vec3 reflectionDir = normal;
 	vec3 viewDir = normal;
 
-	const uint sampleCount = 4096u;
+	const uint sampleCount = 24576u;
 
 	float totalWeight = 0;
 	vec3 irradiance = vec3(0);

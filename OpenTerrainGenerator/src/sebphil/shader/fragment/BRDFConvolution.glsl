@@ -40,7 +40,7 @@ vec2 integrateBRDF(float NdotV, float roughness) {
 	viewDir.z = NdotV;
 
 	// integrate with Monte-Carlo
-	const uint sampleCount = 1024;
+	const uint sampleCount = 2048;
 	float x = 0;
 	float y = 0;
 

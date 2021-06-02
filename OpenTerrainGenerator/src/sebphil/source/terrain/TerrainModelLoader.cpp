@@ -45,7 +45,7 @@ namespace otg {
 
 		Vertex vertex;
 		vertex.position = { position.x, y, position.y };
-		vertex.texCoord = position * 0.2f;
+		vertex.texCoord = position * 0.1f;
 
 		return vertex;
 	}

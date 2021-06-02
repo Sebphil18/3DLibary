@@ -3,8 +3,8 @@
 namespace otg {
 	
 	Material::Material() :
-		roughness(0.5), metallic(0.5), occlusion(1),
-		albedo(1, 0, 1), specular(1, 1, 0), ambient(0, 1, 1)
+		roughness(0), metallic(0), occlusion(1),
+		albedo(0, 0, 0), specular(0, 0, 0), ambient(0, 0, 0)
 	{
 	}
 
