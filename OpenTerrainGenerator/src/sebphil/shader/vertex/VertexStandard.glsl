@@ -25,6 +25,7 @@ out VertexData {
 	vec3 tbnLightPos;
 	vec3 viewPos;
 	mat3 tbnMatrix;
+	vec3 normal2;
 } vertexOut;
 
 void main() {
@@ -52,4 +53,5 @@ void main() {
 	vertexOut.texCoord = texCoord;
 	vertexOut.viewPos = viewPos;
 	vertexOut.tbnMatrix = tbnMat;
+	vertexOut.normal2 = vTangent;
 }

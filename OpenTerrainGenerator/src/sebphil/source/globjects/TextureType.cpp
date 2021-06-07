@@ -30,6 +30,9 @@ namespace otg {
 		case aiTextureType_DIFFUSE_ROUGHNESS:
 			return TextureType::Roughness;
 
+		case aiTextureType_REFLECTION:
+			return TextureType::Roughness;
+
 		case aiTextureType_SPECULAR:
 			return TextureType::Roughness;
 
@@ -43,6 +46,9 @@ namespace otg {
 			return TextureType::Displacement;
 
 		case aiTextureType_NORMALS:
+			return TextureType::Normal;
+
+		case aiTextureType_HEIGHT:
 			return TextureType::Normal;
 
 		default:

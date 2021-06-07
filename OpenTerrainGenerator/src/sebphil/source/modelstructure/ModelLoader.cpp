@@ -26,7 +26,7 @@ namespace otg {
 		std::scoped_lock<std::mutex> lock(loadingLock);
 
 		Assimp::Importer importer;
-		scene = importer.ReadFile(filePath, aiProcessPreset_TargetRealtime_Quality | aiProcess_CalcTangentSpace | aiProcess_FlipUVs);
+		scene = importer.ReadFile(filePath, aiProcessPreset_TargetRealtime_Quality);
 
 		tryLoadModel(importer);
 	}
@@ -121,6 +121,7 @@ namespace otg {
 	}
 
 	glm::vec3 ModelLoader::getTangent(std::uint32_t vertexIndex, aiMesh* mesh) {
+
 		aiVector3D tangent = mesh->mTangents[vertexIndex];
 
 		return convertVector(tangent);
@@ -167,6 +168,7 @@ namespace otg {
 		return indices;
 	}
 
+	// TODO: textureTypes
 	void ModelLoader::loadMaterial(aiMesh* mesh, DeferredMaterial& material) {
 
 		std::uint32_t matIndex = mesh->mMaterialIndex;
@@ -175,9 +177,10 @@ namespace otg {
 			aiMaterial* aiMaterial = scene->mMaterials[matIndex];
 
 			loadTextures(aiTextureType_DIFFUSE, aiMaterial, material);
-			loadTextures(aiTextureType_DIFFUSE_ROUGHNESS, aiMaterial, material);
 			loadTextures(aiTextureType_METALNESS, aiMaterial, material);
 			loadTextures(aiTextureType_NORMALS, aiMaterial, material);
+			loadTextures(aiTextureType_HEIGHT, aiMaterial, material);
+			loadTextures(aiTextureType_DIFFUSE_ROUGHNESS, aiMaterial, material);
 
 			loadMaterialProperties(aiMaterial, material);
 		}

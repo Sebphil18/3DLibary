@@ -36,6 +36,7 @@ in VertexData {
 	vec3 tbnLightPos;
 	vec3 viewPos;
 	mat3 tbnMatrix;
+	vec3 normal2;
 } vertexIn;
 
 float distributionGGX(vec3 normal, vec3 halfway, float roughness);
@@ -76,7 +77,7 @@ void main() {
 //	metallic = 0.99;
 //	normal = vec3(0, 0, 1);
 	
-	occlusion = 1;
+	occlusion = material.occlusion + texOcclusion;
 
 	vec3 viewDir = normalize(vertexIn.tbnViewPos - vertexIn.tbnPosition);
 	vec3 L0 = vec3(0);
@@ -142,6 +143,7 @@ void main() {
 
 	color = vec4(L0 + ambientColor, 1);
 	//color = texture(material.normalTex0, vertexIn.texCoord);
+	//color = vec4(vertexIn.normal2, 1);
 }
 
 float distributionGGX(vec3 normal, vec3 halfway, float roughness) {
@@ -195,6 +197,7 @@ vec3 fresnelSchlickRough(vec3 viewDir, vec3 halfway, vec3 f0, float roughness) {
 
 	// when angle between viewDir and halfway is 90° most light gets reflacted and when angle is 0° no Light gets reflacted back to the observer
 	float reflectiveAngle = max(dot(halfway, viewDir), 0);
+	reflectiveAngle = clamp(reflectiveAngle, 0.0, 1.0);
 	vec3 result = f0 + (max(vec3(1 - roughness), f0) - f0) * pow(max(1 - reflectiveAngle, 0), 5);
 
 	return result;

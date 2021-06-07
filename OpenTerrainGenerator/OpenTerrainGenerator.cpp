@@ -241,21 +241,100 @@ void addTerrain() {
 	terrainModel->meshes[0].setMaterial(material);
 	terrainModel->setPosition({ -size / 2, -1, -size / 2 });
 
-	models.push_back(terrainModel);
+	//models.push_back(terrainModel);
 }
 
 void addPreviewModel() {
 
-	otg::Material testMat;
-	testMat.setAlbedo(glm::vec3(1, 1, 1));
-	testMat.setRoughness(0.3);
-	testMat.setMetallic(0.9);
+	// orange
+	otg::Material orange;
+	orange.setOcclusion(0);
+	std::shared_ptr<otg::TextureImage> albedoMap = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/Orange_Base_Color.jpg", otg::TextureType::Albedo);
+	orange.addTexture(albedoMap);
 
-	otg::ModelLoader loader("rec/shapes/sphere/Sphere.obj");
+	std::shared_ptr<otg::TextureImage> normalMap = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/Orange_Normal_OpenGL.jpg", otg::TextureType::Normal);
+	orange.addTexture(normalMap);
+
+	std::shared_ptr<otg::TextureImage> roughnessMap = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/Orange_Roughness.jpg", otg::TextureType::Roughness);
+	orange.addTexture(roughnessMap);
+
+	std::shared_ptr<otg::TextureImage> metallicMap = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/Orange_Metallic.jpg", otg::TextureType::Roughness);
+	orange.addTexture(metallicMap);
+
+	std::shared_ptr<otg::TextureImage> aoMap = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/Orange_Mixed_AO.jpg", otg::TextureType::Occlusion);
+	orange.addTexture(aoMap);
+	
+	// black
+	otg::Material black;
+	black.setOcclusion(0);
+	std::shared_ptr<otg::TextureImage> albedoMapBlack = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/Black_Base_Color.jpg", otg::TextureType::Albedo);
+	black.addTexture(albedoMapBlack);
+
+	std::shared_ptr<otg::TextureImage> normalMapBlack = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/Black_Normal_OpenGL.jpg", otg::TextureType::Normal);
+	black.addTexture(normalMapBlack);
+
+	std::shared_ptr<otg::TextureImage> roughnessMapBlack = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/Black_Roughness.jpg", otg::TextureType::Roughness);
+	black.addTexture(roughnessMapBlack);
+
+	std::shared_ptr<otg::TextureImage> metallicMapBlack = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/Black_Metallic.jpg", otg::TextureType::Roughness);
+	black.addTexture(metallicMapBlack);
+
+	std::shared_ptr<otg::TextureImage> aoMapBlack = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/Black_Mixed_AO.jpg", otg::TextureType::Occlusion);
+	black.addTexture(aoMapBlack);
+
+	//white
+	otg::Material white;
+	std::shared_ptr<otg::TextureImage> albedoMapWhite = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/White_Base_Color.jpg", otg::TextureType::Albedo);
+	white.addTexture(albedoMapWhite);
+
+	std::shared_ptr<otg::TextureImage> normalMapWhite = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/White_Normal_OpenGL.jpg", otg::TextureType::Normal);
+	white.addTexture(normalMapWhite);
+
+	std::shared_ptr<otg::TextureImage> roughnessMapWhite = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/White_Roughness.jpg", otg::TextureType::Roughness);
+	white.addTexture(roughnessMapWhite);
+
+	std::shared_ptr<otg::TextureImage> metallicMapWhite = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/White_Metallic.jpg", otg::TextureType::Roughness);
+	white.addTexture(metallicMapWhite);
+
+	//black2;
+	otg::Material black2;
+	black2.setAlbedo(glm::vec3(0, 0, 0));
+	black2.setRoughness(0.11);
+	black2.setMetallic(0.5);
+
+	std::shared_ptr<otg::TextureImage> face = std::make_shared<otg::TextureImage>(
+		"rec/shapes/bot/Textures/Faces2.jpg", otg::TextureType::Albedo);
+	black2.addTexture(face);
+
+	otg::ModelLoader loader("rec/shapes/bot/BotObj.obj");
 	std::shared_ptr<otg::Model> model = std::make_shared<otg::Model>(loader.getData());
 
-	model->meshes[0].setMaterial(testMat);
+	model->meshes[0].setMaterial(orange);
+	model->meshes[1].setMaterial(black);
+	model->meshes[2].setMaterial(white);
+	model->meshes[3].setMaterial(black2);
 	models.push_back(model);
+
+	otg::ModelLoader planeLoader("rec/shapes/plane/Plane.obj");
+	std::shared_ptr<otg::Model> plane = std::make_shared<otg::Model>(planeLoader.getData());
+	plane->setScale(glm::vec3(10, 10, 10));
+	plane->setPosition(glm::vec3(0, -5, 0));
+	models.push_back(plane);
+
 }
 
 void addPrograms() {
@@ -300,7 +379,7 @@ void addPrograms() {
 
 otg::CubeMapArray getEnvMap() {
 
-	std::shared_ptr<otg::HDRTexture> equiRectTexture = std::make_shared<otg::HDRTexture>("rec/textures/hdr/outdoor/Night.hdr");
+	std::shared_ptr<otg::HDRTexture> equiRectTexture = std::make_shared<otg::HDRTexture>("rec/textures/hdr/outdoor/Sunrise.hdr");
 
 	otg::CubeMapArray envMap({ 512, 512 });
 	envMap.fromEquirectengular(equiRectTexture, *programs["equirectConv"]);

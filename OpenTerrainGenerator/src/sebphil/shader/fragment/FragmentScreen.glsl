@@ -22,7 +22,7 @@ void main() {
 	vec4 mapped = vec4(1) - exp(-texColor * exposure);
 
 	// Gamma-Correction
-	const float gamma = 2.2;
+	const float gamma = 1.5;
 	mapped = pow(mapped, vec4(1 / gamma));
 
 	color = mapped;
