@@ -16,6 +16,7 @@
 #include "application/FrameClock.h"
 #include "application/Window.h"
 #include "application/VirtualScreen.h"
+#include "application/Mouse.h"
 
 #include "globjects/VertexBuffer.h"
 #include "globjects/IndexBuffer.h"
@@ -80,19 +81,8 @@ static void draw(otg::VirtualScreen& virtualScreen, const otg::Camera& cam, otg:
 static void drawModels(otg::UniformBuffer& matrices);
 static void drawModel(std::shared_ptr<otg::Model>& model, otg::UniformBuffer& matrices);
 
-static glm::vec2 lastMousePos(-1, -1);
-static glm::ivec2 scrollOffset(0, 0);
-
-static void processInput(const otg::Window& window, otg::Camera& camera, float frameTime);
 static void processKeyInput(const otg::Window& window, otg::Camera& camera, float frameTime);
 
-static void processMouseInput(const otg::Window& window, otg::Camera& camera, float frameTime);
-glm::vec2 getCurrenCursorPos(GLFWwindow* windowPtr);
-glm::vec2 getCursorPosDelta(glm::vec2 currentPos);
-
-static void processScrollInput(otg::Camera& cam);
-
-// TODO: cursor/mouse class
 // TOOD: add program to material instead of programs in this file!
 // TOOD: refactor this file
 // TODO: add ImGui
@@ -108,6 +98,7 @@ static void launchApp() {
 
 	stbi_set_flip_vertically_on_load(true);
 
+	// setup application
 	otg::Application app;
 
 	otg::Window window1("OpenTerrainGenerator");
@@ -116,12 +107,10 @@ static void launchApp() {
 
 	otg::DebugMessenger debugMessenger;
 
-	//Screen
+	// setup rendering
+	otg::Mouse mouse(window1);
 	otg::VirtualScreen virtualScreen(initialWidth, initialHeight);
-
-	// Models & Programs
-	addModels();
-	addPrograms();
+	otg::OrbitCamera cam(glm::ivec2(initialWidth, initialHeight));
 
 	// UniformBuffer
 	otg::UniformBuffer matrices;
@@ -130,9 +119,6 @@ static void launchApp() {
 	matrices.addElement({ otg::UniformType::Matrix4 });
 	matrices.addElement({ otg::UniformType::Matrix4 });
 	matrices.bindTo(0);
-	
-	// Camera
-	otg::OrbitCamera cam(glm::ivec2(initialWidth, initialHeight));
 
 	// Callbacks
 	window1.setSizeCallback([&](GLFWwindow* window, int width, int height) {
@@ -155,10 +141,9 @@ static void launchApp() {
 
 		});
 
-	window1.setScrollCallback([&](GLFWwindow* window, double xoffset, double yoffset) {
-		scrollOffset.y = -yoffset;
-		scrollOffset.x = xoffset;
-		});
+	// Models & Programs
+	addModels();
+	addPrograms();
 
 	// IBL
 	otg::CubeMapArray envMap = getEnvMap();
@@ -184,7 +169,17 @@ static void launchApp() {
 		update(cam, matrices);
 		draw(virtualScreen, cam, matrices, skyBox);
 
-		processInput(window1, cam, frameClock.getFrameTime());
+		processKeyInput(window1, cam, frameClock.getFrameTime());
+
+		mouse.move();
+		if (mouse.isPrimaryPressed())
+			cam.move(mouse.getPosDelta());
+
+		std::int32_t scrollOffsetY = mouse.getScrollOffsetY();
+		if (scrollOffsetY != 0) {
+			cam.moveForward(scrollOffsetY);
+			mouse.resetScrollDelta();
+		}
 
 		glfwSwapBuffers(window1.getGlfwWindow());
 		glfwPollEvents();
@@ -222,7 +217,7 @@ void addTerrain() {
 		);
 	material.addTexture(normalMap);
 
-	std::int32_t size = 255;
+	std::int32_t size = 100;
 	otg::Heightmap<float> heightmap({ size, size });
 	for (std::uint32_t x = 0; x < size; x++) {
 		for (std::uint32_t y = 0; y < size; y++) {
@@ -331,10 +326,26 @@ void addPreviewModel() {
 
 	otg::ModelLoader planeLoader("rec/shapes/plane/Plane.obj");
 	std::shared_ptr<otg::Model> plane = std::make_shared<otg::Model>(planeLoader.getData());
-	plane->setScale(glm::vec3(10, 10, 10));
+
+	otg::Material planeMat;
+	planeMat.setAlbedo(glm::vec3(1, 1, 1));
+	planeMat.setMetallic(0.2);
+	planeMat.setRoughness(0.3);
+	planeMat.setOcclusion(1);
+
+	plane->meshes[0].setMaterial(planeMat);
+	plane->setScale(glm::vec3(40, 40, 40));
 	plane->setPosition(glm::vec3(0, -5, 0));
 	models.push_back(plane);
 
+	otg::ModelLoader sphereLoader("rec/shapes/sphere/Sphere.obj");
+	std::shared_ptr<otg::Model> sphere = std::make_shared<otg::Model>(sphereLoader.getData());
+	sphere->setPosition(glm::vec3(3, 0, 0));
+	planeMat.setAlbedo(glm::vec3(0, 1, 1));
+	planeMat.setRoughness(0.1);
+	planeMat.setMetallic(0.9);
+	sphere->meshes[0].setMaterial(planeMat);
+	models.push_back(sphere);
 }
 
 void addPrograms() {
@@ -387,14 +398,6 @@ otg::CubeMapArray getEnvMap() {
 	return envMap;
 }
 
-void clearScreen() {
-
-	glClearColor(0.1, 0.1, 0.1, 1);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glClear(GL_DEPTH_BUFFER_BIT);
-	glClear(GL_STENCIL_BUFFER_BIT);
-}
-
 void update(const otg::Camera& cam, otg::UniformBuffer& matrices) {
 
 	frameClock.tick();
@@ -422,6 +425,14 @@ void draw(otg::VirtualScreen& virtualScreen, const otg::Camera& cam, otg::Unifor
 	virtualScreen.draw(*programs["screen"]);
 }
 
+void clearScreen() {
+
+	glClearColor(0.1, 0.1, 0.1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glClear(GL_STENCIL_BUFFER_BIT);
+}
+
 void drawModels(otg::UniformBuffer& matrices) {
 
 	for (std::shared_ptr<otg::Model>& model : models)
@@ -439,12 +450,6 @@ void drawModel(std::shared_ptr<otg::Model>& model, otg::UniformBuffer& matrices)
 	model->draw(*programs["main"]);
 }
 
-void processInput(const otg::Window& window, otg::Camera& camera, float frameTime) {
-	processKeyInput(window, camera, frameTime);
-	processMouseInput(window, camera, frameTime);
-	processScrollInput(camera);
-}
-
 void processKeyInput(const otg::Window& window, otg::Camera& camera, float frameTime) {
 
 	GLFWwindow* windowPtr = window.getGlfwWindow();
@@ -460,46 +465,4 @@ void processKeyInput(const otg::Window& window, otg::Camera& camera, float frame
 
 	if (glfwGetKey(windowPtr, GLFW_KEY_S) == GLFW_PRESS)
 		camera.moveDown(frameTime);
-}
-
-void processMouseInput(const otg::Window& window, otg::Camera& camera, float frameTime) {
-
-	GLFWwindow* windowPtr = window.getGlfwWindow();
-
-	glm::vec2 currentPos = getCurrenCursorPos(windowPtr);
-	glm::vec2 posDelta = getCursorPosDelta(currentPos);
-
-	lastMousePos = currentPos;
-
-	if (glfwGetMouseButton(windowPtr, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
-		camera.move(posDelta);
-}
-
-glm::vec2 getCurrenCursorPos(GLFWwindow* windowPtr) {
-
-	double currentX, currentY;
-	glfwGetCursorPos(windowPtr, &currentX, &currentY);
-
-	return glm::vec2(currentX, currentY);
-}
-
-glm::vec2 getCursorPosDelta(glm::vec2 currentPos) {
-
-	glm::vec2 posDelta(0);
-
-	if (lastMousePos.x != -1 && lastMousePos.y != -1) {
-
-		posDelta.x = lastMousePos.x - currentPos.x;
-		posDelta.y = currentPos.y - lastMousePos.y;
-	}
-
-	return posDelta;
-}
-
-void processScrollInput(otg::Camera& cam) {
-
-	if (scrollOffset.y != 0) {
-		cam.moveForward(scrollOffset.y);
-		scrollOffset.y = 0;
-	}
 }

@@ -22,6 +22,7 @@
     <ClCompile Include="OpenTerrainGenerator.cpp" />
     <ClCompile Include="src\sebphil\source\application\Application.cpp" />
     <ClCompile Include="src\sebphil\source\application\FrameClock.cpp" />
+    <ClCompile Include="src\sebphil\source\application\Mouse.cpp" />
     <ClCompile Include="src\sebphil\source\application\VirtualScreen.cpp" />
     <ClCompile Include="src\sebphil\source\application\Window.cpp" />
     <ClCompile Include="src\sebphil\source\camera\Camera.cpp" />

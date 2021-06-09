@@ -4,8 +4,8 @@ namespace otg {
 
 	VirtualScreen::VirtualScreen(std::int32_t width, std::int32_t height) :
 		width(width), height(height),
-		multiTex(width, height, 6),
-		multiRbo(width, height, 6),
+		multiTex(width, height, 8),
+		multiRbo(width, height, 8),
 		screenTex(std::make_shared<Texture>(width, height, TextureType::ColorAttachment)), 
 		screenRbo(width, height, TextureType::DepthStencilAttachment)
 	{

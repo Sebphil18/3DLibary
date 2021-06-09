@@ -7,6 +7,7 @@
 
 namespace otg {
 
+	// TODO: This is outdated and will be reworked in the future.
 	struct Scene {
 		Camera cam;
 		std::vector<std::shared_ptr<Model>> models;
