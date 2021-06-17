@@ -3,7 +3,7 @@
 #include <chrono>
 #include <iostream>
 #include "GLFW/glfw3.h"
-#include "../OpenTerrainGenerator/src/sebphil/header/application/FrameClock.h"
+#include "../3DLibary/src/sebphil/header/application/FrameClock.h"
 
 class FrameClockTest : public ::testing::Test {
 

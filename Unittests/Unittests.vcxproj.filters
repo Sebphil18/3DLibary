@@ -9,37 +9,37 @@
     <ClCompile Include="VertexBufferLayoutTest.cpp">
       <Filter>tests</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\application\FrameClock.cpp">
+    <ClCompile Include="..\3DLibary\src\sebphil\source\application\FrameClock.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\globjects\VertexBufferLayout.cpp">
+    <ClCompile Include="..\3DLibary\src\sebphil\source\globjects\VertexBufferLayout.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenTerrainGenerator\src\vendor\glad\glad.c">
+    <ClCompile Include="..\3DLibary\src\vendor\glad\glad.c">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\application\Application.cpp">
+    <ClCompile Include="..\3DLibary\src\sebphil\source\application\Application.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\application\Window.cpp">
+    <ClCompile Include="..\3DLibary\src\sebphil\source\application\Window.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\exceptions\ApplicationException.cpp">
+    <ClCompile Include="..\3DLibary\src\sebphil\source\exceptions\ApplicationException.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\exceptions\GlfwException.cpp">
+    <ClCompile Include="..\3DLibary\src\sebphil\source\exceptions\GlfwException.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\globjects\LayoutElementType.cpp">
+    <ClCompile Include="..\3DLibary\src\sebphil\source\globjects\LayoutElementType.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\io\FileReader.cpp">
+    <ClCompile Include="..\3DLibary\src\sebphil\source\io\FileReader.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="FileReaderTest.cpp">
       <Filter>tests</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenTerrainGenerator\src\sebphil\source\exceptions\FileInputException.cpp">
+    <ClCompile Include="..\3DLibary\src\sebphil\source\exceptions\FileInputException.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

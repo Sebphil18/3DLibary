@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="3DLibary.cpp" />
+    <ClCompile Include="src\sebphil\source\application\Application.cpp" />
+    <ClCompile Include="src\sebphil\source\application\FrameClock.cpp" />
+    <ClCompile Include="src\sebphil\source\application\Mouse.cpp" />
+    <ClCompile Include="src\sebphil\source\application\VirtualScreen.cpp" />
+    <ClCompile Include="src\sebphil\source\application\Window.cpp" />
+    <ClCompile Include="src\sebphil\source\camera\Camera.cpp" />
+    <ClCompile Include="src\sebphil\source\camera\FpsCamera.cpp" />
+    <ClCompile Include="src\sebphil\source\camera\OrbitCamera.cpp" />
+    <ClCompile Include="src\sebphil\source\exceptions\ApplicationException.cpp" />
+    <ClCompile Include="src\sebphil\source\exceptions\FileInputException.cpp" />
+    <ClCompile Include="src\sebphil\source\exceptions\FramebufferException.cpp" />
+    <ClCompile Include="src\sebphil\source\exceptions\GlfwException.cpp" />
+    <ClCompile Include="src\sebphil\source\exceptions\ImageLoadException.cpp" />
+    <ClCompile Include="src\sebphil\source\exceptions\ModelLoadException.cpp" />
+    <ClCompile Include="src\sebphil\source\exceptions\ShaderCompilationException.cpp" />
+    <ClCompile Include="src\sebphil\source\exceptions\ProgramBuildException.cpp" />
+    <ClCompile Include="src\sebphil\source\exceptions\UniformBufferException.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\CubeMapArray.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\DebugMessenger.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\Framebuffer.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\GlObject.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\HDRTexture.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\IndexBuffer.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\LayoutElementType.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\MultisampleRenderBuffer.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\MultisampleTexture.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\ProgramUniformLink.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\RenderBuffer.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\Shader.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\ShaderProgram.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\ShaderType.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\Texture.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\TextureImage.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\TextureType.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\UniformBuffer.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\UniformType.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\VertexArray.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\VertexBuffer.cpp" />
+    <ClCompile Include="src\sebphil\source\globjects\VertexBufferLayout.cpp" />
+    <ClCompile Include="src\sebphil\source\gui\ImGuiEnvironment.cpp" />
+    <ClCompile Include="src\sebphil\source\io\FileReader.cpp" />
+    <ClCompile Include="src\sebphil\source\lighting\HDRTextureCube.cpp" />
+    <ClCompile Include="src\sebphil\source\lighting\SkyBox.cpp" />
+    <ClCompile Include="src\sebphil\source\lighting\SkyBoxLightProbe.cpp" />
+    <ClCompile Include="src\sebphil\source\lighting\SkyBoxReflectionProbe.cpp" />
+    <ClCompile Include="src\sebphil\source\material\Material.cpp" />
+    <ClCompile Include="src\sebphil\source\modelstructure\Mesh.cpp" />
+    <ClCompile Include="src\sebphil\source\modelstructure\Model.cpp" />
+    <ClCompile Include="src\sebphil\source\modelstructure\ModelDataConverter.cpp" />
+    <ClCompile Include="src\sebphil\source\modelstructure\ModelLoader.cpp" />
+    <ClCompile Include="src\sebphil\source\modelstructure\ScreenMesh.cpp" />
+    <ClCompile Include="src\sebphil\source\modelstructure\TextureRegister.cpp" />
+    <ClCompile Include="src\sebphil\source\terrain\TerrainModelLoader.cpp" />
+    <ClCompile Include="src\vendor\glad\glad.c" />
+    <ClCompile Include="src\vendor\imgui\imgui.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_demo.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_draw.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_tables.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_widgets.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\sebphil\header\application\Application.h" />
+    <ClInclude Include="src\sebphil\header\application\FrameClock.h" />
+    <ClInclude Include="src\sebphil\header\application\Mouse.h" />
+    <ClInclude Include="src\sebphil\header\application\VirtualScreen.h" />
+    <ClInclude Include="src\sebphil\header\application\Window.h" />
+    <ClInclude Include="src\sebphil\header\camera\FpsCamera.h" />
+    <ClInclude Include="src\sebphil\header\camera\OrbitCamera.h" />
+    <ClInclude Include="src\sebphil\header\debugflags\DebugFlags.h" />
+    <ClInclude Include="src\sebphil\header\exceptions\ApplicationException.h" />
+    <ClInclude Include="src\sebphil\header\exceptions\FramebufferException.h" />
+    <ClInclude Include="src\sebphil\header\exceptions\GlfwException.h" />
+    <ClInclude Include="src\sebphil\header\exceptions\ImageLoadException.h" />
+    <ClInclude Include="src\sebphil\header\exceptions\ModelLoadException.h" />
+    <ClInclude Include="src\sebphil\header\exceptions\ProgramBuildException.h" />
+    <ClInclude Include="src\sebphil\header\exceptions\ShaderCompilationException.h" />
+    <ClInclude Include="src\sebphil\header\exceptions\UniformBufferException.h" />
+    <ClInclude Include="src\sebphil\header\globjects\CubeMapArray.h" />
+    <ClInclude Include="src\sebphil\header\globjects\DebugMessenger.h" />
+    <ClInclude Include="src\sebphil\header\globjects\Framebuffer.h" />
+    <ClInclude Include="src\sebphil\header\globjects\GlObject.h" />
+    <ClInclude Include="src\sebphil\header\globjects\HDRTexture.h" />
+    <ClInclude Include="src\sebphil\header\globjects\IndexBuffer.h" />
+    <ClInclude Include="src\sebphil\header\globjects\LayoutElementType.h" />
+    <ClInclude Include="src\sebphil\header\globjects\MultisampleRenderBuffer.h" />
+    <ClInclude Include="src\sebphil\header\globjects\MultisampleTexture.h" />
+    <ClInclude Include="src\sebphil\header\globjects\ProgramUniformLink.h" />
+    <ClInclude Include="src\sebphil\header\globjects\RenderBuffer.h" />
+    <ClInclude Include="src\sebphil\header\globjects\Shader.h" />
+    <ClInclude Include="src\sebphil\header\globjects\ShaderProgram.h" />
+    <ClInclude Include="src\sebphil\header\globjects\ShaderType.h" />
+    <ClInclude Include="src\sebphil\header\globjects\Texture.h" />
+    <ClInclude Include="src\sebphil\header\globjects\TextureImage.h" />
+    <ClInclude Include="src\sebphil\header\globjects\UniformBuffer.h" />
+    <ClInclude Include="src\sebphil\header\globjects\UniformType.h" />
+    <ClInclude Include="src\sebphil\header\globjects\VertexArray.h" />
+    <ClInclude Include="src\sebphil\header\globjects\VertexBuffer.h" />
+    <ClInclude Include="src\sebphil\header\globjects\VertexBufferLayout.h" />
+    <ClInclude Include="src\sebphil\header\gui\ImGuiEnvironment.h" />
+    <ClInclude Include="src\sebphil\header\io\FileReader.h" />
+    <ClInclude Include="src\sebphil\header\exceptions\FileInputException.h" />
+    <ClInclude Include="src\sebphil\header\io\Image.h" />
+    <ClInclude Include="src\sebphil\header\lighting\HDRTextureCube.h" />
+    <ClInclude Include="src\sebphil\header\lighting\SkyBox.h" />
+    <ClInclude Include="src\sebphil\header\lighting\SkyBoxReflectionProbe.h" />
+    <ClInclude Include="src\sebphil\header\lighting\SkyBoxLightProbe.h" />
+    <ClInclude Include="src\sebphil\header\material\Material.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\CubeData.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\LoadRegister.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\Mesh.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\Model.h" />
+    <ClInclude Include="src\sebphil\header\globjects\TextureType.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\ModelDataConverter.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\ModelLoader.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\ScreenMesh.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\TextureRegister.h" />
+    <ClInclude Include="src\sebphil\header\modelstructure\Vertex.h" />
+    <ClInclude Include="src\sebphil\header\camera\Camera.h" />
+    <ClInclude Include="src\sebphil\header\scene\Scene.h" />
+    <ClInclude Include="src\sebphil\header\terrain\Heightmap.h" />
+    <ClInclude Include="src\sebphil\header\terrain\TerrainModelLoader.h" />
+    <ClInclude Include="src\vendor\imgui\imconfig.h" />
+    <ClInclude Include="src\vendor\imgui\imgui.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_internal.h" />
+    <ClInclude Include="src\vendor\imgui\imstb_rectpack.h" />
+    <ClInclude Include="src\vendor\imgui\imstb_textedit.h" />
+    <ClInclude Include="src\vendor\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\vendor\stb\stbimage.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\sebphil\shader\fragment\BRDFConvolution.glsl" />
+    <None Include="src\sebphil\shader\fragment\IrradianceConvolution.glsl" />
+    <None Include="src\sebphil\shader\fragment\PrefilterConvolution.glsl" />
+    <None Include="src\sebphil\shader\fragment\SkyBox.glsl" />
+    <None Include="src\sebphil\shader\fragment\EquirectangularToCube.glsl" />
+    <None Include="src\sebphil\shader\fragment\FragmentScreen.glsl" />
+    <None Include="src\sebphil\shader\fragment\FragmentStandard.glsl" />
+    <None Include="src\sebphil\shader\geometry\EquirectangularToCube.glsl" />
+    <None Include="src\sebphil\shader\vertex\BRDFConvolution.glsl" />
+    <None Include="src\sebphil\shader\vertex\IrradianceConvolution.glsl" />
+    <None Include="src\sebphil\shader\vertex\PrefilterConvolution.glsl" />
+    <None Include="src\sebphil\shader\vertex\SkyBox.glsl" />
+    <None Include="src\sebphil\shader\vertex\EquirectangularToCube.glsl" />
+    <None Include="src\sebphil\shader\vertex\VertexStandard.glsl" />
+    <None Include="src\sebphil\shader\vertex\VertexScreen.glsl" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{bb0158bf-fd33-44e2-bbea-961f72c04d75}</ProjectGuid>
+    <RootNamespace>3DLibary</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\Projekte\GLFW\glfw-3.3.2.bin.WIN64\include;D:\Projekte\Assimp\include;D:\Projekte\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\Projekte\GLFW\glfw-3.3.2.bin.WIN64\lib-vc2019;D:\Projekte\Assimp\libary;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\Projekte\GLFW\glfw-3.3.2.bin.WIN64\include;D:\Projekte\Glad\include;D:\Projekte\GitRepos\Assimp\assimp\include;D:\Projekte\GitRepos\GLM\glm;src\sebphil\header;src\vendor;D:\Projekte\GitRepos;src\vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Projekte\GitRepos\GLFW\build\src\Release;D:\Projekte\GitRepos\Assimp\build\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>D:\Projekte\GLFW\glfw-3.3.2.bin.WIN64\include;D:\Projekte\Glad\include;D:\Projekte\GitRepos\Assimp\assimp\include;D:\Projekte\GitRepos\GLM\glm;src\sebphil\header;src\vendor;D:\Projekte\GitRepos;src\vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\Projekte\GitRepos\GLFW\build\src\Release;D:\Projekte\GitRepos\Assimp\build\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -2,7 +2,9 @@ x64
 .vs
 Debug/
 packages
-OpenTerrainGenerator.sln
+3DLibary.sln
 assimp-vc142-mtd.dll
 rec/
-OpenTerrainGenerator/src/vendor
+3DLibary/src/vendor
+3DLibary/imgui.ini
+3DLibary/assimp-vc142-mt.dll
