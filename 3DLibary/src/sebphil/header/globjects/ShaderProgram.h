@@ -6,7 +6,7 @@
 #include "globjects/Shader.h"
 #include "globjects/ProgramUniformLink.h"
 
-namespace otg {
+namespace glib {
 
 	class ShaderProgram : public GlObject, public ProgramUniformLink {
 

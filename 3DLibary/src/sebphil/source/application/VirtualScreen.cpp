@@ -1,6 +1,11 @@
 #include "application/VirtualScreen.h"
 
-namespace otg {
+namespace glib {
+
+	VirtualScreen::VirtualScreen(glm::ivec2 dimensions) :
+		VirtualScreen(dimensions.x, dimensions.y)
+	{
+	}
 
 	VirtualScreen::VirtualScreen(std::int32_t width, std::int32_t height) :
 		width(width), height(height),
@@ -60,7 +65,7 @@ namespace otg {
 		screenFbo.unbind();
 	}
 
-	void VirtualScreen::draw(ShaderProgram& screenProgram) {
+	void VirtualScreen::draw() {
 		screenFbo.copyTo(width, height, 0);
 	}
 

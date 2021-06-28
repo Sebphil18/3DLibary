@@ -1,7 +1,7 @@
-#include "globjects/DebugMessenger.h"
+#include "application/DebugMessenger.h"
 #include <iostream>
 
-namespace otg {
+namespace glib {
 
 	DebugMessenger::DebugMessenger() {
 

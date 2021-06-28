@@ -3,7 +3,7 @@
 #include "glad/glad.h"
 #include "exceptions/FramebufferException.h"
 
-namespace otg {
+namespace glib {
 
 	float Framebuffer::clearColor[4] = { 0.01, 0, 0.01, 1 };
 
@@ -138,7 +138,7 @@ namespace otg {
 		glClearNamedFramebufferfi(glHandle, GL_DEPTH_STENCIL, 0, 1, 0);
 	}
 
-	void Framebuffer::copyTo(std::int32_t width, std::int32_t height, otg::Framebuffer& other) {
+	void Framebuffer::copyTo(std::int32_t width, std::int32_t height, glib::Framebuffer& other) {
 		glBlitNamedFramebuffer(glHandle, other.getGlHandle(), 0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 		glBlitNamedFramebuffer(glHandle, other.getGlHandle(), 0, 0, width, height, 0, 0, width, height, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 		glBlitNamedFramebuffer(glHandle, other.getGlHandle(), 0, 0, width, height, 0, 0, width, height, GL_STENCIL_BUFFER_BIT, GL_NEAREST);

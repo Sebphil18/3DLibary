@@ -3,7 +3,7 @@
 #include <cstddef>
 #include "GlObject.h"
 
-namespace otg {
+namespace glib {
 
 	class IndexBuffer : public GlObject{
 	

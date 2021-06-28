@@ -2,7 +2,7 @@
 #include <memory>
 #include <unordered_map>
 
-namespace otg {
+namespace glib {
 
 	template <class Key, class Value>
 	class LoadRegister {
@@ -27,7 +27,7 @@ namespace otg {
 
 	template<class Key, class Value>
 	template<class ...Args>
-	inline std::shared_ptr<Value> otg::LoadRegister<Key, Value>::load(const Key& key, Args&& ...args) {
+	inline std::shared_ptr<Value> glib::LoadRegister<Key, Value>::load(const Key& key, Args&& ...args) {
 
 		auto itr = registry.find(key);
 		std::shared_ptr<Value> ptr;

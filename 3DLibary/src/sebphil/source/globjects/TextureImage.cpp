@@ -4,7 +4,7 @@
 #include "stb/stb_image.h"
 #include "exceptions/ImageLoadException.h"
 
-namespace otg {
+namespace glib {
 
 	TextureImage::TextureImage() noexcept :
 		Texture() 

@@ -4,7 +4,7 @@
 #include "globjects/RenderBuffer.h"
 #include "modelstructure/CubeData.h"
 
-namespace otg {
+namespace glib {
 
 	const glm::mat4 CubeMapArray::projection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
 	const glm::mat4 CubeMapArray::view[6] = {
@@ -28,6 +28,16 @@ namespace otg {
 		count(count), levels(levels), TextureTypes(TextureType::CubeMapArray)
 	{
 		init();
+	}
+
+	CubeMapArray::CubeMapArray(const ImageFormat& imgFormat, const std::string& equirectengularTexture, ShaderProgram& conversionProgram) noexcept :
+		img({ nullptr, imgFormat.width, imgFormat.height, imgFormat.desiredChannels }),
+		count(1), levels(1), TextureTypes(TextureType::CubeMapArray)
+	{
+		init();
+
+		std::shared_ptr<HDRTexture> hdrTex = std::make_shared<HDRTexture>(equirectengularTexture);
+		fromEquirectengular(hdrTex, conversionProgram);
 	}
 
 	CubeMapArray::CubeMapArray(const CubeMapArray& other) noexcept :
@@ -72,11 +82,11 @@ namespace otg {
 		glTextureParameteri(glHandle, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTextureParameteri(glHandle, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTextureParameteri(glHandle, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		glTextureParameteri(glHandle, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		if (levels == 1) {
+		if (levels == 1)
 			glTextureParameteri(glHandle, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTextureParameteri(glHandle, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		} else
+		else
 			enableMipmaps();
 	}
 
@@ -105,10 +115,6 @@ namespace otg {
 		type = std::move(other.type);
 
 		return *this;
-	}
-
-	void CubeMapArray::bindToUnit(std::uint32_t unit) {
-		glBindTextureUnit(unit, glHandle);
 	}
 
 	void CubeMapArray::fromEquirectengular(const std::shared_ptr<HDRTexture>& equiRectTexture, ShaderProgram& conversionProgram) {
@@ -146,6 +152,10 @@ namespace otg {
 			hdrCube.draw(conversionProgram, i);
 		}
 		fbo.unbind();
+	}
+
+	void CubeMapArray::bindToUnit(std::uint32_t unit) {
+		glBindTextureUnit(unit, glHandle);
 	}
 
 	std::int32_t CubeMapArray::getWidth() const {

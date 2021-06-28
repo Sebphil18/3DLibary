@@ -6,7 +6,7 @@
 #include "io/FileReader.h"
 #include "exceptions/ShaderCompilationException.h"
 
-namespace otg {
+namespace glib {
 
 	Shader::Shader(const std::string& filePath, ShaderType type) noexcept :
 		filePath(filePath), type(ShaderStageType::getGlType(type))
@@ -17,7 +17,7 @@ namespace otg {
 
 	void Shader::readSource() {
 
-		otg::FileReader fileReader;
+		glib::FileReader fileReader;
 		
 		src = fileReader.read(filePath);
 	}
@@ -40,7 +40,7 @@ namespace otg {
 		return *this;
 	}
 
-	void otg::Shader::createShader() {
+	void glib::Shader::createShader() {
 
 		glHandle = glCreateShader(this->type);
 

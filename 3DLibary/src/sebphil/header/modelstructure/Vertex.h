@@ -2,7 +2,7 @@
 #include "glm/glm.hpp"
 #include "globjects/VertexBufferLayout.h"
 
-namespace otg {
+namespace glib {
 
 	struct Vertex {
 		glm::vec3 position = glm::vec3(0);

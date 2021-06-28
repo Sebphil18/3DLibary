@@ -1,6 +1,6 @@
 #include "exceptions/ModelLoadException.h"
 
-namespace otg {
+namespace glib {
 
 	ModelLoadException::ModelLoadException(const ModelLoader& loader) {
 		msg = "ERROR::MODELLOADER::Could not load model/scene '" + loader.getFilePath() + "'!";

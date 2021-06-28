@@ -5,7 +5,7 @@
 
 #include "globjects/TextureImage.h"
 
-namespace otg {
+namespace glib {
 
 	class TextureRegister {
 

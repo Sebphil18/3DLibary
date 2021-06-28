@@ -1,6 +1,6 @@
 #include "exceptions/ImageLoadException.h"
 
-namespace otg {
+namespace glib {
 
 	ImageLoaderException::ImageLoaderException(const std::string& filePath) {
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-namespace otg {
+namespace glib {
 
 	struct Image {
 		unsigned char* buffer = nullptr;

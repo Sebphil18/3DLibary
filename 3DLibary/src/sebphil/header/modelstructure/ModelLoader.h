@@ -10,7 +10,7 @@
 #include "modelstructure/TextureRegister.h"
 #include "globjects/TextureImage.h"
 
-namespace otg {
+namespace glib {
 
 	class ModelLoader {
 
@@ -33,7 +33,7 @@ namespace otg {
 		std::future<void> worker;
 
 		DeferredModelData data;
-		std::unordered_map<std::string, std::shared_ptr<otg::TextureImage>> loadedTextures;
+		std::unordered_map<std::string, std::shared_ptr<glib::TextureImage>> loadedTextures;
 
 		void resolveFilepath();
 

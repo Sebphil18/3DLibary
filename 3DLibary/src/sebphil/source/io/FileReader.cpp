@@ -2,7 +2,7 @@
 #include <iostream>
 #include "exceptions/FileInputException.h"
 
-namespace otg {
+namespace glib {
 
 	FileReader::FileReader() {
 	}
@@ -22,7 +22,7 @@ namespace otg {
 		return content;
 	}
 
-	std::string otg::FileReader::getFileContent(const std::string& filePath) {
+	std::string glib::FileReader::getFileContent(const std::string& filePath) {
 		
 		std::ifstream fileInput(filePath);
 		std::string content("");
@@ -39,7 +39,7 @@ namespace otg {
 		return content;
 	}
 
-	std::string otg::FileReader::writeFileToString(std::ifstream& fileInput) {
+	std::string glib::FileReader::writeFileToString(std::ifstream& fileInput) {
 
 		std::string content;
 		std::string line;

@@ -4,7 +4,7 @@
 #include "globjects/UniformType.h"
 #include "globjects/ShaderProgram.h"
 
-namespace otg{
+namespace glib{
 
 	struct UniformElement {
 		UniformType type;

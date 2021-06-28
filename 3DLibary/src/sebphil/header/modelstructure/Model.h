@@ -6,7 +6,7 @@
 #include "modelstructure/Mesh.h"
 #include "globjects/TextureImage.h"
 
-namespace otg {
+namespace glib {
 
 	struct ModelData {
 		std::vector<MeshData> meshes;

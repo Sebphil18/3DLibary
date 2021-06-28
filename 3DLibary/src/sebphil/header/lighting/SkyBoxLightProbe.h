@@ -4,7 +4,7 @@
 #include "globjects/CubeMapArray.h"
 #include "globjects/ShaderProgram.h"
 
-namespace otg {
+namespace glib {
 
 	class SkyBoxLightProbe {
 

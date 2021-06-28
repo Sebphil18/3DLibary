@@ -1,7 +1,7 @@
 #include "camera/Camera.h"
 #include "glm/gtx/transform.hpp"
 
-namespace otg {
+namespace glib {
 
 	Camera::Camera() : 
 		position(glm::vec3(0, 0, 5)),

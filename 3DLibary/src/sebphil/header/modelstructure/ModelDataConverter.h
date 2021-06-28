@@ -3,7 +3,7 @@
 #include "modelstructure/Mesh.h"
 #include "modelstructure/TextureRegister.h"
 
-namespace otg {
+namespace glib {
 
 	class ModelDataConverter {
 

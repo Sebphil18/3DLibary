@@ -3,7 +3,7 @@
 #include "glm/gtx/transform.hpp"
 #include "glad/glad.h"
 
-namespace otg {
+namespace glib {
 
 	glm::mat4 HDRTextureCube::projection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
 	glm::mat4 HDRTextureCube::view[6] = {

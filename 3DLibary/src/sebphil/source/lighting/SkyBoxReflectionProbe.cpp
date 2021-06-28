@@ -3,7 +3,7 @@
 #include "modelstructure/CubeData.h"
 #include "modelstructure/ScreenMesh.h"
 
-namespace otg {
+namespace glib {
 
 	SkyBoxReflectionProbe::SkyBoxReflectionProbe(CubeMapArray& envMap,
 		const std::shared_ptr<ShaderProgram>& prefilterProgram, const std::shared_ptr<ShaderProgram>& brdfIntegrationProgram) :

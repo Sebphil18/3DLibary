@@ -5,7 +5,7 @@
 #include "globjects/Texture.h"
 #include "globjects/ShaderProgram.h"
 
-namespace otg {
+namespace glib {
 
 	struct DeferredMaterial {
 

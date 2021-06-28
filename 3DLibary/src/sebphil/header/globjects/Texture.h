@@ -3,7 +3,7 @@
 #include "globjects/TextureType.h"
 #include "io/Image.h"
 
-namespace otg {
+namespace glib {
 
 	struct DeferredTexture {
 		std::string filePath;

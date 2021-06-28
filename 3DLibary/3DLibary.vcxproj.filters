@@ -33,7 +33,7 @@
     <ClCompile Include="src\sebphil\source\application\FrameClock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\sebphil\source\globjects\DebugMessenger.cpp">
+    <ClCompile Include="src\sebphil\source\application\DebugMessenger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\sebphil\source\globjects\VertexBuffer.cpp">
@@ -201,6 +201,18 @@
     <ClCompile Include="src\sebphil\source\gui\ImGuiEnvironment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sebphil\source\application\MatrixUniformBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\application\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\lighting\SkyLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\application\Stage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sebphil\header\application\Application.h">
@@ -218,7 +230,7 @@
     <ClInclude Include="src\sebphil\header\application\FrameClock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\sebphil\header\globjects\DebugMessenger.h">
+    <ClInclude Include="src\sebphil\header\application\DebugMessenger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\sebphil\header\globjects\IndexBuffer.h">
@@ -326,9 +338,6 @@
     <ClInclude Include="src\sebphil\header\modelstructure\CubeData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\sebphil\header\scene\Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\sebphil\header\modelstructure\ModelLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -377,10 +386,10 @@
     <ClInclude Include="src\sebphil\header\lighting\SkyBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\sebphil\header\modelstructure\LoadRegister.h">
+    <ClInclude Include="src\sebphil\header\application\LoadRegister.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\sebphil\header\application\Mouse.h">
+    <ClInclude Include="src\sebphil\header\input\Mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\vendor\imgui\imconfig.h">
@@ -408,6 +417,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\sebphil\header\gui\ImGuiEnvironment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\application\ShaderProgramRegister.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\application\MatrixUniformBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\lighting\SkyLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\application\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\application\Stage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

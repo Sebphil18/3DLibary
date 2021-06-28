@@ -2,7 +2,7 @@
 #include "glm/glm.hpp"
 #include "application/Window.h"
 
-namespace otg {
+namespace glib {
 
 	class Mouse {
 
@@ -13,7 +13,7 @@ namespace otg {
 		glm::vec2 getNewPos();
 		void updatePosDelta(glm::dvec2 newPos);
 
-		void resetScrollDelta();
+		void resetScrollOffset();
 		void resetPosition();
 
 		glm::ivec2 getScrollOffset() const ;

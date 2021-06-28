@@ -3,12 +3,12 @@
 #include "modelstructure/CubeData.h"
 #include "camera/Camera.h"
 
-namespace otg {
+namespace glib {
 	
 	class SkyBox {
 
 	public:
-		SkyBox(std::int32_t textureUnit);
+		SkyBox(std::int32_t textureUnit = 12);
 
 		void setTextureUnit(std::int32_t unit);
 		void draw(const Camera& cam, ShaderProgram& skyBoxProgram);

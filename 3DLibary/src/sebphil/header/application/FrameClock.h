@@ -1,6 +1,6 @@
 #pragma once
 
-namespace otg {
+namespace glib {
 
 	struct Frame {
 		unsigned long currentFrame;

@@ -2,7 +2,7 @@
 #include "globjects/GlObject.h"
 #include "globjects/TextureType.h"
 
-namespace otg {
+namespace glib {
 
 	class RenderBuffer : public GlObject, public TextureTypes {
 

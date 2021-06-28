@@ -3,7 +3,7 @@
 #include <string>
 #include <stdexcept>
 
-namespace otg {
+namespace glib {
 
 	class ShaderCompilationException : public std::exception {
 

@@ -22,7 +22,10 @@
     <ClCompile Include="3DLibary.cpp" />
     <ClCompile Include="src\sebphil\source\application\Application.cpp" />
     <ClCompile Include="src\sebphil\source\application\FrameClock.cpp" />
+    <ClCompile Include="src\sebphil\source\application\MatrixUniformBuffer.cpp" />
     <ClCompile Include="src\sebphil\source\application\Mouse.cpp" />
+    <ClCompile Include="src\sebphil\source\application\Scene.cpp" />
+    <ClCompile Include="src\sebphil\source\application\Stage.cpp" />
     <ClCompile Include="src\sebphil\source\application\VirtualScreen.cpp" />
     <ClCompile Include="src\sebphil\source\application\Window.cpp" />
     <ClCompile Include="src\sebphil\source\camera\Camera.cpp" />
@@ -38,7 +41,7 @@
     <ClCompile Include="src\sebphil\source\exceptions\ProgramBuildException.cpp" />
     <ClCompile Include="src\sebphil\source\exceptions\UniformBufferException.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\CubeMapArray.cpp" />
-    <ClCompile Include="src\sebphil\source\globjects\DebugMessenger.cpp" />
+    <ClCompile Include="src\sebphil\source\application\DebugMessenger.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\Framebuffer.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\GlObject.cpp" />
     <ClCompile Include="src\sebphil\source\globjects\HDRTexture.cpp" />
@@ -65,6 +68,7 @@
     <ClCompile Include="src\sebphil\source\lighting\SkyBox.cpp" />
     <ClCompile Include="src\sebphil\source\lighting\SkyBoxLightProbe.cpp" />
     <ClCompile Include="src\sebphil\source\lighting\SkyBoxReflectionProbe.cpp" />
+    <ClCompile Include="src\sebphil\source\lighting\SkyLight.cpp" />
     <ClCompile Include="src\sebphil\source\material\Material.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\Mesh.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\Model.cpp" />
@@ -85,7 +89,11 @@
   <ItemGroup>
     <ClInclude Include="src\sebphil\header\application\Application.h" />
     <ClInclude Include="src\sebphil\header\application\FrameClock.h" />
-    <ClInclude Include="src\sebphil\header\application\Mouse.h" />
+    <ClInclude Include="src\sebphil\header\application\MatrixUniformBuffer.h" />
+    <ClInclude Include="src\sebphil\header\application\Scene.h" />
+    <ClInclude Include="src\sebphil\header\application\ShaderProgramRegister.h" />
+    <ClInclude Include="src\sebphil\header\application\Stage.h" />
+    <ClInclude Include="src\sebphil\header\input\Mouse.h" />
     <ClInclude Include="src\sebphil\header\application\VirtualScreen.h" />
     <ClInclude Include="src\sebphil\header\application\Window.h" />
     <ClInclude Include="src\sebphil\header\camera\FpsCamera.h" />
@@ -100,7 +108,7 @@
     <ClInclude Include="src\sebphil\header\exceptions\ShaderCompilationException.h" />
     <ClInclude Include="src\sebphil\header\exceptions\UniformBufferException.h" />
     <ClInclude Include="src\sebphil\header\globjects\CubeMapArray.h" />
-    <ClInclude Include="src\sebphil\header\globjects\DebugMessenger.h" />
+    <ClInclude Include="src\sebphil\header\application\DebugMessenger.h" />
     <ClInclude Include="src\sebphil\header\globjects\Framebuffer.h" />
     <ClInclude Include="src\sebphil\header\globjects\GlObject.h" />
     <ClInclude Include="src\sebphil\header\globjects\HDRTexture.h" />
@@ -128,9 +136,10 @@
     <ClInclude Include="src\sebphil\header\lighting\SkyBox.h" />
     <ClInclude Include="src\sebphil\header\lighting\SkyBoxReflectionProbe.h" />
     <ClInclude Include="src\sebphil\header\lighting\SkyBoxLightProbe.h" />
+    <ClInclude Include="src\sebphil\header\lighting\SkyLight.h" />
     <ClInclude Include="src\sebphil\header\material\Material.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\CubeData.h" />
-    <ClInclude Include="src\sebphil\header\modelstructure\LoadRegister.h" />
+    <ClInclude Include="src\sebphil\header\application\LoadRegister.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Mesh.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Model.h" />
     <ClInclude Include="src\sebphil\header\globjects\TextureType.h" />
@@ -140,7 +149,6 @@
     <ClInclude Include="src\sebphil\header\modelstructure\TextureRegister.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Vertex.h" />
     <ClInclude Include="src\sebphil\header\camera\Camera.h" />
-    <ClInclude Include="src\sebphil\header\scene\Scene.h" />
     <ClInclude Include="src\sebphil\header\terrain\Heightmap.h" />
     <ClInclude Include="src\sebphil\header\terrain\TerrainModelLoader.h" />
     <ClInclude Include="src\vendor\imgui\imconfig.h" />

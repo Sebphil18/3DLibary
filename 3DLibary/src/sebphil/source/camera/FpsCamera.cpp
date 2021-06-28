@@ -2,7 +2,7 @@
 #include "glm/gtx/polar_coordinates.hpp"
 #include "glm/gtx/transform.hpp"
 
-namespace otg {
+namespace glib {
 
 	FpsCamera::FpsCamera() :
 		angles(0, 0), forward(0, 0, -1),

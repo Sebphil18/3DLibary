@@ -14,7 +14,7 @@
 #include "glm/glm.hpp"
 #include "glad/glad.h"
 
-namespace otg {
+namespace glib {
 
 	struct MeshData {
 		std::vector<Vertex> vertices;
@@ -45,7 +45,7 @@ namespace otg {
 		void setData(const MeshData& data);
 		void updateVertices(const std::vector<Vertex>& vertices, std::size_t offset, std::size_t count);
 
-		void draw(otg::ShaderProgram& program);
+		void draw(glib::ShaderProgram& program);
 
 		void setMaterial(const Material& material);
 
@@ -74,7 +74,7 @@ namespace otg {
 		void drawIndices();
 		void drawVertices();
 
-		void unbindTextures(otg::ShaderProgram& program);
+		void unbindTextures(glib::ShaderProgram& program);
 
 	};
 

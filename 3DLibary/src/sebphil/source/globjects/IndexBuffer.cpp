@@ -2,7 +2,7 @@
 #include <memory>
 #include "glad/glad.h"
 
-namespace otg {
+namespace glib {
 
 	IndexBuffer::IndexBuffer() noexcept :
 		usage(GL_STATIC_DRAW), size(0), data(nullptr) {

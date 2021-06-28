@@ -3,7 +3,7 @@
 #include "io/Image.h"
 #include "globjects/GlObject.h"
 
-namespace otg {
+namespace glib {
 
 	class HDRTexture : public GlObject {
 

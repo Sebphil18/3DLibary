@@ -2,7 +2,7 @@
 #include "glad/glad.h"
 #include <iostream>
 
-namespace otg {
+namespace glib {
 
 	MultisampleTexture::MultisampleTexture() noexcept :
 		samples(4), img({nullptr, 1, 1, 4}), TextureTypes(TextureType::Multisample)

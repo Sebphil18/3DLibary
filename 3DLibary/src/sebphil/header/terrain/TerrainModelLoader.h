@@ -4,7 +4,7 @@
 #include "terrain/Heightmap.h"
 #include "modelstructure/Model.h"
 
-namespace otg {
+namespace glib {
 
 	class TerrainModelLoader {
 

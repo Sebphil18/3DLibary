@@ -1,7 +1,7 @@
 #pragma once
 #include "Camera.h"
 
-namespace otg {
+namespace glib {
 
 	class OrbitCamera : public Camera {
 

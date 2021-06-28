@@ -3,7 +3,7 @@
 #include <vector>
 #include "globjects/LayoutElementType.h"
 
-namespace otg {
+namespace glib {
 
 	struct LayoutElement {
 		ElementType type;

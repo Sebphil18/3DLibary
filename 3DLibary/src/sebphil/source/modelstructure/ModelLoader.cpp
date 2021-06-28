@@ -3,7 +3,7 @@
 #include "modelstructure/ModelDataConverter.h"
 #include "exceptions/ModelLoadException.h"
 
-namespace otg {
+namespace glib {
 
 	ModelLoader::ModelLoader(const std::string& filePath) {
 
@@ -213,7 +213,7 @@ namespace otg {
 
 	}
 
-	float otg::ModelLoader::getMaterialFloat(aiMaterial* material, const char* property, int, int) {
+	float glib::ModelLoader::getMaterialFloat(aiMaterial* material, const char* property, int, int) {
 		
 		float value = 0;
 
@@ -222,7 +222,7 @@ namespace otg {
 		return value;
 	}
 
-	glm::vec3 otg::ModelLoader::getMaterialColor(aiMaterial* material, const char* property, int, int) {
+	glm::vec3 glib::ModelLoader::getMaterialColor(aiMaterial* material, const char* property, int, int) {
 		
 		aiColor4D specularColor;
 		aiGetMaterialColor(material, property, 0, 0, &specularColor);

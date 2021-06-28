@@ -2,7 +2,7 @@
 #include <cstdint>
 #include "assimp/scene.h"
 
-namespace otg {
+namespace glib {
 
 	class TextureTypes {
 

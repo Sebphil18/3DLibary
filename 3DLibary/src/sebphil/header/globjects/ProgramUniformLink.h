@@ -4,7 +4,7 @@
 #include <string>
 #include "glm/glm.hpp"
 
-namespace otg {
+namespace glib {
 
 	class ProgramUniformLink {
 

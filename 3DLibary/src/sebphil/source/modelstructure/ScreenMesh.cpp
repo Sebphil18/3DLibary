@@ -1,9 +1,9 @@
 #include "modelstructure/ScreenMesh.h"
 
-namespace otg {
+namespace glib {
 
 	// standard VertexFormat: position | normal | tangent | bitangent | textureCoordinates
-	std::vector<otg::Vertex> ScreenMesh::screenVertices = {
+	std::vector<glib::Vertex> ScreenMesh::screenVertices = {
 	{ glm::vec3(-1, -1, -1), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
 	{ glm::vec3(1, -1, -1), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
 	{ glm::vec3(1, 1, -1), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 1) },

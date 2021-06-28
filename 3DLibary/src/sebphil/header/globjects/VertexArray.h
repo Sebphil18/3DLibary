@@ -2,7 +2,7 @@
 #include <cstdint>
 #include "globjects/GlObject.h"
 
-namespace otg {
+namespace glib {
 	
 	class VertexArray : public GlObject {
 

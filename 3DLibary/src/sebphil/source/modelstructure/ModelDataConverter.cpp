@@ -1,6 +1,6 @@
 #include "modelstructure/ModelDataConverter.h"
 
-namespace otg {
+namespace glib {
 
 	TextureRegister ModelDataConverter::texRegister;
 

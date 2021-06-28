@@ -5,7 +5,7 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-namespace otg {
+namespace glib {
 
 	// TODO: move callbacks into own class: CallbackRegister
 	typedef std::function<void(GLFWwindow* window, int width, int height)> WindowSizeCallback;
@@ -16,7 +16,7 @@ namespace otg {
 	class Window {
 
 	public:
-		Window(const std::string& title, int width = 1200, int height = 800);
+		Window(const std::string& title = "3DLibary", int width = 1200, int height = 800);
 		~Window();
 
 		void focus() const noexcept;
@@ -24,6 +24,8 @@ namespace otg {
 		int getWidth() const noexcept;
 		int getHeight() const noexcept;
 		GLFWwindow* const getGlfwWindow() const noexcept;
+
+		void setTitle(const std::string& title);
 
 		void setSizeCallback(const WindowSizeCallback& callback);
 		void setKeyCallback(const WindowInputCallback& callback);

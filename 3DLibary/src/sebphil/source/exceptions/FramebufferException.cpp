@@ -1,6 +1,6 @@
 #include "exceptions/FramebufferException.h"
 
-namespace otg {
+namespace glib {
 
 	FramebufferException::FramebufferException() {
 		message = "ERROR::FRAMEBUFFER::Framebuffer is incomplete!";

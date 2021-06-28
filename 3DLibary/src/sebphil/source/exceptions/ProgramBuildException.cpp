@@ -2,7 +2,7 @@
 #include <vector>
 #include "glad/glad.h"
 
-namespace otg {
+namespace glib {
 
 	ProgramBuildException::ProgramBuildException(std::uint32_t programHandle):
 		programHandle(programHandle)

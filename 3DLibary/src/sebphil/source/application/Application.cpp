@@ -5,43 +5,43 @@
 #include "exceptions/GlfwException.h"
 #include "exceptions/ApplicationException.h"
 
-std::uint32_t otg::Application::instances = 0;
+std::uint32_t glib::Application::instances = 0;
 
-otg::Application::Application() {
+glib::Application::Application() {
 
 	try {
 
 		instantiate();
 		init();
 
-	} catch (otg::ApplicationException& exception) {
+	} catch (glib::ApplicationException& exception) {
 		std::cout << exception.what() << "\n";
 	}
 }
 
-void otg::Application::instantiate() {
+void glib::Application::instantiate() {
 
 	instances++;
 
 	if (instances > 1)
-		throw otg::ApplicationException("Application already created!");
+		throw glib::ApplicationException("Application already created!");
 }
 
-void otg::Application::init() {
+void glib::Application::init() {
 
 	if (glfwInit())
 		glfwSetErrorCallback(Application::errorCallback);
 	else
-		throw otg::ApplicationException("Could not initilize glfw!");
+		throw glib::ApplicationException("Could not initilize glfw!");
 }
 
-void otg::Application::errorCallback(int errorCode, const char* description) {
+void glib::Application::errorCallback(int errorCode, const char* description) {
 
-	otg::GlfwExcpetion exception(errorCode, description);
+	glib::GlfwExcpetion exception(errorCode, description);
 	std::cout << exception.what() << "\n";
 }
 
-otg::Application::~Application() {
+glib::Application::~Application() {
 
 	if (instances == 1)
 		glfwTerminate();

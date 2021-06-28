@@ -1,12 +1,12 @@
 #include "exceptions/FileInputException.h"
 
-namespace otg {
+namespace glib {
 
-	otg::FileInputException::FileInputException(const std::string& filePath) {
+	glib::FileInputException::FileInputException(const std::string& filePath) {
 		message = "ERROR::FILE::INPUT::Could not open file '" + filePath + "'!";
 	}
 
-	const char* otg::FileInputException::what() const {
+	const char* glib::FileInputException::what() const {
 		return message.c_str();
 	}
 

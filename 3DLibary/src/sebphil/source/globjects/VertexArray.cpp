@@ -2,7 +2,7 @@
 #include <iostream>
 #include "glad/glad.h"
 
-namespace otg {
+namespace glib {
 	VertexArray::VertexArray() noexcept {
 		createVertexArray();
 	}
@@ -12,12 +12,12 @@ namespace otg {
 	{
 	}
 
-	VertexArray& otg::VertexArray::operator=(const VertexArray& otherVao) noexcept {
+	VertexArray& glib::VertexArray::operator=(const VertexArray& otherVao) noexcept {
 
 		return *this;
 	}
 
-	void otg::VertexArray::createVertexArray() {
+	void glib::VertexArray::createVertexArray() {
 		glCreateVertexArrays(1, &glHandle);
 	}
 

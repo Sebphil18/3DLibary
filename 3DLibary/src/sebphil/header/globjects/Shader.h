@@ -4,7 +4,7 @@
 #include "globjects/GlObject.h"
 #include "globjects/ShaderType.h"
 
-namespace otg {
+namespace glib {
 
 	class Shader : public  GlObject {
 

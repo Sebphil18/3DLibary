@@ -5,7 +5,7 @@
 #include "globjects/RenderBuffer.h"
 #include "globjects/MultisampleRenderBuffer.h"
 
-namespace otg {
+namespace glib {
 
 	class Framebuffer : public GlObject {
 
@@ -33,7 +33,7 @@ namespace otg {
 		void unbind() const;
 
 		void clear();
-		void copyTo(std::int32_t width, std::int32_t height, otg::Framebuffer& other);
+		void copyTo(std::int32_t width, std::int32_t height, glib::Framebuffer& other);
 		void copyTo(std::int32_t width, std::int32_t height, std::uint32_t other);
 
 		std::uint32_t setTarget(std::uint32_t target);

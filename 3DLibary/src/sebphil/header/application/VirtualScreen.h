@@ -6,16 +6,17 @@
 #include "globjects/RenderBuffer.h"
 #include "modelstructure/ScreenMesh.h"
 
-namespace otg {
+namespace glib {
 
 	class VirtualScreen {
 
 	public:
+		VirtualScreen(glm::ivec2 dimensions);
 		VirtualScreen(std::int32_t width, std::int32_t height);
 
 		void beginFrame();
 		void endFrame(ShaderProgram& screenProgram);
-		void draw(ShaderProgram& screenProgram);
+		void draw();
 
 		void setSize(std::int32_t width, std::int32_t height);
 		std::uint32_t getScreenTexHandle() const;

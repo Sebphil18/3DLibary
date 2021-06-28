@@ -8,13 +8,14 @@
 #include "globjects/Framebuffer.h"
 #include "lighting/HDRTextureCube.h"
 
-namespace otg {
+namespace glib {
 
 	class CubeMapArray : public GlObject, public TextureTypes{
 
 	public:
 		CubeMapArray(const ImageFormat& imgFormat, std::uint32_t count = 1) noexcept;
 		CubeMapArray(const ImageFormat& imgFormat, std::uint32_t levels, std::uint32_t count = 1) noexcept;
+		CubeMapArray(const ImageFormat& imgFormat, const std::string& equirectengularTexture, ShaderProgram& conversionProgram) noexcept;
 		CubeMapArray(const CubeMapArray& other) noexcept;
 		CubeMapArray(CubeMapArray&& other) noexcept;
 
@@ -23,9 +24,9 @@ namespace otg {
 
 		~CubeMapArray() noexcept;
 
-		void bindToUnit(std::uint32_t unit);
-
 		void fromEquirectengular(const std::shared_ptr<HDRTexture>& equiRectTexture, ShaderProgram& conversionProgram);
+
+		void bindToUnit(std::uint32_t unit);
 
 		std::int32_t getWidth() const;
 		std::int32_t getHeight() const;

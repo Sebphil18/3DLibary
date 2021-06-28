@@ -2,7 +2,7 @@
 #include <iostream>
 #include "glad/glad.h"
 
-namespace otg {
+namespace glib {
 
 	MultisampleRenderBuffer::MultisampleRenderBuffer() noexcept : 
 		width(0), height(0), samples(4), TextureTypes(TextureType::DepthStencilAttachment)

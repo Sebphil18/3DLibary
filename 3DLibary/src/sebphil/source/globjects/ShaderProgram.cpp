@@ -3,7 +3,7 @@
 #include "exceptions/ProgramBuildException.h"
 #include "exceptions/UniformBufferException.h"
 
-namespace otg {
+namespace glib {
 
 	// TDOO: duplicated code
 	ShaderProgram::ShaderProgram(const std::string& vertexShaderPath, const std::string& fragmentShaderPath) {

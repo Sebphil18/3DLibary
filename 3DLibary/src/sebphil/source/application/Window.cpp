@@ -3,7 +3,7 @@
 #include "exceptions/ApplicationException.h"
 #include "debugflags/DebugFlags.h"
 
-namespace otg {
+namespace glib {
 
 	std::unordered_map<GLFWwindow*, WindowSizeCallback> Window::sizeCallbacks;
 	std::unordered_map<GLFWwindow*, WindowInputCallback> Window::inputCallbacks;
@@ -119,7 +119,6 @@ namespace otg {
 
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
-		glEnable(GL_MULTISAMPLE);
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 		glEnable(GL_CULL_FACE);
 
@@ -164,6 +163,10 @@ namespace otg {
 
 	GLFWwindow* const Window::getGlfwWindow() const noexcept {
 		return window;
+	}
+
+	void Window::setTitle(const std::string& title) {
+		glfwSetWindowTitle(window, title.c_str());
 	}
 
 	void Window::setSizeCallback(const WindowSizeCallback& callback) {

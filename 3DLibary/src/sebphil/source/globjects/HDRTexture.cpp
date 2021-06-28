@@ -1,11 +1,11 @@
 #include "globjects/HDRTexture.h"
 #include <iostream>
 #include <memory>
-#include "glad/glad.h"
 #include "stb/stb_image.h"
+#include "glad/glad.h"
 #include "exceptions/ImageLoadException.h"
 
-namespace otg {
+namespace glib {
 
 	HDRTexture::HDRTexture(const std::string& filePath) noexcept : 
 		filePath(filePath)

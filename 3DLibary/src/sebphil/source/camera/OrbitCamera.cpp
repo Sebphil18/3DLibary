@@ -5,7 +5,7 @@
 #include "glm/gtc/constants.hpp"
 #include "glm/gtx/polar_coordinates.hpp"
 
-namespace otg {
+namespace glib {
 	
 	OrbitCamera::OrbitCamera() :
 		angles(0, 0), radius(5), middlePoint(0),

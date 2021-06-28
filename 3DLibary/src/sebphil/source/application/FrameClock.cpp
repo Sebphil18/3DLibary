@@ -1,17 +1,17 @@
 #include "application/FrameClock.h"
 #include "GLFW/glfw3.h"
 
-otg::FrameClock::FrameClock() {
+glib::FrameClock::FrameClock() {
 
 	frame = { 0, 0, 0, 0 };
 }
 
-void otg::FrameClock::tick() {
+void glib::FrameClock::tick() {
 
 	updateFrame();
 }
 
-void otg::FrameClock::updateFrame() {
+void glib::FrameClock::updateFrame() {
 
 	double currentTime = glfwGetTime();
 
@@ -24,18 +24,18 @@ void otg::FrameClock::updateFrame() {
 	frame.currentFrame++;
 }
 
-double otg::FrameClock::getFrameRate() const {
+double glib::FrameClock::getFrameRate() const {
 	return frame.frameRate;
 }
 
-double otg::FrameClock::getFrameTime() const {
+double glib::FrameClock::getFrameTime() const {
 	return frame.frameTime;
 }
 
-double otg::FrameClock::getElapsedTime() const {
+double glib::FrameClock::getElapsedTime() const {
 	return frame.elapsedTime;
 }
 
-unsigned long otg::FrameClock::getCurrentFrame() const {
+unsigned long glib::FrameClock::getCurrentFrame() const {
 	return frame.currentFrame;
 }

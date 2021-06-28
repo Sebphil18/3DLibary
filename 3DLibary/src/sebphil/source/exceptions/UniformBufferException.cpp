@@ -1,6 +1,6 @@
 #include "exceptions/UniformBufferException.h"
 
-namespace otg {
+namespace glib {
 
 	UniformBufferException::UniformBufferException(const std::string& blockName) {
 		msg = "ERROR::UNIFORMBUFFER::Could not locate uniform block '" + blockName + "'!";

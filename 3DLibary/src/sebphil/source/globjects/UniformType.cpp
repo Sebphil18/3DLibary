@@ -1,6 +1,6 @@
 #include "globjects/UniformType.h"
 
-namespace otg {
+namespace glib {
 
 	UniformTypes::UniformTypes(UniformType type) noexcept : 
 		type(type)

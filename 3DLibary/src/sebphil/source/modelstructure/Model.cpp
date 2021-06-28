@@ -2,7 +2,7 @@
 #include "stb/stb_image.h"
 #include "modelstructure/Mesh.h"
 
-namespace otg {
+namespace glib {
 
 	Model::Model() noexcept : 
 		worldMatrix(glm::mat4(1))

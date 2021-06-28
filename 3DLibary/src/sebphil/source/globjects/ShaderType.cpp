@@ -1,9 +1,9 @@
 #include "globjects/ShaderType.h"
 #include "glad/glad.h"
 
-namespace otg {
+namespace glib {
 
-	std::int32_t otg::ShaderStageType::getGlType(ShaderType type) {
+	std::int32_t glib::ShaderStageType::getGlType(ShaderType type) {
 
 		switch (type) {
 		case ShaderType::Vertex:

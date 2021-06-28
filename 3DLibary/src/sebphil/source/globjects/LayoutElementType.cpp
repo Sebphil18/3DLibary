@@ -1,7 +1,7 @@
 #include "globjects/LayoutElementType.h"
 #include "glad/glad.h"
 
-std::uint32_t otg::LayoutElementType::getElementTypeSize(ElementType type) {
+std::uint32_t glib::LayoutElementType::getElementTypeSize(ElementType type) {
 
 	switch (type) {
 
@@ -32,7 +32,7 @@ std::uint32_t otg::LayoutElementType::getElementTypeSize(ElementType type) {
 	}
 }
 
-std::uint32_t otg::LayoutElementType::getElementGlType(ElementType type) {
+std::uint32_t glib::LayoutElementType::getElementGlType(ElementType type) {
 
 	switch (type) {
 

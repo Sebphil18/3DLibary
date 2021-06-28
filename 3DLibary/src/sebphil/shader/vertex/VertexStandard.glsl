@@ -20,12 +20,12 @@ out VertexData {
 	vec3 position;
 	vec3 normal;
 	vec2 texCoord;
+	vec3 lightPos;
 	vec3 tbnPosition;
 	vec3 tbnViewPos;
 	vec3 tbnLightPos;
 	vec3 viewPos;
 	mat3 tbnMatrix;
-	vec3 normal2;
 } vertexOut;
 
 void main() {
@@ -47,11 +47,11 @@ void main() {
 
 	mat3 inverseTbnMat = transpose(tbnMat);
 
+	vertexOut.lightPos = lightPos;
 	vertexOut.tbnPosition = inverseTbnMat * worldPos.xyz;
 	vertexOut.tbnViewPos = inverseTbnMat * viewPos;
 	vertexOut.tbnLightPos = inverseTbnMat * lightPos;
 	vertexOut.texCoord = texCoord;
 	vertexOut.viewPos = viewPos;
 	vertexOut.tbnMatrix = tbnMat;
-	vertexOut.normal2 = vTangent;
 }

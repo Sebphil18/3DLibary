@@ -2,7 +2,7 @@
 #include "application/Window.h"
 #include "imgui/imgui.h"
 
-namespace otg {
+namespace glib {
 
 	class ImGuiEnvironment {
 
@@ -13,7 +13,7 @@ namespace otg {
 
 		ImGuiEnvironment& operator=(const ImGuiEnvironment& other) = delete;
 
-		void newFrame();
+		void beginFrame();
 		void endFrame();
 
 	private:

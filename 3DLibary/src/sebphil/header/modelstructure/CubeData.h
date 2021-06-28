@@ -3,7 +3,7 @@
 #include "glm/glm.hpp"
 #include "modelstructure/Vertex.h"
 
-static std::vector<otg::Vertex> unitCubeVertices = {
+static std::vector<glib::Vertex> unitCubeVertices = {
 	// front
 	{ glm::vec3(-0.5, -0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },
 	{ glm::vec3(0.5, -0.5, -0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(1, 0) },
@@ -41,7 +41,7 @@ static std::vector<otg::Vertex> unitCubeVertices = {
 	{ glm::vec3(-0.5, -0.5, 0.5), glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec2(0, 1) }
 };
 
-static std::vector<otg::Vertex> cubeVertices = {
+static std::vector<glib::Vertex> cubeVertices = {
 
 	// front
 	{ glm::vec3(-1, -1, -1), glm::vec3(0, 0, -1), glm::vec3(0), glm::vec3(0), glm::vec2(0, 0) },

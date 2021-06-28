@@ -1,7 +1,7 @@
 #include "globjects/TextureType.h"
 #include "glad/glad.h"
 
-namespace otg {
+namespace glib {
 
 	TextureTypes::TextureTypes() noexcept :
 		type(TextureType::None)

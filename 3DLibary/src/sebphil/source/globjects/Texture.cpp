@@ -2,7 +2,7 @@
 #include "glad/glad.h"
 #include <iostream>
 
-namespace otg {
+namespace glib {
 
 	Texture::Texture() noexcept : 
 		img({ nullptr, 1, 1, 0 }), TextureTypes()
@@ -10,7 +10,7 @@ namespace otg {
 		createTexture();
 	}
 
-	otg::Texture::Texture(TextureType type) noexcept :
+	glib::Texture::Texture(TextureType type) noexcept :
 		img({ nullptr, 1, 1, 0 }), TextureTypes(type)
 	{
 		createTexture();

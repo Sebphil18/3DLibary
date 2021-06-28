@@ -1,7 +1,7 @@
 #include "globjects/GlObject.h"
 #include <memory>
 
-namespace otg {
+namespace glib {
 
 	GlObject::GlObject() noexcept :
 		glHandle(0)

@@ -2,7 +2,7 @@
 #include <memory>
 #include "glad/glad.h"
 
-namespace otg {
+namespace glib {
 
 	RenderBuffer::RenderBuffer() noexcept :
 		width(1), height(1), TextureTypes(TextureType::DepthStencilAttachment)

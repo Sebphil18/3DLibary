@@ -1,12 +1,12 @@
 #pragma once
 #include "modelstructure/Mesh.h"
 
-namespace otg {
+namespace glib {
 
 	class ScreenMesh : public Mesh {
 
 	public:
-		static std::vector<otg::Vertex> screenVertices;
+		static std::vector<glib::Vertex> screenVertices;
 		static std::vector<unsigned int> screenIndices;
 		
 		ScreenMesh();

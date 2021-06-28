@@ -6,7 +6,7 @@
 // This is not nice to read but this signature is worse
 #define SEB_GL_MSG_CALLBACK_FUNC_PTR void (*glMessageCallback)(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 
-namespace otg {
+namespace glib {
 
 	struct Message {
 		std::uint32_t id;

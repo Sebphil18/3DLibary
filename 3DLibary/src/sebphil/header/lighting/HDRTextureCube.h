@@ -3,7 +3,7 @@
 #include "globjects/ShaderProgram.h"
 #include "modelstructure/Mesh.h"
 
-namespace otg {
+namespace glib {
 
 	class HDRTextureCube {
 

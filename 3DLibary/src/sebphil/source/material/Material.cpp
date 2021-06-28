@@ -1,6 +1,6 @@
 #include "material/Material.h"
 
-namespace otg {
+namespace glib {
 	
 	Material::Material() :
 		roughness(0), metallic(0), occlusion(1),
@@ -73,7 +73,7 @@ namespace otg {
 		}
 	}
 
-	std::string Material::getTexUniName(TextureIterators& iterators, otg::TextureType type) {
+	std::string Material::getTexUniName(TextureIterators& iterators, glib::TextureType type) {
 
 		std::string uniName = "";
 

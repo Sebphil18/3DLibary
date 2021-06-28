@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 
-namespace otg {
+namespace glib {
 
 	class FileReader {
 

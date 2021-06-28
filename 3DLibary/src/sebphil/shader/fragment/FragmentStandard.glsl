@@ -27,16 +27,15 @@ uniform samplerCubeArray prefilterMap;
 uniform sampler2D brdf;
 
 in VertexData {
-
 	vec3 position;
 	vec3 normal;
 	vec2 texCoord;
+	vec3 lightPos;
 	vec3 tbnPosition;
 	vec3 tbnViewPos;
 	vec3 tbnLightPos;
 	vec3 viewPos;
 	mat3 tbnMatrix;
-	vec3 normal2;
 } vertexIn;
 
 float distributionGGX(vec3 normal, vec3 halfway, float roughness);
@@ -53,9 +52,11 @@ vec3 fresnelSchlickRough(vec3 viewDir, vec3 halfway, vec3 f0, float roughness);
 void main() {
 
 	const vec3 lightColor = vec3(1, 1, 1);
+
 	vec3 normalTex = texture(material.normalTex0, vertexIn.texCoord).rgb;
 	vec3 normal = normalize(normalTex * 2 - 1);
 
+	// TODO: normal mapping in tbn space
 	if(normalTex == vec3(0))
 		normal = vec3(0, 0, 1);
 
@@ -75,9 +76,6 @@ void main() {
 //	albedo = vec3(0, 1, 1);
 //	roughness = 0.2;
 //	metallic = 0.99;
-//	normal = vec3(0, 0, 1);
-	
-	occlusion = material.occlusion + texOcclusion;
 
 	vec3 viewDir = normalize(vertexIn.tbnViewPos - vertexIn.tbnPosition);
 	vec3 L0 = vec3(0);

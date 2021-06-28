@@ -2,7 +2,7 @@
 #include <exception>
 #include <string>
 
-namespace otg {
+namespace glib {
 	
 	class UniformBufferException : public std::exception {
 

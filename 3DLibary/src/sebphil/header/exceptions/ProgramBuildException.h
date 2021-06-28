@@ -3,7 +3,7 @@
 #include <exception>
 #include <iostream>
 
-namespace otg {
+namespace glib {
 
 	class ProgramBuildException : public std::exception {
 

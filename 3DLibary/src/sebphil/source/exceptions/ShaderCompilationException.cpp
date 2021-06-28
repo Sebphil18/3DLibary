@@ -3,7 +3,7 @@
 #include <iostream>
 #include "glad/glad.h"
 
-namespace otg {
+namespace glib {
 
 	ShaderCompilationException::ShaderCompilationException(std::uint32_t glHandle, const std::string& filePath) :
 		glHandle(glHandle)
@@ -12,7 +12,7 @@ namespace otg {
 		deleteShader();
 	}
 
-	void otg::ShaderCompilationException::constructMsg(const std::string& filePath) {
+	void glib::ShaderCompilationException::constructMsg(const std::string& filePath) {
 
 		std::string log = getLog();
 
@@ -43,7 +43,7 @@ namespace otg {
 		glDeleteShader(glHandle);
 	}
 
-	const char* otg::ShaderCompilationException::what() const {
+	const char* glib::ShaderCompilationException::what() const {
 		return message.c_str();
 	}
 

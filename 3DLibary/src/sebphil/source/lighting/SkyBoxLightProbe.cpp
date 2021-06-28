@@ -2,7 +2,7 @@
 #include "glad/glad.h"
 #include "modelstructure/CubeData.h"
 
-namespace otg {
+namespace glib {
 	
 	SkyBoxLightProbe::SkyBoxLightProbe(CubeMapArray& skybox, const std::shared_ptr<ShaderProgram>& convProgram) :
 		envMap({ 64, 64 }), convolutionProgram(convProgram)

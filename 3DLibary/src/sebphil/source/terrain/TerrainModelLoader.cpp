@@ -1,7 +1,7 @@
 #include "terrain/TerrainModelLoader.h"
 #include "modelstructure/ModelDataConverter.h"
 
-namespace otg {
+namespace glib {
 
 	TerrainModelLoader::TerrainModelLoader(const Heightmap<float>& heightmap) : 
 		dimensions(heightmap.getSize())

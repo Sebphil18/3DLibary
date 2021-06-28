@@ -1,7 +1,7 @@
 #include "modelstructure/Mesh.h"
 #include <algorithm>
 
-namespace otg {
+namespace glib {
 
 	Mesh::Mesh() noexcept {
 
@@ -46,7 +46,7 @@ namespace otg {
 	{
 	}
 
-	Mesh& otg::Mesh::operator=(const Mesh& otherMesh) noexcept {
+	Mesh& glib::Mesh::operator=(const Mesh& otherMesh) noexcept {
 		data = otherMesh.data;
 
 		setUpLayout();
@@ -130,7 +130,7 @@ namespace otg {
 		vbo.updateData(static_cast<std::uint32_t>(size), static_cast<std::uint32_t>(offset), &data.vertices[offset]);
 	}
 
-	void Mesh::draw(otg::ShaderProgram& program) {
+	void Mesh::draw(glib::ShaderProgram& program) {
 
 		program.use();
 		vao.use();

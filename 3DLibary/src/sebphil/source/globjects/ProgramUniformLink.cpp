@@ -8,9 +8,9 @@
 #include <iostream>
 #endif
 
-namespace otg {
+namespace glib {
 
-	otg::ProgramUniformLink::ProgramUniformLink():
+	glib::ProgramUniformLink::ProgramUniformLink():
 		programHandle(0)
 	{
 	}
@@ -43,7 +43,7 @@ namespace otg {
 			glProgramUniform1f(programHandle, uniformLocation, value);
 	}
 
-	void otg::ProgramUniformLink::setUniformVec(const std::string& uniformName, glm::vec2 vec2) {
+	void glib::ProgramUniformLink::setUniformVec(const std::string& uniformName, glm::vec2 vec2) {
 
 		std::int32_t uniformLocation = getUniformLocation(uniformName);
 
@@ -54,7 +54,7 @@ namespace otg {
 		
 	}
 
-	void otg::ProgramUniformLink::setUniformVec(const std::string& uniformName, glm::vec3 vec3) {
+	void glib::ProgramUniformLink::setUniformVec(const std::string& uniformName, glm::vec3 vec3) {
 
 		std::int32_t uniformLocation = getUniformLocation(uniformName);
 
@@ -64,7 +64,7 @@ namespace otg {
 			glProgramUniform3f(programHandle, uniformLocation, vec3.x, vec3.y, vec3.z);
 	}
 
-	void otg::ProgramUniformLink::setUniformVec(const std::string& uniformName, glm::vec4 vec4) {
+	void glib::ProgramUniformLink::setUniformVec(const std::string& uniformName, glm::vec4 vec4) {
 
 		std::int32_t uniformLocation = getUniformLocation(uniformName);
 
@@ -74,7 +74,7 @@ namespace otg {
 			glProgramUniform4f(programHandle, uniformLocation, vec4.x, vec4.y, vec4.z, vec4.w);
 	}
 
-	void otg::ProgramUniformLink::setUniformMat(const std::string& uniformName, glm::mat4 mat4, bool transpose) {
+	void glib::ProgramUniformLink::setUniformMat(const std::string& uniformName, glm::mat4 mat4, bool transpose) {
 
 		std::int32_t uniformLocation = getUniformLocation(uniformName);
 
@@ -84,7 +84,7 @@ namespace otg {
 			glProgramUniformMatrix4fv(programHandle, uniformLocation, 1, transpose, glm::value_ptr(mat4));
 	}
 
-	std::int32_t otg::ProgramUniformLink::getUniformLocation(const std::string& uniformName) {
+	std::int32_t glib::ProgramUniformLink::getUniformLocation(const std::string& uniformName) {
 
 		std::int32_t uniformLocation;
 		
@@ -98,20 +98,20 @@ namespace otg {
 		return uniformLocation;
 	}
 
-	bool otg::ProgramUniformLink::uniformNameIsCached(const std::string& uniformName) {
+	bool glib::ProgramUniformLink::uniformNameIsCached(const std::string& uniformName) {
 
 		auto itr = uniformLocations.find(uniformName);
 
 		return itr != uniformLocations.end();
 	}
 
-	void otg::ProgramUniformLink::printUnusedUniform(const std::string& uniformName) {
+	void glib::ProgramUniformLink::printUnusedUniform(const std::string& uniformName) {
 #if SEB_PROGRAM_DEBUG == 1
 		std::cout << "INFO::SHADERPROGRAM::Uniform '" << uniformName << "' not found. (It might got removed because it was not used in a shader.)\n";
 #endif
 	}
 
-	void otg::ProgramUniformLink::setProgramUniformHandle(std::uint32_t programHandle) {
+	void glib::ProgramUniformLink::setProgramUniformHandle(std::uint32_t programHandle) {
 		this->programHandle = programHandle;
 	}
 

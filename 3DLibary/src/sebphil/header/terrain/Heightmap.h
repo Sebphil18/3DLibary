@@ -2,7 +2,7 @@
 #include <vector>
 #include "glm/glm.hpp"
 
-namespace otg {
+namespace glib {
 
 	template<typename T>
 	class Heightmap {

@@ -1,6 +1,6 @@
 #include "modelstructure/TextureRegister.h"
 
-namespace otg {
+namespace glib {
 
 	std::shared_ptr<TextureImage> TextureRegister::loadTexture(const std::string& filePath, TextureType type) {
 
@@ -16,7 +16,7 @@ namespace otg {
 		return texture;
 	}
 
-	void otg::TextureRegister::manageWeakPtr(Iterator itr, TextureType type, std::shared_ptr<TextureImage>& texture) {
+	void glib::TextureRegister::manageWeakPtr(Iterator itr, TextureType type, std::shared_ptr<TextureImage>& texture) {
 
 		std::weak_ptr<TextureImage> weakTexture = itr->second;
 

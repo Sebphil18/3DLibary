@@ -2,7 +2,7 @@
 #include <exception>
 #include "modelstructure/ModelLoader.h"
 
-namespace otg {
+namespace glib {
 
 	class ModelLoadException : public std::exception {
 

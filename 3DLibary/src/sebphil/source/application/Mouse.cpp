@@ -1,7 +1,7 @@
-#include "application/Mouse.h"
+#include "input/Mouse.h"
 #include <iostream>
 
-namespace otg {
+namespace glib {
 
 	Mouse::Mouse(Window& window) :
 		windowHandle(window.getGlfwWindow()), 
@@ -34,7 +34,7 @@ namespace otg {
 			delta = lastPos - newPos;
 	}
 
-	void Mouse::resetScrollDelta() {
+	void Mouse::resetScrollOffset() {
 		scrollDelta = glm::ivec2(0);
 	}
 

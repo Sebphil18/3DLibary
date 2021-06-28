@@ -1,7 +1,7 @@
 #include "globjects/UniformBuffer.h"
 #include "glad/glad.h"
 
-namespace otg {
+namespace glib {
 
 	UniformBuffer::UniformBuffer() noexcept :
 		size(0), capacity(64 * 4)

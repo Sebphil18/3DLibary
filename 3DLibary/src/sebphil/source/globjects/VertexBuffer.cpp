@@ -3,26 +3,26 @@
 #include "glad/glad.h"
 
 // TODO: buffer allocates data array of length 0 on construction
-otg::VertexBuffer::VertexBuffer() noexcept :
+glib::VertexBuffer::VertexBuffer() noexcept :
 	usage(GL_STATIC_DRAW), size(0), data(nullptr)
 {
 	createBuffer();
 	fillBuffer();
 }
 
-otg::VertexBuffer::VertexBuffer(std::size_t size, void* data, std::uint32_t usage) noexcept :
+glib::VertexBuffer::VertexBuffer(std::size_t size, void* data, std::uint32_t usage) noexcept :
 	usage(usage), size(size), data(data)
 {
 	createBuffer();
 	fillBuffer();
 }
 
-otg::VertexBuffer::VertexBuffer(const VertexBuffer& otherVbo) noexcept :
+glib::VertexBuffer::VertexBuffer(const VertexBuffer& otherVbo) noexcept :
 	VertexBuffer(otherVbo.size, otherVbo.data, otherVbo.usage)
 {
 }
 
-otg::VertexBuffer& otg::VertexBuffer::operator=(const VertexBuffer& otherVbo) noexcept {
+glib::VertexBuffer& glib::VertexBuffer::operator=(const VertexBuffer& otherVbo) noexcept {
 
 	usage = otherVbo.usage;
 	size = otherVbo.size;
@@ -33,12 +33,12 @@ otg::VertexBuffer& otg::VertexBuffer::operator=(const VertexBuffer& otherVbo) no
 	return *this;
 }
 
-void otg::VertexBuffer::createBuffer() {
+void glib::VertexBuffer::createBuffer() {
 
 	glCreateBuffers(1, &glHandle);
 }
 
-otg::VertexBuffer::VertexBuffer(VertexBuffer&& otherVbo) noexcept :
+glib::VertexBuffer::VertexBuffer(VertexBuffer&& otherVbo) noexcept :
 	GlObject(std::move(otherVbo)),
 	usage(std::move(otherVbo.usage)),
 	size(std::move(otherVbo.size)),
@@ -46,7 +46,7 @@ otg::VertexBuffer::VertexBuffer(VertexBuffer&& otherVbo) noexcept :
 {
 }
 
-otg::VertexBuffer& otg::VertexBuffer::operator=(VertexBuffer&& otherVbo) noexcept {
+glib::VertexBuffer& glib::VertexBuffer::operator=(VertexBuffer&& otherVbo) noexcept {
 
 	GlObject::operator=(std::move(otherVbo));
 
@@ -57,12 +57,12 @@ otg::VertexBuffer& otg::VertexBuffer::operator=(VertexBuffer&& otherVbo) noexcep
 	return *this;
 }
 
-otg::VertexBuffer::~VertexBuffer() noexcept {
+glib::VertexBuffer::~VertexBuffer() noexcept {
 
 	glDeleteBuffers(1, &glHandle);
 }
 
-void otg::VertexBuffer::setData(std::size_t size, void* data, std::uint32_t usage) {
+void glib::VertexBuffer::setData(std::size_t size, void* data, std::uint32_t usage) {
 
 	this->data = data;
 	this->size = size;
@@ -71,19 +71,19 @@ void otg::VertexBuffer::setData(std::size_t size, void* data, std::uint32_t usag
 	fillBuffer();
 }
 
-void otg::VertexBuffer::fillBuffer() {
+void glib::VertexBuffer::fillBuffer() {
 
 	glNamedBufferData(glHandle, size, data, usage);
 }
 
-void otg::VertexBuffer::updateData(std::uint32_t size, std::uint32_t offset, void* data) {
+void glib::VertexBuffer::updateData(std::uint32_t size, std::uint32_t offset, void* data) {
 	glNamedBufferSubData(glHandle, offset, size, data);
 }
 
-void otg::VertexBuffer::use() const {
+void glib::VertexBuffer::use() const {
 	glBindBuffer(GL_ARRAY_BUFFER, glHandle);
 }
 
-void otg::VertexBuffer::unbind() {
+void glib::VertexBuffer::unbind() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

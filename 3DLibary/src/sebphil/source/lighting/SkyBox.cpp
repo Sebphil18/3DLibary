@@ -1,6 +1,6 @@
 #include "lighting/SkyBox.h"
 
-namespace otg {
+namespace glib {
 
 	SkyBox::SkyBox(std::int32_t textureUnit) :
 		mesh(cubeVertices, cubeIndices), textureUnit(textureUnit)

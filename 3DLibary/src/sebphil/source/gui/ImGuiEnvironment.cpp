@@ -2,7 +2,7 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-namespace otg {
+namespace glib {
 
 	ImGuiEnvironment::ImGuiEnvironment(const Window& window) noexcept {
 
@@ -46,7 +46,7 @@ namespace otg {
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiEnvironment::newFrame() {
+	void ImGuiEnvironment::beginFrame() {
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
