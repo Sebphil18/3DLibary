@@ -1,4 +1,3 @@
-#include <iostream>
 #include "stb/stbimage.h"
 #include "application/Application.h"
 #include "application/Scene.h"
@@ -21,15 +20,22 @@ int main() {
 	glib::Model monkey(loader.getData());
 
 	glib::Material material;
-	material.setAlbedo(glm::vec3(1, 0, 0));
-	material.setRoughness(0.2);
-	material.setMetallic(0);
+	auto texture = std::make_shared<glib::TextureImage>("rec/textures/testtexture/TestGrid.png", glib::TextureType::Albedo);
+	material.addTexture(texture);
 
 	monkey.meshes[0].setMaterial(material);
 	monkey.setRotation(glm::vec3(glm::radians(-90.0f), 0, 0));
 
 	auto& models = scene->models;
 	models.push_back(monkey);
+
+	stage.setOnUpdate([](glib::Scene& scene, const glib::FrameClock& clock) {
+
+		float angle = clock.getCurrentFrame() * 0.01;
+		glm::vec3 rotation = glm::vec3(angle, angle, 0);
+		scene.models[0].setRotation(rotation);
+
+		});
 
 	stage.startRenderLoop();
 
