@@ -1,26 +1,10 @@
 #include <iostream>
 #include "stb/stbimage.h"
 #include "application/Application.h"
-#include "application/Window.h"
-#include "application/DebugMessenger.h"
-#include "application/VirtualScreen.h"
-#include "application/FrameClock.h"
-#include "application/MatrixUniformBuffer.h"
 #include "application/Scene.h"
 #include "application/Stage.h"
-#include "gui/ImGuiEnvironment.h"
 #include "modelstructure/ModelLoader.h"
 #include "modelstructure/Model.h"
-#include "globjects/UniformBuffer.h"
-#include "globjects/TextureImage.h"
-#include "globjects/CubeMapArray.h"
-#include "lighting/SkyBox.h"
-#include "lighting/SkyBoxLightProbe.h"
-#include "lighting/SkyBoxReflectionProbe.h"
-#include "lighting/SkyLight.h"
-#include "exceptions/ApplicationException.h"
-#include "camera/OrbitCamera.h"
-#include "glm/gtc/type_ptr.hpp"
 
 // test app
 int main() {

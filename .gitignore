@@ -8,3 +8,4 @@ rec/
 3DLibary/src/vendor
 3DLibary/imgui.ini
 3DLibary/assimp-vc142-mt.dll
+TestApplication/glad.c
