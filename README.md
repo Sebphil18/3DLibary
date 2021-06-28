@@ -33,3 +33,14 @@ int main() {
 ```
 output: <br>
 <image src="https://i.imgur.com/9BphM7J.png"> <br>
+adding a texture to the material:
+```c++
+glib::Material material;
+
+auto texture = std::make_shared<glib::TextureImage>("rec/textures/testtexture/TestTexture.png", glib::TextureType::Albedo);
+material.addTexture(texture);
+
+monkey.meshes[0].setMaterial(material);
+```
+TextureTypes that might be useful: Albedo, Roughness, Metallic, Occlusion, Normal <br>
+Please note that the textures are added to the other corresponding material properties. For example, if the material has a roughness of 0.5 and the roughness-texture a value of 0.2 the resulting roughness will be 0.7. Every texture has to be at least rgb.<br>
