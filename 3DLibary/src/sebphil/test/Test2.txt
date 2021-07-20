@@ -1,0 +1,4 @@
+START OF Test2.txt
+[include error.txt]
+[include src/sebphil/test/Test1.txt]
+END OF Test2.txt

@@ -213,6 +213,21 @@
     <ClCompile Include="src\sebphil\source\application\Stage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sebphil\source\preprocessor\CommandTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\preprocessor\Command.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\preprocessor\IncludeFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\preprocessor\SourceBuild.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sebphil\source\preprocessor\DefineCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sebphil\header\application\Application.h">
@@ -432,6 +447,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\sebphil\header\application\Stage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\preprocessor\CommandTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\preprocessor\Command.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\preprocessor\IncludeFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\preprocessor\SourceBuild.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sebphil\header\preprocessor\DefineCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

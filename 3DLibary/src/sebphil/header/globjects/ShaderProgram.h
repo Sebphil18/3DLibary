@@ -8,6 +8,10 @@
 
 namespace glib {
 
+	enum class ShaderProgramFlags {
+		PBR, BlinnPhong, Normalmapping, ImageBasedLighting
+	};
+
 	class ShaderProgram : public GlObject, public ProgramUniformLink {
 
 	public:

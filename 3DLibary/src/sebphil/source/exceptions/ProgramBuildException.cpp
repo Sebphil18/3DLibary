@@ -1,5 +1,6 @@
 #include "exceptions/ProgramBuildException.h"
 #include <vector>
+#include <string>
 #include "glad/glad.h"
 
 namespace glib {
@@ -10,7 +11,7 @@ namespace glib {
 		constructMessage();
 	}
 
-	void ProgramBuildException::constructMessage() {
+	void ProgramBuildException::constructMessage() {                 
 
 		std::string log = getLog();
 

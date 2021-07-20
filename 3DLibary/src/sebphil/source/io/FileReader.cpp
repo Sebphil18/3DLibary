@@ -41,11 +41,9 @@ namespace glib {
 
 	std::string glib::FileReader::writeFileToString(std::ifstream& fileInput) {
 
-		std::string content;
-		std::string line;
-
-		while (std::getline(fileInput, line))
-			content.append(line + "\n");
+		std::string content(
+			{ std::istreambuf_iterator<char>(fileInput) },
+			std::istreambuf_iterator<char>());
 
 		return content;
 	}

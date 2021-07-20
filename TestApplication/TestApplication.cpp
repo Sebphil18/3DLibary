@@ -19,7 +19,29 @@ int main() {
 
 	loadGlBindings();
 	printGlInfo();
+
+	std::cout << "press any key to continue... \n";
 	std::cin.get();
+
+	double lastTime = glfwGetTime();
+
+	while (!glfwWindowShouldClose(window)) {
+
+		double currentTime = glfwGetTime();
+		double delta = currentTime - lastTime;
+		double fps = 1 / delta;
+		lastTime = currentTime;
+
+		std::cout << "frametime: " << delta << "s \n";
+		std::cout << "frameRate: " << fps << "fps \n";
+		std::cout << "\n";
+
+		glClearColor(1, 1, 0, 1);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
 
 	glfwDestroyWindow(window);
 	glfwTerminate();

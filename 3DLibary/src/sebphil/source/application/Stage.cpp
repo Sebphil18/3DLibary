@@ -3,22 +3,22 @@
 namespace glib {
 
 	Stage::Stage(const std::string& title, int width, int height) :
-		glib::Window(title, width, height),
-		screen(width, height) {
+		Window(title, width, height),
+		screen(width, height),
+		imGuiEnv(*this)
+	{
 
 		setCallbacks();
-		updateFunc = standartUpdateFunc;
-		drawFunc = standartDrawFunc;
 	}
 
-	Stage::Stage(const std::shared_ptr<glib::Scene>& scene, const std::string& title, int width, int height) :
-		glib::Window(title, width, height),
+	Stage::Stage(const std::shared_ptr<Scene>& scene, const std::string& title, int width, int height) :
+		Window(title, width, height),
 		screen(width, height),
-		scene(scene) {
+		scene(scene),
+		imGuiEnv(*this)
+	{
 
 		setCallbacks();
-		updateFunc = standartUpdateFunc;
-		drawFunc = standartDrawFunc;
 	}
 
 	void Stage::setCallbacks() {
@@ -28,9 +28,13 @@ namespace glib {
 			scene->setSize(width, height);
 			glViewport(0, 0, width, height);
 			});
+
+		updateFunc = standartUpdateFunc;
+		drawFunc = standartDrawFunc;
+		guiDrawFunc = standartGuiDrawFunc;
 	}
 
-	void Stage::setScene(const std::shared_ptr<glib::Scene>& scene) {
+	void Stage::setScene(const std::shared_ptr<Scene>& scene) {
 
 		if (scene == nullptr)
 			throw ApplicationException("Scene cannot be null!");
@@ -41,7 +45,7 @@ namespace glib {
 	void Stage::startRenderLoop() {
 		try {
 			launchRenderLoop();
-		} catch (const glib::ApplicationException& exception) {
+		} catch (const ApplicationException& exception) {
 			std::cout << exception.what() << "\n";
 		}
 	}
@@ -50,12 +54,16 @@ namespace glib {
 	void Stage::launchRenderLoop() {
 
 		if (scene == nullptr)
-			throw glib::ApplicationException("Stage has no scene to render! \n");
+			throw ApplicationException("Stage has no scene to render! \n");
 
 		while (!shouldClose()) {
 
 			update();
 			draw();
+
+			imGuiEnv.beginFrame();
+			guiDrawFunc(*scene, clock);
+			imGuiEnv.endFrame();
 
 			glfwSwapBuffers(getGlfwWindow());
 			glfwPollEvents();
@@ -79,12 +87,12 @@ namespace glib {
 		screen.draw();
 	}
 
-	std::shared_ptr<glib::Scene>& Stage::getScene() {
+	std::shared_ptr<Scene>& Stage::getScene() {
 
 		try {
 			if (scene == nullptr)
-				throw glib::ApplicationException("Stage has no scene to render! \n");
-		} catch (const glib::ApplicationException& exception) {
+				throw ApplicationException("Stage has no scene to render! \n");
+		} catch (const ApplicationException& exception) {
 			std::cout << exception.what() << "\n";
 		}
 
@@ -99,7 +107,11 @@ namespace glib {
 		drawFunc = function;
 	}
 
-	void Stage::standartUpdateFunc(Scene& scene, const glib::FrameClock& clock) {}
-	void Stage::standartDrawFunc(glib::Scene& scene, const glib::FrameClock& clock) {}
+	void Stage::setOnGuiDraw(const RenderFunction& function) {
+		guiDrawFunc = function;
+	}
 
+	void Stage::standartUpdateFunc(Scene& scene, const glib::FrameClock& clock) {}
+	void Stage::standartDrawFunc(Scene& scene, const glib::FrameClock& clock) {}
+	void Stage::standartGuiDrawFunc(glib::Scene& scene, const glib::FrameClock& clock) {}
 }

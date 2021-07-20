@@ -5,13 +5,13 @@
 #include "glad/glad.h"
 #include "io/FileReader.h"
 #include "exceptions/ShaderCompilationException.h"
+#include "preprocessor/SourceBuild.h"
 
 namespace glib {
 
 	Shader::Shader(const std::string& filePath, ShaderType type) noexcept :
-		filePath(filePath), type(ShaderStageType::getGlType(type))
+		filePath(filePath), type(ShaderStageType::getGlType(type)), src(SourceBuild(filePath))
 	{
-		readSource();
 		createShader();
 	}
 
@@ -55,13 +55,9 @@ namespace glib {
 	}
 
 	void Shader::tryToCompile() {
-
 		try {
-
 			compile();
-
 		} catch (const ShaderCompilationException& exception) {
-
 			std::cout << exception.what() << "\n";
 		}
 	}

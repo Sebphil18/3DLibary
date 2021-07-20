@@ -1,0 +1,20 @@
+START OF Test1.txt
+This is some code! :)
+[include src/sebphil/test/Test2.txt]
+[define VARIABLE]
+
+[ifdef VARIABLE]
+if-test
+[endif]
+
+[ifdef VARIABLE2]
+This text should not appear because the corresponding token was not defined!
+[endif]
+
+[ifdef VARIABLE3]
+Else should be included instead of this text!
+[else]
+else-test
+[endif]
+
+END OF Test1.txt

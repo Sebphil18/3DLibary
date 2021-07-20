@@ -76,6 +76,11 @@
     <ClCompile Include="src\sebphil\source\modelstructure\ModelLoader.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\ScreenMesh.cpp" />
     <ClCompile Include="src\sebphil\source\modelstructure\TextureRegister.cpp" />
+    <ClCompile Include="src\sebphil\source\preprocessor\Command.cpp" />
+    <ClCompile Include="src\sebphil\source\preprocessor\DefineCommand.cpp" />
+    <ClCompile Include="src\sebphil\source\preprocessor\IncludeFunction.cpp" />
+    <ClCompile Include="src\sebphil\source\preprocessor\CommandTypes.cpp" />
+    <ClCompile Include="src\sebphil\source\preprocessor\SourceBuild.cpp" />
     <ClCompile Include="src\sebphil\source\terrain\TerrainModelLoader.cpp" />
     <ClCompile Include="src\vendor\glad\glad.c" />
     <ClCompile Include="src\vendor\imgui\imgui.cpp" />
@@ -149,6 +154,11 @@
     <ClInclude Include="src\sebphil\header\modelstructure\TextureRegister.h" />
     <ClInclude Include="src\sebphil\header\modelstructure\Vertex.h" />
     <ClInclude Include="src\sebphil\header\camera\Camera.h" />
+    <ClInclude Include="src\sebphil\header\preprocessor\Command.h" />
+    <ClInclude Include="src\sebphil\header\preprocessor\DefineCommand.h" />
+    <ClInclude Include="src\sebphil\header\preprocessor\IncludeFunction.h" />
+    <ClInclude Include="src\sebphil\header\preprocessor\CommandTypes.h" />
+    <ClInclude Include="src\sebphil\header\preprocessor\SourceBuild.h" />
     <ClInclude Include="src\sebphil\header\terrain\Heightmap.h" />
     <ClInclude Include="src\sebphil\header\terrain\TerrainModelLoader.h" />
     <ClInclude Include="src\vendor\imgui\imconfig.h" />
