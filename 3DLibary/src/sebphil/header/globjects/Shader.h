@@ -21,11 +21,9 @@ namespace glib {
 	private:
 		std::uint32_t type;
 		std::string src;
-		std::string filePath;
 
 		void createShader();
 
-		void readSource();
 		void loadSource();
 
 		void tryToCompile();

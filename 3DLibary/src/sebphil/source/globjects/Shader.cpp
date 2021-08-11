@@ -9,28 +9,20 @@
 
 namespace glib {
 
-	Shader::Shader(const std::string& filePath, ShaderType type) noexcept :
-		filePath(filePath), type(ShaderStageType::getGlType(type)), src(SourceBuild(filePath))
+	Shader::Shader(const std::string& src, ShaderType type) noexcept :
+		type(ShaderStageType::getGlType(type)), src(src)
 	{
 		createShader();
 	}
 
-	void Shader::readSource() {
-
-		glib::FileReader fileReader;
-		
-		src = fileReader.read(filePath);
-	}
-
 	Shader::Shader(const Shader& other) noexcept :
-		filePath(other.filePath), src(other.src), type(other.type) {
+		src(other.src), type(other.type) {
 
 		createShader();
 	}
 
 	Shader& Shader::operator=(const Shader& other) noexcept {
 
-		filePath = other.filePath;
 		src = other.src;
 		type = other.type;
 
@@ -67,7 +59,7 @@ namespace glib {
 		glCompileShader(glHandle);
 
 		if (compilationFailed())
-			throw ShaderCompilationException(glHandle, filePath);
+			throw ShaderCompilationException(glHandle, src);
 	}
 
 	bool Shader::compilationFailed() {
@@ -80,7 +72,6 @@ namespace glib {
 
 	Shader::Shader(Shader&& other) noexcept :
 		GlObject(std::move(other)),
-		filePath(std::move(other.filePath)),
 		src(std::move(other.src)),
 		type(std::move(other.type)) 
 	{
@@ -88,7 +79,6 @@ namespace glib {
 
 	Shader& Shader::operator=(Shader&& other) noexcept {
 
-		filePath = std::move(other.filePath);
 		src = std::move(other.src);
 		type = std::move(other.type);
 

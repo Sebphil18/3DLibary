@@ -6,10 +6,14 @@
 
 namespace glib {
 
+	enum class ShaderProgramPreset {
+		High, Medium, Low
+	};
+
 	class ShaderProgramRegister {
 
 	public:
-		inline ShaderProgramRegister() {
+		inline ShaderProgramRegister(ShaderProgramPreset preset = ShaderProgramPreset::High) {
 			loadStandardPrograms();
 		};
 

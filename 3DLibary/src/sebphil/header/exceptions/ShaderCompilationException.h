@@ -8,7 +8,7 @@ namespace glib {
 	class ShaderCompilationException : public std::exception {
 
 	public:
-		ShaderCompilationException(std::uint32_t glHandle, const std::string& filePath);
+		ShaderCompilationException(std::uint32_t glHandle, const std::string& src);
 
 		const char* what() const override;
 
@@ -20,7 +20,7 @@ namespace glib {
 		std::int32_t getLogLength() const;
 		void deleteShader() const;
 
-		void constructMsg(const std::string& filePath);
+		void constructMsg(const std::string& src);
 
 	};
 

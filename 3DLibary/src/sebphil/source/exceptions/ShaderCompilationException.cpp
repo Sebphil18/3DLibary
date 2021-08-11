@@ -5,19 +5,20 @@
 
 namespace glib {
 
-	ShaderCompilationException::ShaderCompilationException(std::uint32_t glHandle, const std::string& filePath) :
+	ShaderCompilationException::ShaderCompilationException(std::uint32_t glHandle, const std::string& src) :
 		glHandle(glHandle)
 	{
-		constructMsg(filePath);
+		constructMsg(src);
 		deleteShader();
 	}
 
-	void glib::ShaderCompilationException::constructMsg(const std::string& filePath) {
+	void glib::ShaderCompilationException::constructMsg(const std::string& src) {
 
 		std::string log = getLog();
 
-		message = "ERROR::SHADER::COMPILATION::Could not compile shader '" + filePath + "': \n";
+		message = "ERROR::SHADER::COMPILATION::Could not compile shader: \n";
 		message.append(log);
+		message.append(src);
 		message.append("\n");
 	}
 

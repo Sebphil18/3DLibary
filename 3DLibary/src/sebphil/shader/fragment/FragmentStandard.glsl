@@ -126,6 +126,7 @@ void main() {
 	vec3 diffuseAmb = irradianceAmb * albedo;
 
 	// specular
+	#ifndef LOW
 	vec3 reflectedDir = reflect(-viewDir, normal);
 	const float maxLevel = 4;
 	float level = roughness * maxLevel;
@@ -135,7 +136,9 @@ void main() {
 	vec2 envBRDF = texture(brdf, brdfSampleVector).rg;
 
 	vec3 specIBL = prefilteredColor * (kSAmb * envBRDF.x + envBRDF.y);
-
+	#else
+	vec3 specIBL = vec3(0);
+	#endif
 	// combine
 	vec3 ambientColor = (kDAmb * diffuseAmb + specIBL) * occlusion;
 

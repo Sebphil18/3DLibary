@@ -6,28 +6,29 @@
 namespace glib {
 
 	// TDOO: duplicated code
-	ShaderProgram::ShaderProgram(const std::string& vertexShaderPath, const std::string& fragmentShaderPath) {
+	ShaderProgram::ShaderProgram(const SourceBuild& vertexShaderSrc, const SourceBuild& fragmentShaderSrc) {
 
 		glHandle = glCreateProgram();
 		setProgramUniformHandle(glHandle);
 
-		Shader vertexShader(vertexShaderPath, ShaderType::Vertex);
-		Shader fragmentShader(fragmentShaderPath, ShaderType::Fragment);
+		Shader vertexShader(vertexShaderSrc, ShaderType::Vertex);
+		Shader fragmentShader(fragmentShaderSrc, ShaderType::Fragment);
 
 		shaderHandles.push_back(vertexShader.getGlHandle());
 		shaderHandles.push_back(fragmentShader.getGlHandle());
 
 		buildProgram();
+
 	}
 
-	ShaderProgram::ShaderProgram(const std::string& vertexShaderPath, const std::string& geometryShaderPath, const std::string& fragmentShaderPath) {
+	ShaderProgram::ShaderProgram(const SourceBuild& vertexShaderSrc, const SourceBuild& geometryShaderSrc, const SourceBuild& fragmentShaderSrc) {
 
 		glHandle = glCreateProgram();
 		setProgramUniformHandle(glHandle);
 
-		Shader vertexShader(vertexShaderPath, ShaderType::Vertex);
-		Shader fragmentShader(fragmentShaderPath, ShaderType::Fragment);
-		Shader geometryShader(geometryShaderPath, ShaderType::Geometry);
+		Shader vertexShader(vertexShaderSrc, ShaderType::Vertex);
+		Shader fragmentShader(geometryShaderSrc, ShaderType::Fragment);
+		Shader geometryShader(fragmentShaderSrc, ShaderType::Geometry);
 
 		shaderHandles.push_back(vertexShader.getGlHandle());
 		shaderHandles.push_back(fragmentShader.getGlHandle());

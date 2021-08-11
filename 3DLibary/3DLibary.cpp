@@ -6,6 +6,7 @@
 #include "modelstructure/Model.h"
 #include "imgui/imgui.h"
 
+// TODO: change Shader constructor: it should take in ready to use src-code and not a filePath so defines can be used
 int main() {
 
 	stbi_set_flip_vertically_on_load(true);

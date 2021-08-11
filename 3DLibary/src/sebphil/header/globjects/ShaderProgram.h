@@ -5,18 +5,15 @@
 #include "globjects/GlObject.h"
 #include "globjects/Shader.h"
 #include "globjects/ProgramUniformLink.h"
+#include "preprocessor/SourceBuild.h"
 
 namespace glib {
-
-	enum class ShaderProgramFlags {
-		PBR, BlinnPhong, Normalmapping, ImageBasedLighting
-	};
 
 	class ShaderProgram : public GlObject, public ProgramUniformLink {
 
 	public:
-		ShaderProgram(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
-		ShaderProgram(const std::string& vertexShaderPath, const std::string& geometryShaderPath, const std::string& fragmentShaderPath);
+		ShaderProgram(const SourceBuild& vertexShaderSrc, const SourceBuild& fragmentShaderSrc);
+		ShaderProgram(const SourceBuild& vertexShaderSrc, const SourceBuild& geometryShaderSrc, const SourceBuild& fragmentShaderSrc);
 
 		~ShaderProgram();
 
